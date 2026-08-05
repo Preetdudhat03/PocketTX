@@ -21,7 +21,6 @@ public partial class App : Application
 
     public App()
     {
-        // Enforce Software Rendering to prevent white screen issues on systems with GPU/D3D rendering glitches
         RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
 
         AppDomain.CurrentDomain.UnhandledException += (s, e) =>
@@ -62,20 +61,20 @@ public partial class App : Application
 
         try
         {
-            // Start Host background tasks
-            _host.StartAsync();
+            // 1. Show MainWindow IMMEDIATELY on UI thread
+            var mainWindow = _host.Services.GetRequiredService<MainWindow>();
+            MainWindow = mainWindow;
+            mainWindow.Show();
 
-            // Load Settings & Profiles asynchronously
+            // 2. Start Host background services after UI window is visible
+            _ = _host.StartAsync();
+
+            // 3. Load Settings & Profiles asynchronously
             var settingsService = _host.Services.GetRequiredService<ISettingsService>();
             _ = settingsService.LoadSettingsAsync();
 
             var profileService = _host.Services.GetRequiredService<IProfileService>();
             _ = profileService.LoadProfilesAsync();
-
-            // Instantiate and Show MainWindow
-            var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-            MainWindow = mainWindow;
-            mainWindow.Show();
         }
         catch (Exception ex)
         {

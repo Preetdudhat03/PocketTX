@@ -26,7 +26,7 @@ public partial class App : Application
                 services
                     .AddShared()
                     .AddCore()
-                    .AddLogging()
+                    .AddPocketTXLogging()
                     .AddProtocol()
                     .AddVirtualController()
                     .AddServices();

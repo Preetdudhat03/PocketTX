@@ -1,4 +1,6 @@
 using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PocketTX.Companion.Core.Contracts;
@@ -19,6 +21,9 @@ public partial class App : Application
 
     public App()
     {
+        // Enforce Software Rendering to prevent white screen issues on systems with GPU/D3D rendering glitches
+        RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
+
         AppDomain.CurrentDomain.UnhandledException += (s, e) =>
         {
             MessageBox.Show($"Unhandled Exception: {e.ExceptionObject}", "PocketTX Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -57,7 +62,7 @@ public partial class App : Application
 
         try
         {
-            // Start Host background tasks synchronously/asynchronously
+            // Start Host background tasks
             _host.StartAsync();
 
             // Load Settings & Profiles asynchronously
@@ -67,7 +72,7 @@ public partial class App : Application
             var profileService = _host.Services.GetRequiredService<IProfileService>();
             _ = profileService.LoadProfilesAsync();
 
-            // Instantiate and Show MainWindow IMMEDIATELY on UI thread
+            // Instantiate and Show MainWindow
             var mainWindow = _host.Services.GetRequiredService<MainWindow>();
             MainWindow = mainWindow;
             mainWindow.Show();

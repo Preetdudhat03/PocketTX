@@ -2,9 +2,9 @@
   "branch": "main",
   "remote": "origin",
   "watch": true,
-  "delay": 120,
-  "auto_push": false,
-  "auto_sync": false,
+  "delay": 0,
+  "auto_push": true,
+  "auto_sync": true,
   "sync_strategy": "merge",
   "fetch_interval": 300,
   "max_file_size_mb": 50

@@ -9,20 +9,20 @@
     <SolidColorBrush x:Key="PrimaryAccentHoverBrush" Color="{StaticResource PrimaryAccentHoverColor}" />
 
     <!-- Light Theme Backgrounds -->
-    <Color x:Key="WindowBackgroundColor">#F4F6FB</Color>
+    <Color x:Key="WindowBackgroundColor">#F8FAFC</Color>
     <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowBackgroundColor}" />
 
-    <Color x:Key="SidebarBackgroundColor">#E9EEF7</Color>
+    <Color x:Key="SidebarBackgroundColor">#F1F5F9</Color>
     <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="{StaticResource SidebarBackgroundColor}" />
 
     <Color x:Key="CardBackgroundColor">#FFFFFF</Color>
     <SolidColorBrush x:Key="CardBackgroundBrush" Color="{StaticResource CardBackgroundColor}" />
 
-    <Color x:Key="CardHeaderBackgroundColor">#F0F4FA</Color>
+    <Color x:Key="CardHeaderBackgroundColor">#E2E8F0</Color>
     <SolidColorBrush x:Key="CardHeaderBackgroundBrush" Color="{StaticResource CardHeaderBackgroundColor}" />
 
-    <Color x:Key="BorderColor">#D4DCE8</Color>
-    <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}" />
+    <Color x:Key="BorderColor">#CBD5E1</Color>
+    <SolidColorBrush x:Key="CardBorderBrush" Color="{StaticResource BorderColor}" />
 
     <!-- Text Brushes -->
     <SolidColorBrush x:Key="TextPrimaryBrush" Color="#0F172A" />

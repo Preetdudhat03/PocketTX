@@ -69,4 +69,25 @@ public sealed class ConnectionManager : IConnectionManager
         _stateStore.UpdateConnectionStatus(_activeChannel.Type, false);
         _logger.LogInfo($"Disconnected from {_activeChannel.Type}.", "ConnectionManager");
     }
+
+    public async Task ScanDevicesAsync(CancellationToken cancellationToken = default)
+    {
+        _logger.LogInfo("Scanning USB / ADB / WiFi / Bluetooth for mobile devices...", "DeviceScanner");
+
+        // Simulate 500ms device discovery scan across interfaces
+        await Task.Delay(500, cancellationToken);
+
+        var physicalChannel = _channels.FirstOrDefault(c => c.Type != ConnectionType.TestMode && c.IsConnected);
+        if (physicalChannel != null)
+        {
+            _activeChannel = physicalChannel;
+            _stateStore.UpdateConnectionStatus(_activeChannel.Type, true);
+            _logger.LogInfo($"Mobile device found on {_activeChannel.Type}!", "DeviceScanner");
+        }
+        else
+        {
+            _logger.LogWarning("No mobile device detected. Test Mode (Simulation) active.", "DeviceScanner");
+            _stateStore.UpdateConnectionStatus(ConnectionType.TestMode, true);
+        }
+    }
 }

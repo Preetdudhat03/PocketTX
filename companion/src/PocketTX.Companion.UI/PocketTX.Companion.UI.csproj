@@ -1,5 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\PocketTX.Companion.Core\PocketTX.Companion.Core.csproj" />
+    <ProjectReference Include="..\PocketTX.Companion.Shared\PocketTX.Companion.Shared.csproj" />
+    <ProjectReference Include="..\PocketTX.Companion.Protocol\PocketTX.Companion.Protocol.csproj" />
+    <ProjectReference Include="..\PocketTX.Companion.VirtualController\PocketTX.Companion.VirtualController.csproj" />
+    <ProjectReference Include="..\PocketTX.Companion.Logging\PocketTX.Companion.Logging.csproj" />
+    <ProjectReference Include="..\PocketTX.Companion.Services\PocketTX.Companion.Services.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>

@@ -22,7 +22,7 @@
     <SolidColorBrush x:Key="CardHeaderBackgroundBrush" Color="{StaticResource CardHeaderBackgroundColor}" />
 
     <Color x:Key="BorderColor">#2A3246</Color>
-    <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}" />
+    <SolidColorBrush x:Key="CardBorderBrush" Color="{StaticResource BorderColor}" />
 
     <!-- Text Brushes -->
     <SolidColorBrush x:Key="TextPrimaryBrush" Color="#F0F4FC" />

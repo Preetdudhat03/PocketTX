@@ -132,9 +132,9 @@ class _MetricCard extends StatelessWidget {
 }
 
 class _InfoRow extends StatelessWidget {
-  final String key;
+  final String label;
   final String value;
-  const _InfoRow(this.key, this.value);
+  const _InfoRow(this.label, this.value);
 
   @override
   Widget build(BuildContext context) => Padding(

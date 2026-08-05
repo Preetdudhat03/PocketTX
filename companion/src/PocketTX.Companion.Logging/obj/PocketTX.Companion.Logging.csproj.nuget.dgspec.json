@@ -4,6 +4,78 @@
     "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Logging\\PocketTX.Companion.Logging.csproj": {}
   },
   "projects": {
+    "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj",
+        "projectName": "PocketTX.Companion.Core",
+        "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj",
+        "packagesPath": "C:\\Users\\preet\\.nuget\\packages\\",
+        "outputPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\preet\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj": {
+                "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "CommunityToolkit.Mvvm": {
+              "target": "Package",
+              "version": "[8.4.2, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[10.0.10, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Users\\preet\\.dotnet\\sdk\\8.0.423/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Logging\\PocketTX.Companion.Logging.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -12,6 +84,71 @@
         "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Logging\\PocketTX.Companion.Logging.csproj",
         "packagesPath": "C:\\Users\\preet\\.nuget\\packages\\",
         "outputPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Logging\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\preet\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj": {
+                "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj"
+              },
+              "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj": {
+                "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Users\\preet\\.dotnet\\sdk\\8.0.423/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj",
+        "projectName": "PocketTX.Companion.Shared",
+        "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj",
+        "packagesPath": "C:\\Users\\preet\\.nuget\\packages\\",
+        "outputPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\preet\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -42,6 +179,12 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[10.0.10, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

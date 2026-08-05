@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "AZ+4TNo4DZ8=",
+  "dgSpecHash": "EUCaJddgSGk=",
   "success": true,
   "projectFilePath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Protocol\\PocketTX.Companion.Protocol.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\preet\\.nuget\\packages\\communitytoolkit.mvvm\\8.4.2\\communitytoolkit.mvvm.8.4.2.nupkg.sha512",
+    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.10\\microsoft.extensions.dependencyinjection.abstractions.10.0.10.nupkg.sha512",
+    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\10.0.10\\microsoft.extensions.logging.abstractions.10.0.10.nupkg.sha512",
+    "C:\\Users\\preet\\.nuget\\packages\\system.diagnostics.diagnosticsource\\10.0.10\\system.diagnostics.diagnosticsource.10.0.10.nupkg.sha512"
+  ],
   "logs": []
 }

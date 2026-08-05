@@ -10,12 +10,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("PocketTX.Companion.Tests")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("PocketTX.Companion.UI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+969c4678dabac435ce0e586c3518cd993557d94e")]
-[assembly: System.Reflection.AssemblyProductAttribute("PocketTX.Companion.Tests")]
-[assembly: System.Reflection.AssemblyTitleAttribute("PocketTX.Companion.Tests")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1b6b26603083aa6a156b3f02a68560ea4529d157")]
+[assembly: System.Reflection.AssemblyProductAttribute("PocketTX.Companion.UI")]
+[assembly: System.Reflection.AssemblyTitleAttribute("PocketTX.Companion.UI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 [assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]
 [assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows7.0")]

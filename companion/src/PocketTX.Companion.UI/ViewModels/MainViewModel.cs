@@ -101,23 +101,31 @@ public partial class MainViewModel : ObservableObject, IRecipient<ThemeChangedMe
 
         string themeUri = theme switch
         {
-            ThemeType.Light => "pack://application:,,,/PocketTX.Companion.UI;component/Themes/Theme.Light.xaml",
-            _ => "pack://application:,,,/PocketTX.Companion.UI;component/Themes/Theme.Dark.xaml"
+            ThemeType.Light => "/PocketTX.Companion.UI;component/Themes/Theme.Light.xaml",
+            _ => "/PocketTX.Companion.UI;component/Themes/Theme.Dark.xaml"
         };
 
         try
         {
-            var resourceDict = new ResourceDictionary
+            var newDict = new ResourceDictionary
             {
-                Source = new Uri(themeUri, UriKind.Absolute)
+                Source = new Uri(themeUri, UriKind.Relative)
             };
 
-            Application.Current.Resources.MergedDictionaries.Clear();
-            Application.Current.Resources.MergedDictionaries.Add(resourceDict);
+            // Safely swap theme dictionaries without wiping all app resources
+            var existingTheme = Application.Current.Resources.MergedDictionaries
+                .FirstOrDefault(d => d.Source != null && d.Source.OriginalString.Contains("Theme."));
+
+            if (existingTheme != null)
+            {
+                Application.Current.Resources.MergedDictionaries.Remove(existingTheme);
+            }
+
+            Application.Current.Resources.MergedDictionaries.Add(newDict);
         }
         catch
         {
-            // Ignore if already loaded
+            // Ignore if already applied
         }
     }
 }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kyIjDMZYXSs=",
+  "dgSpecHash": "c0FpquvvCHU=",
   "success": true,
-  "projectFilePath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.VirtualController\\PocketTX.Companion.VirtualController.csproj",
+  "projectFilePath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.VirtualController\\PocketTX.Companion.VirtualController.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\preet\\.nuget\\packages\\communitytoolkit.mvvm\\8.4.2\\communitytoolkit.mvvm.8.4.2.nupkg.sha512",
     "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.10\\microsoft.extensions.dependencyinjection.abstractions.10.0.10.nupkg.sha512",

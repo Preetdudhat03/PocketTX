@@ -1,0 +1,10 @@
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\PocketTX.Companion.UI.csproj.AssemblyReference.cache
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Themes\Theme.Dark.baml
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Themes\Theme.Light.baml
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Views\LogsView.baml
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\App.baml
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\MainWindow.g.cs
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Views\LogsView.g.cs
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\App.g.cs
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\PocketTX.Companion.UI_MarkupCompile.cache
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\PocketTX.Companion.UI_MarkupCompile.lref

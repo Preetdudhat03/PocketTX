@@ -12,11 +12,9 @@
             CornerRadius="12"
             Padding="8">
         <Grid x:Name="ContainerGrid" ClipToBounds="True">
-            <!-- Grid Lines -->
-            <Line X1="0" Y1="{Binding ElementName=ContainerGrid, Path=ActualHeight, Converter={x:Static System:Double.NaN}}" 
-                  X2="{Binding ElementName=ContainerGrid, Path=ActualWidth}" Y2="0" Stroke="{DynamicResource BorderBrush}" StrokeDashArray="2 2" VerticalAlignment="Center"/>
-            <Line X1="0" Y1="0" X2="0" Y2="{Binding ElementName=ContainerGrid, Path=ActualHeight}" 
-                  Stroke="{DynamicResource BorderBrush}" StrokeDashArray="2 2" HorizontalAlignment="Center"/>
+            <!-- Crosshair Grid Lines -->
+            <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1" Height="1" VerticalAlignment="Center"/>
+            <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0" Width="1" HorizontalAlignment="Center"/>
 
             <!-- Center Circle -->
             <Ellipse Width="16" Height="16" Stroke="{DynamicResource BorderBrush}" StrokeThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -38,7 +36,7 @@
             <TextBlock x:Name="TitleLabel" Text="GIMBAL"
                        Foreground="{DynamicResource TextMutedBrush}"
                        FontSize="10" FontWeight="Bold"
-                       HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                       HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4"/>
         </Grid>
     </Border>
 </UserControl>

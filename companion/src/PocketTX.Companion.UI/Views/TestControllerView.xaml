@@ -1,0 +1,142 @@
+<UserControl x:Class="PocketTX.Companion.UI.Views.TestControllerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:PocketTX.Companion.UI.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="650" d:DesignWidth="900">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24" Spacing="20">
+            
+            <!-- Top Header & Action Buttons -->
+            <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Left">
+                        <TextBlock Text="TEST CONTROLLER MODE" Foreground="{DynamicResource PrimaryAccentBrush}" FontSize="18" FontWeight="Bold"/>
+                        <TextBlock Text="Simulate live RC stick inputs and aux switches directly into Windows" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" Margin="0,4,0,0"/>
+                    </StackPanel>
+
+                    <!-- Quick Action Buttons -->
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button Command="{Binding ToggleArmCommand}" Margin="4,0" Padding="16,8" Background="{DynamicResource CardHeaderBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="ARM: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding IsArmed, Converter={x:Static System:Object.ToString}}" Foreground="{DynamicResource PrimaryAccentBrush}"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding ToggleBeeperCommand}" Margin="4,0" Padding="16,8" Background="{DynamicResource CardHeaderBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="BEEPER: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding IsBeeperActive, Converter={x:Static System:Object.ToString}}" Foreground="{DynamicResource PrimaryAccentBrush}"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding CycleFlightModeCommand}" Margin="4,0" Padding="16,8" Background="{DynamicResource CardHeaderBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="MODE: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding FlightModeText}" Foreground="{DynamicResource PrimaryAccentBrush}"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding ResetSticksCommand}" Margin="4,0" Padding="16,8" Background="{DynamicResource CardHeaderBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                            <TextBlock Text="RESET CENTER" FontWeight="Bold"/>
+                        </Button>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <!-- Dual Gimbals Section (RadioMaster Style Visualizer) -->
+            <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Left Stick (Throttle Y, Yaw X) -->
+                    <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                        <TextBlock Text="LEFT STICK (THROTTLE / YAW)" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                        <controls:GimbalVisualizer XValue="{Binding YawNormalized}" YValue="{Binding ThrottleNormalized}" Title="THROTTLE / YAW" Width="200" Height="200"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,12,0,0">
+                            <TextBlock Text="Throttle: " Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{Binding ThrottlePwm, StringFormat='{}{0}us'}" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Bold" Margin="0,0,16,0"/>
+                            <TextBlock Text="Yaw: " Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{Binding YawPwm, StringFormat='{}{0}us'}" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Bold"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Right Stick (Pitch Y, Roll X) -->
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                        <TextBlock Text="RIGHT STICK (PITCH / ROLL)" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                        <controls:GimbalVisualizer XValue="{Binding RollNormalized}" YValue="{Binding PitchNormalized}" Title="PITCH / ROLL" Width="200" Height="200"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,12,0,0">
+                            <TextBlock Text="Pitch: " Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{Binding PitchPwm, StringFormat='{}{0}us'}" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Bold" Margin="0,0,16,0"/>
+                            <TextBlock Text="Roll: " Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{Binding RollPwm, StringFormat='{}{0}us'}" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Bold"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Axis Sliders Section -->
+            <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="ANALOG AXIS SLIDERS" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+
+                    <!-- Roll -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="80"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Roll (Aileron)" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                        <Slider Grid.Column="1" Minimum="-1.0" Maximum="1.0" Value="{Binding RollNormalized, Mode=TwoWay}" SmallChange="0.05" LargeChange="0.2" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="{Binding RollPwm, StringFormat='{}{0} us'}" Foreground="{DynamicResource PrimaryAccentBrush}" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <!-- Pitch -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="80"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Pitch (Elevator)" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                        <Slider Grid.Column="1" Minimum="-1.0" Maximum="1.0" Value="{Binding PitchNormalized, Mode=TwoWay}" SmallChange="0.05" LargeChange="0.2" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="{Binding PitchPwm, StringFormat='{}{0} us'}" Foreground="{DynamicResource PrimaryAccentBrush}" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <!-- Throttle -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="80"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Throttle" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                        <Slider Grid.Column="1" Minimum="-1.0" Maximum="1.0" Value="{Binding ThrottleNormalized, Mode=TwoWay}" SmallChange="0.05" LargeChange="0.2" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="{Binding ThrottlePwm, StringFormat='{}{0} us'}" Foreground="{DynamicResource PrimaryAccentBrush}" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <!-- Yaw -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="80"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Yaw (Rudder)" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                        <Slider Grid.Column="1" Minimum="-1.0" Maximum="1.0" Value="{Binding YawNormalized, Mode=TwoWay}" SmallChange="0.05" LargeChange="0.2" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="{Binding YawPwm, StringFormat='{}{0} us'}" Foreground="{DynamicResource PrimaryAccentBrush}" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

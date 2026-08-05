@@ -5,8 +5,14 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/PocketTX.Companion.UI;component/Themes/Theme.Dark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/PocketTX.Companion.UI;component/Themes/Theme.Dark.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <!-- Fallback Brushes -->
+            <SolidColorBrush x:Key="PrimaryAccentBrush" Color="#5B8DEF"/>
+            <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#0F1218"/>
+            <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="#141822"/>
+            <SolidColorBrush x:Key="CardBackgroundBrush" Color="#1B202E"/>
+            <SolidColorBrush x:Key="TextPrimaryBrush" Color="#F0F4FC"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

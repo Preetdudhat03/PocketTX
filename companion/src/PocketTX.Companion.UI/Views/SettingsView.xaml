@@ -1,0 +1,73 @@
+<UserControl x:Class="PocketTX.Companion.UI.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:coreEnums="clr-namespace:PocketTX.Companion.Core.Enums;assembly=PocketTX.Companion.Core"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="900">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24" Spacing="20">
+            
+            <TextBlock Text="APPLICATION SETTINGS" Foreground="{DynamicResource PrimaryAccentBrush}" FontSize="18" FontWeight="Bold"/>
+
+            <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="APPEARANCE & THEME" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Interface Theme" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Column="1" SelectedItem="{Binding SelectedTheme, Mode=TwoWay}" Padding="8,6" Background="{DynamicResource CardHeaderBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}">
+                            <coreEnums:ThemeType>Dark</coreEnums:ThemeType>
+                            <coreEnums:ThemeType>Light</coreEnums:ThemeType>
+                        </ComboBox>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="CONTROLLER DEADBAND & EXPO" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="60"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Default Deadband" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                        <Slider Grid.Column="1" Minimum="0.0" Maximum="0.10" Value="{Binding Deadband, Mode=TwoWay}" SmallChange="0.005" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="{Binding Deadband, StringFormat='{}{0:P1}'}" Foreground="{DynamicResource PrimaryAccentBrush}" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="60"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Default Expo" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                        <Slider Grid.Column="1" Minimum="0.0" Maximum="0.50" Value="{Binding Expo, Mode=TwoWay}" SmallChange="0.05" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="{Binding Expo, StringFormat='{}{0:P0}'}" Foreground="{DynamicResource PrimaryAccentBrush}" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="SYSTEM & INTEGRATION" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+
+                    <CheckBox Content="Start PocketTX Companion automatically with Windows" IsChecked="{Binding AutoStart, Mode=TwoWay}" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <CheckBox Content="Start application minimized to system tray" IsChecked="{Binding StartMinimized, Mode=TwoWay}" Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                    <Button Command="{Binding SaveSettingsCommand}" Content="SAVE SETTINGS" Padding="20,10" Background="{DynamicResource PrimaryAccentBrush}" Foreground="#FFFFFF" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,12,0,0"/>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

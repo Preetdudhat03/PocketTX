@@ -15,16 +15,16 @@ public sealed class ApplicationState : IStateStore
     private readonly IMessenger _messenger;
     private readonly object _lock = new();
 
-    public ChannelData CurrentChannels { get; private me; } = new();
-    public ControllerProfile CurrentProfile { get; private me; } = ControllerProfile.CreateDefaultAcro();
-    public AppSettings CurrentSettings { get; private me; } = new();
-    public SimulatorStatus CurrentSimulator { get; private me; } = SimulatorStatus.NotRunning();
-    public DiagnosticMetrics Diagnostics { get; private me; } = new();
+    public ChannelData CurrentChannels { get; private set; } = new();
+    public ControllerProfile CurrentProfile { get; private set; } = ControllerProfile.CreateDefaultAcro();
+    public AppSettings CurrentSettings { get; private set; } = new();
+    public SimulatorStatus CurrentSimulator { get; private set; } = SimulatorStatus.NotRunning();
+    public DiagnosticMetrics Diagnostics { get; private set; } = new();
 
-    public ConnectionType CurrentConnection { get; private me; } = ConnectionType.TestMode;
-    public VirtualBackendType CurrentBackend { get; private me; } = VirtualBackendType.Simulation;
-    public ThemeType CurrentTheme { get; private me; } = ThemeType.Dark;
-    public bool IsConnected { get; private me; } = true;
+    public ConnectionType CurrentConnection { get; private set; } = ConnectionType.TestMode;
+    public VirtualBackendType CurrentBackend { get; private set; } = VirtualBackendType.Simulation;
+    public ThemeType CurrentTheme { get; private set; } = ThemeType.Dark;
+    public bool IsConnected { get; private set; } = true;
 
     public double CurrentLatencyMs
     {

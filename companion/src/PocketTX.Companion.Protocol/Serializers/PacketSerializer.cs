@@ -1,5 +1,5 @@
-using System.IO.Hashing;
 using PocketTX.Companion.Core.Enums;
+using PocketTX.Companion.Protocol.Helpers;
 using PocketTX.Companion.Protocol.Packets;
 
 namespace PocketTX.Companion.Protocol.Serializers;
@@ -34,7 +34,7 @@ public static class PacketSerializer
         }
 
         // CRC32 calculation over header + payload
-        uint crc = Crc32.HashToUInt32(buffer.AsSpan(0, PacketHeader.HeaderSize + packet.Payload.Length));
+        uint crc = Crc32.Compute(buffer.AsSpan(0, PacketHeader.HeaderSize + packet.Payload.Length));
         packet.Crc32 = crc;
         writer.Write(crc);
 
@@ -57,7 +57,7 @@ public static class PacketSerializer
 
         // Verify CRC32
         uint expectedCrc = BitConverter.ToUInt32(buffer.Slice(PacketHeader.HeaderSize + payloadLength, 4));
-        uint calculatedCrc = Crc32.HashToUInt32(buffer.Slice(0, PacketHeader.HeaderSize + payloadLength));
+        uint calculatedCrc = Crc32.Compute(buffer.Slice(0, PacketHeader.HeaderSize + payloadLength));
 
         if (expectedCrc != calculatedCrc) return false;
 

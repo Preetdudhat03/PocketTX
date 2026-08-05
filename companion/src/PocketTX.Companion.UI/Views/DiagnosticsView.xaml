@@ -1,0 +1,87 @@
+<UserControl x:Class="PocketTX.Companion.UI.Views.DiagnosticsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="900">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24" Spacing="20">
+            
+            <TextBlock Text="SYSTEM DIAGNOSTICS & TELEMETRY" Foreground="{DynamicResource PrimaryAccentBrush}" FontSize="18" FontWeight="Bold"/>
+
+            <!-- Metrics Cards Grid -->
+            <UniformGrid Columns="3">
+                <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16" Margin="6">
+                    <StackPanel>
+                        <TextBlock Text="APPLICATION UPTIME" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding UptimeText}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="22" FontWeight="Bold" Margin="0,8,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16" Margin="6">
+                    <StackPanel>
+                        <TextBlock Text="PACKET RATE" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding PacketsPerSecond, StringFormat='{}{0} p/s'}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="22" FontWeight="Bold" Margin="0,8,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16" Margin="6">
+                    <StackPanel>
+                        <TextBlock Text="DROPPED PACKETS" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding DroppedPackets}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="22" FontWeight="Bold" Margin="0,8,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16" Margin="6">
+                    <StackPanel>
+                        <TextBlock Text="AVG LATENCY" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding AvgLatencyMs, StringFormat='{}{0} ms'}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="22" FontWeight="Bold" Margin="0,8,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16" Margin="6">
+                    <StackPanel>
+                        <TextBlock Text="PEAK LATENCY" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding PeakLatencyMs, StringFormat='{}{0} ms'}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="22" FontWeight="Bold" Margin="0,8,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16" Margin="6">
+                    <StackPanel>
+                        <TextBlock Text="QUEUE DEPTH" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding QueueDepth}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="22" FontWeight="Bold" Margin="0,8,0,0"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Detailed System Resource Summary -->
+            <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="SYSTEM PROCESS PERFORMANCE" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+                    
+                    <Grid Margin="0,4">
+                        <TextBlock Text="Process RAM Usage" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <TextBlock Text="{Binding RamUsageMb, StringFormat='{}{0} MB'}" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <Grid Margin="0,4">
+                        <TextBlock Text="Active Threads" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <TextBlock Text="{Binding ThreadCount}" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <Grid Margin="0,4">
+                        <TextBlock Text="Last Packet Sent Timestamp" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <TextBlock Text="{Binding LastPacketSentText}" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <Grid Margin="0,4">
+                        <TextBlock Text="Active Virtual Controller Backend" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <TextBlock Text="{Binding ActiveBackendText}" Foreground="{DynamicResource PrimaryAccentBrush}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

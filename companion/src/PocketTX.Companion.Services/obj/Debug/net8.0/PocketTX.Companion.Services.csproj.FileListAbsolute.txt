@@ -1,0 +1,6 @@
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Services\obj\Debug\net8.0\PocketTX.Companion.Services.csproj.AssemblyReference.cache
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Services\obj\Debug\net8.0\PocketTX.Companion.Services.GeneratedMSBuildEditorConfig.editorconfig
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Services\obj\Debug\net8.0\PocketTX.Companion.Services.AssemblyInfoInputs.cache
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Services\obj\Debug\net8.0\PocketTX.Companion.Services.AssemblyInfo.cs
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Services\obj\Debug\net8.0\PocketTX.Companion.Services.csproj.CoreCompileInputs.cache
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Services\obj\Debug\net8.0\PocketTX.Companion.Services.sourcelink.json

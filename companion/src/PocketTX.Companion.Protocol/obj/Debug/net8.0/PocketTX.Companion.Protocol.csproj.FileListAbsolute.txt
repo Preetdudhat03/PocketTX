@@ -4,3 +4,15 @@ P:\pro\PocketTX\companion\src\PocketTX.Companion.Protocol\obj\Debug\net8.0\Pocke
 P:\pro\PocketTX\companion\src\PocketTX.Companion.Protocol\obj\Debug\net8.0\PocketTX.Companion.Protocol.AssemblyInfo.cs
 P:\pro\PocketTX\companion\src\PocketTX.Companion.Protocol\obj\Debug\net8.0\PocketTX.Companion.Protocol.csproj.CoreCompileInputs.cache
 P:\pro\PocketTX\companion\src\PocketTX.Companion.Protocol\obj\Debug\net8.0\PocketTX.Companion.Protocol.sourcelink.json
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Protocol\bin\Debug\net8.0\PocketTX.Companion.Protocol.deps.json
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Protocol\bin\Debug\net8.0\PocketTX.Companion.Protocol.dll
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Protocol\bin\Debug\net8.0\PocketTX.Companion.Protocol.pdb
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Protocol\bin\Debug\net8.0\PocketTX.Companion.Core.dll
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Protocol\bin\Debug\net8.0\PocketTX.Companion.Shared.dll
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Protocol\bin\Debug\net8.0\PocketTX.Companion.Core.pdb
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Protocol\bin\Debug\net8.0\PocketTX.Companion.Shared.pdb
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Protocol\obj\Debug\net8.0\PocketTX.11C15690.Up2Date
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Protocol\obj\Debug\net8.0\PocketTX.Companion.Protocol.dll
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Protocol\obj\Debug\net8.0\refint\PocketTX.Companion.Protocol.dll
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Protocol\obj\Debug\net8.0\PocketTX.Companion.Protocol.pdb
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Protocol\obj\Debug\net8.0\ref\PocketTX.Companion.Protocol.dll

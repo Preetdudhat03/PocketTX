@@ -23,7 +23,7 @@ public class HostStartupTests
                 services
                     .AddShared()
                     .AddCore()
-                    .AddLogging()
+                    .AddPocketTXLogging()
                     .AddProtocol()
                     .AddVirtualController()
                     .AddServices();

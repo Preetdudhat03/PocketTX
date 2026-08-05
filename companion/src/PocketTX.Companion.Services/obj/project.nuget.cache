@@ -1,19 +1,19 @@
 {
   "version": 2,
-  "dgSpecHash": "+Qe7yhPa1i4=",
+  "dgSpecHash": "3ymv/IF3dQI=",
   "success": true,
-  "projectFilePath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Services\\PocketTX.Companion.Services.csproj",
+  "projectFilePath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Services\\PocketTX.Companion.Services.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\preet\\.nuget\\packages\\communitytoolkit.mvvm\\8.4.2\\communitytoolkit.mvvm.8.4.2.nupkg.sha512",
-    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\10.0.10\\microsoft.extensions.configuration.abstractions.10.0.10.nupkg.sha512",
+    "C:\\Users\\preet\\.nuget\\packages\\communitytoolkit.mvvm\\8.2.2\\communitytoolkit.mvvm.8.2.2.nupkg.sha512",
+    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\8.0.0\\microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.10\\microsoft.extensions.dependencyinjection.abstractions.10.0.10.nupkg.sha512",
-    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.diagnostics.abstractions\\10.0.10\\microsoft.extensions.diagnostics.abstractions.10.0.10.nupkg.sha512",
-    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\10.0.10\\microsoft.extensions.fileproviders.abstractions.10.0.10.nupkg.sha512",
-    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.hosting.abstractions\\10.0.10\\microsoft.extensions.hosting.abstractions.10.0.10.nupkg.sha512",
-    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\10.0.10\\microsoft.extensions.logging.abstractions.10.0.10.nupkg.sha512",
-    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.options\\10.0.10\\microsoft.extensions.options.10.0.10.nupkg.sha512",
-    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.primitives\\10.0.10\\microsoft.extensions.primitives.10.0.10.nupkg.sha512",
-    "C:\\Users\\preet\\.nuget\\packages\\system.diagnostics.diagnosticsource\\10.0.10\\system.diagnostics.diagnosticsource.10.0.10.nupkg.sha512"
+    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.diagnostics.abstractions\\8.0.0\\microsoft.extensions.diagnostics.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\8.0.0\\microsoft.extensions.fileproviders.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.hosting.abstractions\\8.0.0\\microsoft.extensions.hosting.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.options\\8.0.0\\microsoft.extensions.options.8.0.0.nupkg.sha512",
+    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "C:\\Users\\preet\\.nuget\\packages\\system.diagnostics.diagnosticsource\\8.0.0\\system.diagnostics.diagnosticsource.8.0.0.nupkg.sha512"
   ],
   "logs": []
 }

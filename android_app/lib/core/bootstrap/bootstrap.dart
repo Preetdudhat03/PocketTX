@@ -18,8 +18,8 @@ class Bootstrap {
 
     // 2. Set system UI style (immersive mode)
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: 0x00000000, // transparent
-      systemNavigationBarColor: 0xFF0A0C10,
+      statusBarColor: Color(0x00000000),
+      systemNavigationBarColor: Color(0xFF0A0C10),
       statusBarBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.light,
     ));

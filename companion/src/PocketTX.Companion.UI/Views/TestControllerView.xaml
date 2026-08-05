@@ -22,14 +22,14 @@
                         <Button Command="{Binding ToggleArmCommand}" Margin="4,0" Padding="16,8" Background="{DynamicResource CardHeaderBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="ARM: " FontWeight="Bold"/>
-                                <TextBlock Text="{Binding IsArmed, Converter={x:Static System:Object.ToString}}" Foreground="{DynamicResource PrimaryAccentBrush}"/>
+                                <TextBlock Text="{Binding IsArmed}" Foreground="{DynamicResource PrimaryAccentBrush}"/>
                             </StackPanel>
                         </Button>
 
                         <Button Command="{Binding ToggleBeeperCommand}" Margin="4,0" Padding="16,8" Background="{DynamicResource CardHeaderBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="BEEPER: " FontWeight="Bold"/>
-                                <TextBlock Text="{Binding IsBeeperActive, Converter={x:Static System:Object.ToString}}" Foreground="{DynamicResource PrimaryAccentBrush}"/>
+                                <TextBlock Text="{Binding IsBeeperActive}" Foreground="{DynamicResource PrimaryAccentBrush}"/>
                             </StackPanel>
                         </Button>
 

@@ -6,8 +6,8 @@
 import 'dart:convert';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import '../../models/controller_profile.dart';
-import '../constants/app_constants.dart';
-import '../services/logger_service.dart';
+import 'package:pockettx_app/core/constants/app_constants.dart';
+import 'package:pockettx_app/core/services/logger_service.dart';
 import '../../models/log_entry_model.dart';
 
 class ProfileRepository {

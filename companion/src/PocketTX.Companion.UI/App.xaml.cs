@@ -19,6 +19,11 @@ public partial class App : Application
 
     public App()
     {
+        AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+        {
+            MessageBox.Show($"Unhandled Exception: {e.ExceptionObject}", "PocketTX Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        };
+
         _host = Host.CreateDefaultBuilder()
             .ConfigureServices((context, services) =>
             {
@@ -50,20 +55,27 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
-        await _host.StartAsync();
+        try
+        {
+            await _host.StartAsync();
 
-        // Load Settings and Profiles on Startup
-        var settingsService = _host.Services.GetRequiredService<ISettingsService>();
-        await settingsService.LoadSettingsAsync();
+            // Load Settings and Profiles on Startup
+            var settingsService = _host.Services.GetRequiredService<ISettingsService>();
+            await settingsService.LoadSettingsAsync();
 
-        var profileService = _host.Services.GetRequiredService<IProfileService>();
-        await profileService.LoadProfilesAsync();
+            var profileService = _host.Services.GetRequiredService<IProfileService>();
+            await profileService.LoadProfilesAsync();
 
-        var stateStore = _host.Services.GetRequiredService<IStateStore>();
-        MainViewModel.ApplyThemeResource(stateStore.CurrentTheme);
+            var stateStore = _host.Services.GetRequiredService<IStateStore>();
+            MainViewModel.ApplyThemeResource(stateStore.CurrentTheme);
 
-        var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-        mainWindow.Show();
+            var mainWindow = _host.Services.GetRequiredService<MainWindow>();
+            mainWindow.Show();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Startup Error: {ex.Message}\n\n{ex.StackTrace}", "PocketTX Startup Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
     protected override async void OnExit(ExitEventArgs e)

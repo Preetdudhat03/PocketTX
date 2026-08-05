@@ -4,7 +4,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Themes/Theme.Dark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/PocketTX.Companion.UI;component/Themes/Theme.Dark.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

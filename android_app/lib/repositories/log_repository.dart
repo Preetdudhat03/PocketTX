@@ -4,7 +4,7 @@
 // ─────────────────────────────────────────────
 
 import '../../models/log_entry_model.dart';
-import '../services/logger_service.dart';
+import 'package:pockettx_app/core/services/logger_service.dart';
 
 /// Repository providing access to the in-memory log ring buffer.
 /// For Phase 1, this wraps LoggerService directly.

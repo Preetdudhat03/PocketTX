@@ -15,11 +15,11 @@
           "PocketTX.Companion.Protocol.dll": {}
         }
       },
-      "CommunityToolkit.Mvvm/8.4.2": {
+      "CommunityToolkit.Mvvm/8.2.2": {
         "runtime": {
-          "lib/net8.0/CommunityToolkit.Mvvm.dll": {
-            "assemblyVersion": "8.4.0.0",
-            "fileVersion": "8.4.2.1"
+          "lib/net6.0/CommunityToolkit.Mvvm.dll": {
+            "assemblyVersion": "8.2.0.0",
+            "fileVersion": "8.2.2.1"
           }
         }
       },
@@ -31,30 +31,21 @@
           }
         }
       },
-      "Microsoft.Extensions.Logging.Abstractions/10.0.10": {
+      "Microsoft.Extensions.Logging.Abstractions/8.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.10",
-          "System.Diagnostics.DiagnosticSource": "10.0.10"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.10"
         },
         "runtime": {
           "lib/net8.0/Microsoft.Extensions.Logging.Abstractions.dll": {
-            "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.1026.32716"
-          }
-        }
-      },
-      "System.Diagnostics.DiagnosticSource/10.0.10": {
-        "runtime": {
-          "lib/net8.0/System.Diagnostics.DiagnosticSource.dll": {
-            "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.1026.32716"
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
           }
         }
       },
       "PocketTX.Companion.Core/1.0.0": {
         "dependencies": {
-          "CommunityToolkit.Mvvm": "8.4.2",
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.10",
+          "CommunityToolkit.Mvvm": "8.2.2",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.0",
           "PocketTX.Companion.Shared": "1.0.0"
         },
         "runtime": {
@@ -83,12 +74,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CommunityToolkit.Mvvm/8.4.2": {
+    "CommunityToolkit.Mvvm/8.2.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-WadCzGEc2U+3e20avRLng4qNtt4zoOGWrdUISqJWrHe3/FSnrYjuM5Sb4yQb09LhkBXrrI4Zt3dLKgRMbItsrg==",
-      "path": "communitytoolkit.mvvm/8.4.2",
-      "hashPath": "communitytoolkit.mvvm.8.4.2.nupkg.sha512"
+      "sha512": "sha512-r0g0k9tGYdrnz8R7T3x5UiokDffeevzK/2P/9SBL6fqLgN8B157MIi/bVUWI1KAz6ZorZrK9AdABCWUeXZZsvA==",
+      "path": "communitytoolkit.mvvm/8.2.2",
+      "hashPath": "communitytoolkit.mvvm.8.2.2.nupkg.sha512"
     },
     "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.10": {
       "type": "package",
@@ -97,19 +88,12 @@
       "path": "microsoft.extensions.dependencyinjection.abstractions/10.0.10",
       "hashPath": "microsoft.extensions.dependencyinjection.abstractions.10.0.10.nupkg.sha512"
     },
-    "Microsoft.Extensions.Logging.Abstractions/10.0.10": {
+    "Microsoft.Extensions.Logging.Abstractions/8.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-zkFxGYUvdxAvIKTyXHrmW+Sux53D4SezD9dMyZ6hrwwzPQJNuwCRy1f5W7AvYTqacEGhWF2XderRQG1OvbV8og==",
-      "path": "microsoft.extensions.logging.abstractions/10.0.10",
-      "hashPath": "microsoft.extensions.logging.abstractions.10.0.10.nupkg.sha512"
-    },
-    "System.Diagnostics.DiagnosticSource/10.0.10": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-cjtKi6ERMYWp6b9UTVPcwDT29PjKDtlM3W9OwnWL5abRsI8ku42Q2wqZoLIIXJnT/XF2s2CjuK8Nl4a3mmTxQQ==",
-      "path": "system.diagnostics.diagnosticsource/10.0.10",
-      "hashPath": "system.diagnostics.diagnosticsource.10.0.10.nupkg.sha512"
+      "sha512": "sha512-arDBqTgFCyS0EvRV7O3MZturChstm50OJ0y9bDJvAcmEPJm0FFpFyjU/JLYyStNGGey081DvnQYlncNX5SJJGA==",
+      "path": "microsoft.extensions.logging.abstractions/8.0.0",
+      "hashPath": "microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512"
     },
     "PocketTX.Companion.Core/1.0.0": {
       "type": "project",

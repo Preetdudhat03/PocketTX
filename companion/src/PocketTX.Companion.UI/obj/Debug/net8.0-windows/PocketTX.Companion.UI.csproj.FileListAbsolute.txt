@@ -59,14 +59,8 @@ P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\bin\Debug\net8.0-windows\Mic
 P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\bin\Debug\net8.0-windows\Microsoft.Extensions.Options.dll
 P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\bin\Debug\net8.0-windows\Microsoft.Extensions.Options.ConfigurationExtensions.dll
 P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\bin\Debug\net8.0-windows\Microsoft.Extensions.Primitives.dll
-P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\bin\Debug\net8.0-windows\System.Diagnostics.DiagnosticSource.dll
 P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\bin\Debug\net8.0-windows\System.Diagnostics.EventLog.dll
-P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\bin\Debug\net8.0-windows\System.IO.Pipelines.dll
-P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\bin\Debug\net8.0-windows\System.Text.Encodings.Web.dll
-P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\bin\Debug\net8.0-windows\System.Text.Json.dll
-P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.Messages.dll
 P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
-P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\bin\Debug\net8.0-windows\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\bin\Debug\net8.0-windows\PocketTX.Companion.Core.dll
 P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\bin\Debug\net8.0-windows\PocketTX.Companion.Logging.dll
 P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\bin\Debug\net8.0-windows\PocketTX.Companion.Protocol.dll

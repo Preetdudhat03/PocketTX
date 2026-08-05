@@ -51,25 +51,25 @@ public partial class App : Application
             .Build();
     }
 
-    protected override async void OnStartup(StartupEventArgs e)
+    protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
 
         try
         {
-            await _host.StartAsync();
+            // Start Host background tasks synchronously/asynchronously
+            _host.StartAsync();
 
-            // Load Settings and Profiles on Startup
+            // Load Settings & Profiles asynchronously
             var settingsService = _host.Services.GetRequiredService<ISettingsService>();
-            await settingsService.LoadSettingsAsync();
+            _ = settingsService.LoadSettingsAsync();
 
             var profileService = _host.Services.GetRequiredService<IProfileService>();
-            await profileService.LoadProfilesAsync();
+            _ = profileService.LoadProfilesAsync();
 
-            var stateStore = _host.Services.GetRequiredService<IStateStore>();
-            MainViewModel.ApplyThemeResource(stateStore.CurrentTheme);
-
+            // Instantiate and Show MainWindow IMMEDIATELY on UI thread
             var mainWindow = _host.Services.GetRequiredService<MainWindow>();
+            MainWindow = mainWindow;
             mainWindow.Show();
         }
         catch (Exception ex)

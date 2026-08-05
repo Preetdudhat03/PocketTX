@@ -1,12 +1,18 @@
 {
   "version": 2,
-  "dgSpecHash": "I24t7IE6uU0=",
+  "dgSpecHash": "GWWjMDMFEiM=",
   "success": true,
   "projectFilePath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Services\\PocketTX.Companion.Services.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\preet\\.nuget\\packages\\communitytoolkit.mvvm\\8.4.2\\communitytoolkit.mvvm.8.4.2.nupkg.sha512",
+    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\10.0.10\\microsoft.extensions.configuration.abstractions.10.0.10.nupkg.sha512",
     "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.10\\microsoft.extensions.dependencyinjection.abstractions.10.0.10.nupkg.sha512",
+    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.diagnostics.abstractions\\10.0.10\\microsoft.extensions.diagnostics.abstractions.10.0.10.nupkg.sha512",
+    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\10.0.10\\microsoft.extensions.fileproviders.abstractions.10.0.10.nupkg.sha512",
+    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.hosting.abstractions\\10.0.10\\microsoft.extensions.hosting.abstractions.10.0.10.nupkg.sha512",
     "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\10.0.10\\microsoft.extensions.logging.abstractions.10.0.10.nupkg.sha512",
+    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.options\\10.0.10\\microsoft.extensions.options.10.0.10.nupkg.sha512",
+    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.primitives\\10.0.10\\microsoft.extensions.primitives.10.0.10.nupkg.sha512",
     "C:\\Users\\preet\\.nuget\\packages\\system.diagnostics.diagnosticsource\\10.0.10\\system.diagnostics.diagnosticsource.10.0.10.nupkg.sha512"
   ],
   "logs": []

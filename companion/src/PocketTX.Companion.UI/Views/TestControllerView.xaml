@@ -7,10 +7,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="650" d:DesignWidth="900">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24" Spacing="20">
+        <StackPanel Margin="24">
             
             <!-- Top Header & Action Buttons -->
-            <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
+            <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20" Margin="0,0,0,16">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Left">
                         <TextBlock Text="TEST CONTROLLER MODE" Foreground="{DynamicResource PrimaryAccentBrush}" FontSize="18" FontWeight="Bold"/>
@@ -19,7 +19,7 @@
 
                     <!-- Quick Action Buttons -->
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
-                        <Button Command="{Binding ToggleArmCommand}" Margin="4,0" Padding="16,8" Background="{DynamicResource CardHeaderBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <Button Command="{Binding ToggleArmCommand}" Margin="4,0" Padding="16,8" Background="{DynamicResource CardHeaderBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="ARM: " FontWeight="Bold"/>
                                 <TextBlock Text="{Binding IsArmed, Converter={x:Static System:Object.ToString}}" Foreground="{DynamicResource PrimaryAccentBrush}"/>
@@ -48,7 +48,7 @@
             </Border>
 
             <!-- Dual Gimbals Section (RadioMaster Style Visualizer) -->
-            <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
+            <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20" Margin="0,0,0,16">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
@@ -83,11 +83,11 @@
 
             <!-- Axis Sliders Section -->
             <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
-                <StackPanel Spacing="16">
-                    <TextBlock Text="ANALOG AXIS SLIDERS" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+                <StackPanel>
+                    <TextBlock Text="ANALOG AXIS SLIDERS" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold" Margin="0,0,0,16"/>
 
                     <!-- Roll -->
-                    <Grid>
+                    <Grid Margin="0,0,0,12">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="*"/>
@@ -99,7 +99,7 @@
                     </Grid>
 
                     <!-- Pitch -->
-                    <Grid>
+                    <Grid Margin="0,0,0,12">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="*"/>
@@ -111,7 +111,7 @@
                     </Grid>
 
                     <!-- Throttle -->
-                    <Grid>
+                    <Grid Margin="0,0,0,12">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="*"/>
@@ -123,7 +123,7 @@
                     </Grid>
 
                     <!-- Yaw -->
-                    <Grid>
+                    <Grid Margin="0,0,0,12">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="*"/>

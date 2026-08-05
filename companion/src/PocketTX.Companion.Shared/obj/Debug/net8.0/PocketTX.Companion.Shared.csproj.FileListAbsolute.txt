@@ -1,0 +1,13 @@
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Shared\bin\Debug\net8.0\PocketTX.Companion.Shared.deps.json
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Shared\bin\Debug\net8.0\PocketTX.Companion.Shared.dll
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Shared\bin\Debug\net8.0\PocketTX.Companion.Shared.pdb
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Shared\obj\Debug\net8.0\PocketTX.Companion.Shared.csproj.AssemblyReference.cache
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Shared\obj\Debug\net8.0\PocketTX.Companion.Shared.GeneratedMSBuildEditorConfig.editorconfig
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Shared\obj\Debug\net8.0\PocketTX.Companion.Shared.AssemblyInfoInputs.cache
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Shared\obj\Debug\net8.0\PocketTX.Companion.Shared.AssemblyInfo.cs
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Shared\obj\Debug\net8.0\PocketTX.Companion.Shared.csproj.CoreCompileInputs.cache
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Shared\obj\Debug\net8.0\PocketTX.Companion.Shared.sourcelink.json
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Shared\obj\Debug\net8.0\PocketTX.Companion.Shared.dll
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Shared\obj\Debug\net8.0\refint\PocketTX.Companion.Shared.dll
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Shared\obj\Debug\net8.0\PocketTX.Companion.Shared.pdb
+P:\pro\PocketTX\companion\src\PocketTX.Companion.Shared\obj\Debug\net8.0\ref\PocketTX.Companion.Shared.dll

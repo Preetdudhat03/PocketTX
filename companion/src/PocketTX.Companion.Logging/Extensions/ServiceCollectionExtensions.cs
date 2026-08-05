@@ -7,7 +7,7 @@ namespace PocketTX.Companion.Logging.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddLogging(this IServiceCollection services)
+    public static IServiceCollection AddPocketTXLogging(this IServiceCollection services)
     {
         services.AddSingleton<ILogSink, DebugSink>();
         services.AddSingleton<ILogSink, UISink>();

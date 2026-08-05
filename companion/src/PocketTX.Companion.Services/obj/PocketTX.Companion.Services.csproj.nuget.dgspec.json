@@ -76,14 +76,14 @@
         }
       }
     },
-    "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Logging\\PocketTX.Companion.Logging.csproj": {
+    "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Logging\\PocketTX.Companion.Logging.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Logging\\PocketTX.Companion.Logging.csproj",
+        "projectUniqueName": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Logging\\PocketTX.Companion.Logging.csproj",
         "projectName": "PocketTX.Companion.Logging",
-        "projectPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Logging\\PocketTX.Companion.Logging.csproj",
+        "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Logging\\PocketTX.Companion.Logging.csproj",
         "packagesPath": "C:\\Users\\preet\\.nuget\\packages\\",
-        "outputPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Logging\\obj\\",
+        "outputPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Logging\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\preet\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -231,8 +231,8 @@
               "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj": {
                 "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj"
               },
-              "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Logging\\PocketTX.Companion.Logging.csproj": {
-                "projectPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Logging\\PocketTX.Companion.Logging.csproj"
+              "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Logging\\PocketTX.Companion.Logging.csproj": {
+                "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Logging\\PocketTX.Companion.Logging.csproj"
               },
               "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Protocol\\PocketTX.Companion.Protocol.csproj": {
                 "projectPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Protocol\\PocketTX.Companion.Protocol.csproj"

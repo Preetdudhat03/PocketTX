@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PocketTX.Companion.Protocol")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e34c432850d67722fd06b8591b59e87bda40c7ff")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ce5f95f5a683ef1c1108a2e41ac931da87ed013f")]
 [assembly: System.Reflection.AssemblyProductAttribute("PocketTX.Companion.Protocol")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PocketTX.Companion.Protocol")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

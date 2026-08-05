@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "GW51xL+BEgo=",
+  "dgSpecHash": "eQ1GBkloDnU=",
   "success": true,
-  "projectFilePath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Services\\PocketTX.Companion.Services.csproj",
+  "projectFilePath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Services\\PocketTX.Companion.Services.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\preet\\.nuget\\packages\\communitytoolkit.mvvm\\8.4.2\\communitytoolkit.mvvm.8.4.2.nupkg.sha512",
     "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\10.0.10\\microsoft.extensions.configuration.abstractions.10.0.10.nupkg.sha512",

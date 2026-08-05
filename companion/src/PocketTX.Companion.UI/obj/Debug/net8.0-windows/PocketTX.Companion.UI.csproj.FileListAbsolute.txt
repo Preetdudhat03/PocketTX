@@ -8,3 +8,15 @@ P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Vie
 P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\App.g.cs
 P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\PocketTX.Companion.UI_MarkupCompile.cache
 P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\PocketTX.Companion.UI_MarkupCompile.lref
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Controls\GimbalVisualizer.baml
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Views\DiagnosticsView.baml
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Views\ProfilesView.baml
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Views\SettingsView.baml
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Controls\GimbalVisualizer.g.cs
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Views\DashboardView.g.cs
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Views\DiagnosticsView.g.cs
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Views\MainWindow.g.cs
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Views\ProfilesView.g.cs
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Views\SettingsView.g.cs
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Views\TestControllerView.g.cs
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs

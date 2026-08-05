@@ -8,7 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using PocketTX.Companion.UI.Controls;
 using System;
 using System.Diagnostics;
 using System.Windows;

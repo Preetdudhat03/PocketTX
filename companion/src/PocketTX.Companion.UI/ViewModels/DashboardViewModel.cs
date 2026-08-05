@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using PocketTX.Companion.Core.Contracts;
 using PocketTX.Companion.Core.Enums;
@@ -18,9 +19,10 @@ public partial class DashboardViewModel : ObservableObject,
     IRecipient<LogEntry>
 {
     private readonly IStateStore _stateStore;
+    private readonly IConnectionManager _connectionManager;
 
     [ObservableProperty]
-    private string _connectionStatusText = "Active (Test Mode)";
+    private string _connectionStatusText = "TestMode (Connected)";
 
     [ObservableProperty]
     private bool _isConnected = true;
@@ -49,14 +51,41 @@ public partial class DashboardViewModel : ObservableObject,
     [ObservableProperty]
     private string _activeBackendText = "Simulation Backend";
 
+    [ObservableProperty]
+    private bool _isScanning = false;
+
+    [ObservableProperty]
+    private string _scanButtonText = "REFRESH DEVICES";
+
     public ObservableCollection<string> QuickLogs { get; } = new();
 
-    public DashboardViewModel(IStateStore stateStore, IMessenger messenger)
+    public DashboardViewModel(
+        IStateStore stateStore,
+        IConnectionManager connectionManager,
+        IMessenger messenger)
     {
         _stateStore = stateStore;
+        _connectionManager = connectionManager;
         messenger.RegisterAll(this);
 
         RefreshFromState();
+    }
+
+    [RelayCommand]
+    private async Task ScanDevicesAsync()
+    {
+        IsScanning = true;
+        ScanButtonText = "SCANNING...";
+
+        try
+        {
+            await _connectionManager.ScanDevicesAsync();
+        }
+        finally
+        {
+            IsScanning = false;
+            ScanButtonText = "REFRESH DEVICES";
+        }
     }
 
     private void RefreshFromState()

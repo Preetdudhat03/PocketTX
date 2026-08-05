@@ -33,12 +33,6 @@ public sealed class InputUpdateService : BackgroundService
             {
                 var channels = _stateStore.CurrentChannels;
                 await _virtualController.UpdateInputAsync(channels, stoppingToken);
-
-                _stateStore.UpdateDiagnostics(d =>
-                {
-                    d.TotalPacketsSent++;
-                    d.LastPacketSentTime = DateTime.UtcNow;
-                });
             }
             catch (OperationCanceledException)
             {

@@ -52,6 +52,7 @@ public partial class MainViewModel : ObservableObject, IRecipient<ThemeChangedMe
         LogsVM = logsVM;
 
         _currentView = DashboardVM;
+        CurrentView = DashboardVM;
     }
 
     [RelayCommand]
@@ -100,16 +101,23 @@ public partial class MainViewModel : ObservableObject, IRecipient<ThemeChangedMe
 
         string themeUri = theme switch
         {
-            ThemeType.Light => "Themes/Theme.Light.xaml",
-            _ => "Themes/Theme.Dark.xaml"
+            ThemeType.Light => "pack://application:,,,/PocketTX.Companion.UI;component/Themes/Theme.Light.xaml",
+            _ => "pack://application:,,,/PocketTX.Companion.UI;component/Themes/Theme.Dark.xaml"
         };
 
-        var resourceDict = new ResourceDictionary
+        try
         {
-            Source = new Uri(themeUri, UriKind.Relative)
-        };
+            var resourceDict = new ResourceDictionary
+            {
+                Source = new Uri(themeUri, UriKind.Absolute)
+            };
 
-        Application.Current.Resources.MergedDictionaries.Clear();
-        Application.Current.Resources.MergedDictionaries.Add(resourceDict);
+            Application.Current.Resources.MergedDictionaries.Clear();
+            Application.Current.Resources.MergedDictionaries.Add(resourceDict);
+        }
+        catch
+        {
+            // Ignore if already loaded
+        }
     }
 }

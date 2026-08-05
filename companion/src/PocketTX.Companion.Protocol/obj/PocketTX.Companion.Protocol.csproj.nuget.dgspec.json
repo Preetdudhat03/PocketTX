@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Protocol\\PocketTX.Companion.Protocol.csproj": {}
+    "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Protocol\\PocketTX.Companion.Protocol.csproj": {}
   },
   "projects": {
-    "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj": {
+    "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj",
+        "projectUniqueName": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj",
         "projectName": "PocketTX.Companion.Core",
-        "projectPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj",
+        "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj",
         "packagesPath": "C:\\Users\\preet\\.nuget\\packages\\",
-        "outputPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Core\\obj\\",
+        "outputPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\preet\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -76,14 +76,14 @@
         }
       }
     },
-    "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Protocol\\PocketTX.Companion.Protocol.csproj": {
+    "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Protocol\\PocketTX.Companion.Protocol.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Protocol\\PocketTX.Companion.Protocol.csproj",
+        "projectUniqueName": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Protocol\\PocketTX.Companion.Protocol.csproj",
         "projectName": "PocketTX.Companion.Protocol",
-        "projectPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Protocol\\PocketTX.Companion.Protocol.csproj",
+        "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Protocol\\PocketTX.Companion.Protocol.csproj",
         "packagesPath": "C:\\Users\\preet\\.nuget\\packages\\",
-        "outputPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Protocol\\obj\\",
+        "outputPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Protocol\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\preet\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -98,8 +98,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj": {
-                "projectPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj"
+              "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj": {
+                "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj"
               },
               "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj": {
                 "projectPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj"

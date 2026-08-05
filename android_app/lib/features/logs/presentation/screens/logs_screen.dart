@@ -4,7 +4,7 @@ import '../../../../core/design/theme_tokens.dart';
 import '../../../../core/design/spacing.dart';
 import '../../../../core/design/typography.dart';
 import '../../../../core/design/icons.dart';
-import '../../../../repositories/log_repository.dart';
+import '../../../../core/design/radius.dart';
 import '../../../../models/log_entry_model.dart';
 import '../../../../core/bootstrap/dependency_injection.dart';
 
@@ -130,7 +130,7 @@ class _FilterChip extends StatelessWidget {
             horizontal: AppSpacing.sm, vertical: AppSpacing.xs2),
         decoration: BoxDecoration(
           color: selected ? c.withValues(alpha: 0.2) : context.cardBg,
-          borderRadius: BorderRadius.circular(AppSpacing.full),
+          borderRadius: BorderRadius.circular(AppRadius.full),
           border: Border.all(
               color: selected ? c : context.border, width: 1),
         ),

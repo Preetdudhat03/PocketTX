@@ -6,6 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/bootstrap/bootstrap.dart';
+import 'core/bootstrap/app_initializer.dart';
 import 'core/state/app_state.dart';
 import 'core/state/theme_state.dart';
 import 'core/state/diagnostics_state.dart';
@@ -21,7 +22,7 @@ void main() async {
 
   runApp(
     ProviderScope(
-      overrides: [],
+      overrides: const [],
       child: _AppBootstrapper(
         initResult: initResult,
       ),

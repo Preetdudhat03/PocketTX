@@ -7,10 +7,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="900">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24" Spacing="20">
+        <StackPanel Margin="24">
             
             <!-- Top Summary Cards Grid -->
-            <UniformGrid Columns="4">
+            <UniformGrid Columns="4" Margin="0,0,0,16">
                 <!-- Connection Card -->
                 <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16" Margin="6">
                     <StackPanel>
@@ -54,7 +54,7 @@
             </UniformGrid>
 
             <!-- Middle Section: Latency Sparkline Graph & System Summary -->
-            <Grid Margin="6">
+            <Grid Margin="6,0,6,16">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="1*"/>

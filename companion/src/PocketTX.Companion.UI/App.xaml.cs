@@ -1,4 +1,6 @@
 using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PocketTX.Companion.Core.Contracts;
@@ -8,7 +10,6 @@ using PocketTX.Companion.Protocol.Extensions;
 using PocketTX.Companion.Services.Extensions;
 using PocketTX.Companion.Shared.Extensions;
 using PocketTX.Companion.UI.ViewModels;
-using PocketTX.Companion.UI.Views;
 using PocketTX.Companion.VirtualController.Extensions;
 
 namespace PocketTX.Companion.UI;
@@ -16,9 +17,12 @@ namespace PocketTX.Companion.UI;
 public partial class App : Application
 {
     private readonly IHost _host;
+    public IServiceProvider Services => _host.Services;
 
     public App()
     {
+        RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
+
         AppDomain.CurrentDomain.UnhandledException += (s, e) =>
         {
             MessageBox.Show($"Unhandled Exception: {e.ExceptionObject}", "PocketTX Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -27,7 +31,6 @@ public partial class App : Application
         _host = Host.CreateDefaultBuilder()
             .ConfigureServices((context, services) =>
             {
-                // Register modular extension layers
                 services
                     .AddShared()
                     .AddCore()
@@ -36,7 +39,6 @@ public partial class App : Application
                     .AddVirtualController()
                     .AddServices();
 
-                // UI ViewModels
                 services.AddSingleton<DashboardViewModel>();
                 services.AddSingleton<TestControllerViewModel>();
                 services.AddSingleton<DiagnosticsViewModel>();
@@ -44,38 +46,17 @@ public partial class App : Application
                 services.AddSingleton<SettingsViewModel>();
                 services.AddSingleton<LogsViewModel>();
                 services.AddSingleton<MainViewModel>();
-
-                // Windows
-                services.AddSingleton<MainWindow>();
             })
             .Build();
-    }
 
-    protected override void OnStartup(StartupEventArgs e)
-    {
-        base.OnStartup(e);
+        _ = _host.StartAsync();
 
-        try
-        {
-            // Show MainWindow on UI thread first
-            var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-            MainWindow = mainWindow;
-            mainWindow.Show();
+        // Load Settings & Profiles asynchronously
+        var settingsService = Services.GetRequiredService<ISettingsService>();
+        _ = settingsService.LoadSettingsAsync();
 
-            // Start Host background services
-            _ = _host.StartAsync();
-
-            // Load Settings & Profiles asynchronously
-            var settingsService = _host.Services.GetRequiredService<ISettingsService>();
-            _ = settingsService.LoadSettingsAsync();
-
-            var profileService = _host.Services.GetRequiredService<IProfileService>();
-            _ = profileService.LoadProfilesAsync();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Startup Error: {ex.Message}\n\n{ex.StackTrace}", "PocketTX Startup Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        var profileService = Services.GetRequiredService<IProfileService>();
+        _ = profileService.LoadProfilesAsync();
     }
 
     protected override async void OnExit(ExitEventArgs e)

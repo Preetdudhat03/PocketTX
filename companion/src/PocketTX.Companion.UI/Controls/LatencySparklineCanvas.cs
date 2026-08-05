@@ -46,7 +46,7 @@ public sealed class LatencySparklineCanvas : Canvas
 
         if (width <= 0 || height <= 0 || _values.Count < 2) return;
 
-        Brush accentBrush = (Brush)FindResource("PrimaryAccentBrush") ?? Brushes.DodgerBlue;
+        Brush accentBrush = (Brush)TryFindResource("PrimaryAccentBrush") ?? Brushes.DodgerBlue;
         Pen pen = new(accentBrush, 2.0);
 
         double maxVal = System.Math.Max(5.0, _values.Max());

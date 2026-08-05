@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.VirtualController\\PocketTX.Companion.VirtualController.csproj": {}
+    "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.VirtualController\\PocketTX.Companion.VirtualController.csproj": {}
   },
   "projects": {
     "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj": {
@@ -26,8 +26,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj": {
-                "projectPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj"
+              "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj": {
+                "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj"
               }
             }
           }
@@ -76,14 +76,14 @@
         }
       }
     },
-    "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj": {
+    "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj",
+        "projectUniqueName": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj",
         "projectName": "PocketTX.Companion.Shared",
-        "projectPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj",
+        "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj",
         "packagesPath": "C:\\Users\\preet\\.nuget\\packages\\",
-        "outputPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Shared\\obj\\",
+        "outputPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\preet\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -140,14 +140,14 @@
         }
       }
     },
-    "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.VirtualController\\PocketTX.Companion.VirtualController.csproj": {
+    "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.VirtualController\\PocketTX.Companion.VirtualController.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.VirtualController\\PocketTX.Companion.VirtualController.csproj",
+        "projectUniqueName": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.VirtualController\\PocketTX.Companion.VirtualController.csproj",
         "projectName": "PocketTX.Companion.VirtualController",
-        "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.VirtualController\\PocketTX.Companion.VirtualController.csproj",
+        "projectPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.VirtualController\\PocketTX.Companion.VirtualController.csproj",
         "packagesPath": "C:\\Users\\preet\\.nuget\\packages\\",
-        "outputPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.VirtualController\\obj\\",
+        "outputPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.VirtualController\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\preet\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -165,8 +165,8 @@
               "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj": {
                 "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj"
               },
-              "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj": {
-                "projectPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj"
+              "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj": {
+                "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj"
               }
             }
           }

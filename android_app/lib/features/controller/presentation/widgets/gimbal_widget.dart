@@ -1,26 +1,15 @@
-// ─────────────────────────────────────────────
-// PocketTX – Gimbal Widget
-// Multitouch 2D stick with IStickPhysics.
-// Left: RatchetPhysics (Throttle free-stay + Yaw spring)
-// Right: SpringPhysics (Pitch + Roll spring return)
-// Rendering only — zero physics logic in this widget.
-// ─────────────────────────────────────────────
-
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/design/theme_tokens.dart';
-import '../../../../core/design/spacing.dart';
-import '../../../../core/physics/spring_physics.dart';
-import '../../../../core/physics/ratchet_physics.dart';
-import '../../../../core/physics/i_stick_physics.dart';
-import '../../../../core/state/channel_state.dart';
-import '../../../../core/state/app_state.dart';
-import '../../../../core/services/input_processor.dart';
-import '../../../../core/services/haptic_service.dart';
-import '../../../../models/controller_profile.dart';
-import '../../../../core/constants/channel_constants.dart';
-import '../../../../core/utils/stick_mode_mapper.dart';
+import 'package:pockettx_app/core/design/theme_tokens.dart';
+import 'package:pockettx_app/core/design/spacing.dart';
+import 'package:pockettx_app/core/physics/spring_physics.dart';
+import 'package:pockettx_app/core/physics/ratchet_physics.dart';
+import 'package:pockettx_app/core/physics/i_stick_physics.dart';
+import 'package:pockettx_app/core/state/channel_state.dart';
+import 'package:pockettx_app/core/state/app_state.dart';
+import 'package:pockettx_app/core/services/haptic_service.dart';
+import 'package:pockettx_app/core/constants/channel_constants.dart';
 
 /// Pure rendering gimbal widget — all physics is delegated to IStickPhysics.
 class GimbalWidget extends ConsumerStatefulWidget {
@@ -44,7 +33,6 @@ class _GimbalWidgetState extends ConsumerState<GimbalWidget>
   late IStickPhysics _physics;
   late Ticker _ticker;
   DateTime _lastTick = DateTime.now();
-  InputProcessor? _processor;
 
   @override
   void initState() {
@@ -60,7 +48,7 @@ class _GimbalWidgetState extends ConsumerState<GimbalWidget>
 
   void _onTick(Duration elapsed) {
     final now = DateTime.now();
-    final dt = now.difference(_lastTick).inMicroseconds / 1_000_000.0;
+    final dt = now.difference(_lastTick).inMicroseconds / 1000000.0;
     _lastTick = now;
 
     // Update physics (no touch = null target = spring/hold applies)
@@ -83,7 +71,6 @@ class _GimbalWidgetState extends ConsumerState<GimbalWidget>
     final pos = _touchToNorm(d.localPosition);
     _physics.update(target: pos, dtSeconds: 0.016);
     _publishChannels();
-    setState(() {});
   }
 
   void _onPanEnd(DragEndDetails _) {
@@ -100,7 +87,6 @@ class _GimbalWidgetState extends ConsumerState<GimbalWidget>
   }
 
   void _publishChannels() {
-    final settings = ref.read(appSettingsProvider);
     final notifier = ref.read(channelStateProvider.notifier);
 
     final pos = _physics.position;

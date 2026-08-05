@@ -7,13 +7,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="900">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24" Spacing="20">
+        <StackPanel Margin="24">
             
-            <TextBlock Text="APPLICATION SETTINGS" Foreground="{DynamicResource PrimaryAccentBrush}" FontSize="18" FontWeight="Bold"/>
+            <TextBlock Text="APPLICATION SETTINGS" Foreground="{DynamicResource PrimaryAccentBrush}" FontSize="18" FontWeight="Bold" Margin="0,0,0,16"/>
 
-            <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
-                <StackPanel Spacing="16">
-                    <TextBlock Text="APPEARANCE & THEME" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+            <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="APPEARANCE &amp; THEME" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold" Margin="0,0,0,16"/>
 
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -29,11 +29,11 @@
                 </StackPanel>
             </Border>
 
-            <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
-                <StackPanel Spacing="16">
-                    <TextBlock Text="CONTROLLER DEADBAND & EXPO" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+            <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="CONTROLLER DEADBAND &amp; EXPO" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold" Margin="0,0,0,16"/>
 
-                    <Grid>
+                    <Grid Margin="0,0,0,12">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="180"/>
                             <ColumnDefinition Width="*"/>
@@ -44,7 +44,7 @@
                         <TextBlock Grid.Column="2" Text="{Binding Deadband, StringFormat='{}{0:P1}'}" Foreground="{DynamicResource PrimaryAccentBrush}" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     </Grid>
 
-                    <Grid>
+                    <Grid Margin="0,0,0,12">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="180"/>
                             <ColumnDefinition Width="*"/>
@@ -58,11 +58,11 @@
             </Border>
 
             <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
-                <StackPanel Spacing="16">
-                    <TextBlock Text="SYSTEM & INTEGRATION" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+                <StackPanel>
+                    <TextBlock Text="SYSTEM &amp; INTEGRATION" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold" Margin="0,0,0,16"/>
 
-                    <CheckBox Content="Start PocketTX Companion automatically with Windows" IsChecked="{Binding AutoStart, Mode=TwoWay}" Foreground="{DynamicResource TextPrimaryBrush}"/>
-                    <CheckBox Content="Start application minimized to system tray" IsChecked="{Binding StartMinimized, Mode=TwoWay}" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <CheckBox Content="Start PocketTX Companion automatically with Windows" IsChecked="{Binding AutoStart, Mode=TwoWay}" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,8"/>
+                    <CheckBox Content="Start application minimized to system tray" IsChecked="{Binding StartMinimized, Mode=TwoWay}" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,8"/>
 
                     <Button Command="{Binding SaveSettingsCommand}" Content="SAVE SETTINGS" Padding="20,10" Background="{DynamicResource PrimaryAccentBrush}" Foreground="#FFFFFF" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,12,0,0"/>
                 </StackPanel>

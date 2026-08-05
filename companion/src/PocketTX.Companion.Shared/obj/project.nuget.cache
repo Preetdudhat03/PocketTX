@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "p3kk3XhXDGI=",
+  "dgSpecHash": "pKvOBrWiERs=",
   "success": true,
   "projectFilePath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.10\\microsoft.extensions.dependencyinjection.abstractions.10.0.10.nupkg.sha512"
+  ],
   "logs": []
 }

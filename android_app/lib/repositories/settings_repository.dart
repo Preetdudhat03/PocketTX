@@ -6,7 +6,7 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/app_settings.dart';
-import '../services/logger_service.dart';
+import 'package:pockettx_app/core/services/logger_service.dart';
 import '../../models/log_entry_model.dart';
 
 const _kSettingsKey = 'app_settings_v1';

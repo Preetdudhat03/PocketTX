@@ -1,0 +1,39 @@
+<UserControl x:Class="PocketTX.Companion.UI.Views.LogsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="900">
+    <DockPanel Margin="24">
+        
+        <!-- Header & Search Toolbar -->
+        <Border DockPanel.Dock="Top" Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16" Margin="0,0,0,16">
+            <DockPanel>
+                <TextBlock Text="LOG TERMINAL" Foreground="{DynamicResource PrimaryAccentBrush}" FontSize="18" FontWeight="Bold" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                    <TextBox Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" Width="200" Padding="8,6" Background="{DynamicResource CardHeaderBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}" Margin="0,0,12,0"/>
+                    <Button Command="{Binding ClearLogsCommand}" Content="CLEAR LOGS" Padding="12,6" Background="{DynamicResource CardHeaderBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Log List Terminal -->
+        <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16">
+            <ListView ItemsSource="{Binding FilteredLogs}" Background="Transparent" BorderThickness="0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="0,3">
+                            <TextBlock Text="{Binding Timestamp, StringFormat='{}{0:HH:mm:ss.fff}'}" Foreground="{DynamicResource TextMutedBrush}" FontFamily="Consolas" Width="100"/>
+                            <TextBlock Text="{Binding Level}" Foreground="{DynamicResource PrimaryAccentBrush}" FontWeight="Bold" FontFamily="Consolas" Width="80"/>
+                            <TextBlock Text="{Binding Category}" Foreground="{DynamicResource TextSecondaryBrush}" FontFamily="Consolas" Width="120"/>
+                            <TextBlock Text="{Binding Message}" Foreground="{DynamicResource TextPrimaryBrush}" FontFamily="Consolas"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
+
+    </DockPanel>
+</UserControl>

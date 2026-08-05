@@ -5,12 +5,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../core/design/theme_tokens.dart';
-import '../core/design/spacing.dart';
-import '../core/design/radius.dart';
-import '../core/design/typography.dart';
-import '../core/state/diagnostics_state.dart';
-import '../core/state/app_state.dart';
+import 'package:pockettx_app/core/design/theme_tokens.dart';
+import 'package:pockettx_app/core/design/spacing.dart';
+import 'package:pockettx_app/core/design/radius.dart';
+import 'package:pockettx_app/core/design/typography.dart';
+import 'package:pockettx_app/core/state/diagnostics_state.dart';
+import 'package:pockettx_app/core/state/app_state.dart';
 
 class DevOverlay extends ConsumerWidget {
   final Widget child;

@@ -1,0 +1,113 @@
+<UserControl x:Class="PocketTX.Companion.UI.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:PocketTX.Companion.UI.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="900">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24" Spacing="20">
+            
+            <!-- Top Summary Cards Grid -->
+            <UniformGrid Columns="4">
+                <!-- Connection Card -->
+                <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16" Margin="6">
+                    <StackPanel>
+                        <TextBlock Text="CONNECTION" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding ConnectionStatusText}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="16" FontWeight="SemiBold" Margin="0,8,0,4"/>
+                        <Border Background="{DynamicResource SuccessBadgeBrush}" CornerRadius="10" Padding="8,2" HorizontalAlignment="Left">
+                            <TextBlock Text="ACTIVE" Foreground="#FFFFFF" FontSize="10" FontWeight="Bold"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Active Profile Card -->
+                <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16" Margin="6">
+                    <StackPanel>
+                        <TextBlock Text="ACTIVE PROFILE" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding ActiveProfileName}" Foreground="{DynamicResource PrimaryAccentBrush}" FontSize="18" FontWeight="Bold" Margin="0,8,0,4"/>
+                        <TextBlock Text="250Hz / 1000-2000us" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Latency Card -->
+                <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16" Margin="6">
+                    <StackPanel>
+                        <TextBlock Text="LATENCY" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,4">
+                            <TextBlock Text="{Binding LatencyMs}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="24" FontWeight="Bold"/>
+                            <TextBlock Text=" ms" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="14" VerticalAlignment="Bottom" Margin="4,0,0,3"/>
+                        </StackPanel>
+                        <TextBlock Text="100Hz Heartbeat" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Simulator Status Card -->
+                <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16" Margin="6">
+                    <StackPanel>
+                        <TextBlock Text="SIMULATOR" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding SimulatorStatusText}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="15" FontWeight="SemiBold" Margin="0,8,0,4"/>
+                        <TextBlock Text="Auto-Detect Active" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Middle Section: Latency Sparkline Graph & System Summary -->
+            <Grid Margin="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Latency Live Waveform -->
+                <Border Grid.Column="0" Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16" Margin="0,0,12,0">
+                    <DockPanel>
+                        <TextBlock Text="REAL-TIME LATENCY WAVEFORM" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold" DockPanel.Dock="Top" Margin="0,0,0,12"/>
+                        <controls:LatencySparklineCanvas CurrentLatency="{Binding LatencyMs}" Height="140" HorizontalAlignment="Stretch"/>
+                    </DockPanel>
+                </Border>
+
+                <!-- Backend & Telemetry Summary Card -->
+                <Border Grid.Column="1" Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16">
+                    <StackPanel>
+                        <TextBlock Text="VIRTUAL BACKEND" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding ActiveBackendText}" Foreground="{DynamicResource PrimaryAccentBrush}" FontSize="16" FontWeight="Bold" Margin="0,8,0,12"/>
+                        
+                        <Separator Background="{DynamicResource BorderBrush}" Margin="0,0,0,12"/>
+
+                        <Grid Margin="0,4">
+                            <TextBlock Text="Update Frequency" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{Binding UpdateFrequencyHz, StringFormat='{}{0} Hz'}" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                        </Grid>
+
+                        <Grid Margin="0,4">
+                            <TextBlock Text="Packet Rate" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{Binding PacketRate, StringFormat='{}{0} p/s'}" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                        </Grid>
+
+                        <Grid Margin="0,4">
+                            <TextBlock Text="UI Rendering FPS" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{Binding Fps, StringFormat='{}{0} FPS'}" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Bottom Section: Quick Log Stream -->
+            <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16" Margin="6">
+                <DockPanel>
+                    <TextBlock Text="LIVE EVENT TERMINAL" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold" DockPanel.Dock="Top" Margin="0,0,0,12"/>
+                    <ItemsControl ItemsSource="{Binding QuickLogs}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" Foreground="{DynamicResource TextSecondaryBrush}" FontFamily="Consolas" FontSize="12" Margin="0,2"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </DockPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

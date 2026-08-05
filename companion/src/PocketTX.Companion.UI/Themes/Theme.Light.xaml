@@ -1,0 +1,38 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Primary Accent Palette -->
+    <Color x:Key="PrimaryAccentColor">#5B8DEF</Color>
+    <SolidColorBrush x:Key="PrimaryAccentBrush" Color="{StaticResource PrimaryAccentColor}" />
+    
+    <Color x:Key="PrimaryAccentHoverColor">#4A7BDC</Color>
+    <SolidColorBrush x:Key="PrimaryAccentHoverBrush" Color="{StaticResource PrimaryAccentHoverColor}" />
+
+    <!-- Light Theme Backgrounds -->
+    <Color x:Key="WindowBackgroundColor">#F4F6FB</Color>
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowBackgroundColor}" />
+
+    <Color x:Key="SidebarBackgroundColor">#E9EEF7</Color>
+    <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="{StaticResource SidebarBackgroundColor}" />
+
+    <Color x:Key="CardBackgroundColor">#FFFFFF</Color>
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="{StaticResource CardBackgroundColor}" />
+
+    <Color x:Key="CardHeaderBackgroundColor">#F0F4FA</Color>
+    <SolidColorBrush x:Key="CardHeaderBackgroundBrush" Color="{StaticResource CardHeaderBackgroundColor}" />
+
+    <Color x:Key="BorderColor">#D4DCE8</Color>
+    <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}" />
+
+    <!-- Text Brushes -->
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#0F172A" />
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#475569" />
+    <SolidColorBrush x:Key="TextMutedBrush" Color="#94A3B8" />
+
+    <!-- Badge Brushes -->
+    <SolidColorBrush x:Key="SuccessBadgeBrush" Color="#16A34A" />
+    <SolidColorBrush x:Key="WarningBadgeBrush" Color="#D97706" />
+    <SolidColorBrush x:Key="ErrorBadgeBrush" Color="#DC2626" />
+    <SolidColorBrush x:Key="InfoBadgeBrush" Color="#2563EB" />
+
+</ResourceDictionary>

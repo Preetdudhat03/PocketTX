@@ -24,6 +24,7 @@ public interface IConnectionManager
     Task SwitchConnectionAsync(ConnectionType connectionType, CancellationToken cancellationToken = default);
     Task ConnectAsync(CancellationToken cancellationToken = default);
     Task DisconnectAsync(CancellationToken cancellationToken = default);
+    Task ScanDevicesAsync(CancellationToken cancellationToken = default);
 }
 
 public interface IProfileService

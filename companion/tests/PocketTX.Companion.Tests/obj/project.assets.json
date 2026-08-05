@@ -7373,11 +7373,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "P:\\pro\\PocketTX\\companion\\tests\\PocketTX.Companion.Tests\\PocketTX.Companion.Tests.csproj",
+      "projectUniqueName": "P:\\pro\\pocketTX\\companion\\tests\\PocketTX.Companion.Tests\\PocketTX.Companion.Tests.csproj",
       "projectName": "PocketTX.Companion.Tests",
-      "projectPath": "P:\\pro\\PocketTX\\companion\\tests\\PocketTX.Companion.Tests\\PocketTX.Companion.Tests.csproj",
+      "projectPath": "P:\\pro\\pocketTX\\companion\\tests\\PocketTX.Companion.Tests\\PocketTX.Companion.Tests.csproj",
       "packagesPath": "C:\\Users\\preet\\.nuget\\packages\\",
-      "outputPath": "P:\\pro\\PocketTX\\companion\\tests\\PocketTX.Companion.Tests\\obj\\",
+      "outputPath": "P:\\pro\\pocketTX\\companion\\tests\\PocketTX.Companion.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\preet\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -7395,8 +7395,8 @@
             "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj": {
               "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj"
             },
-            "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Logging\\PocketTX.Companion.Logging.csproj": {
-              "projectPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.Logging\\PocketTX.Companion.Logging.csproj"
+            "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Logging\\PocketTX.Companion.Logging.csproj": {
+              "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Logging\\PocketTX.Companion.Logging.csproj"
             },
             "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Protocol\\PocketTX.Companion.Protocol.csproj": {
               "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Protocol\\PocketTX.Companion.Protocol.csproj"
@@ -7407,8 +7407,8 @@
             "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj": {
               "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj"
             },
-            "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.UI\\PocketTX.Companion.UI.csproj": {
-              "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.UI\\PocketTX.Companion.UI.csproj"
+            "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.UI\\PocketTX.Companion.UI.csproj": {
+              "projectPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.UI\\PocketTX.Companion.UI.csproj"
             },
             "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.VirtualController\\PocketTX.Companion.VirtualController.csproj": {
               "projectPath": "P:\\pro\\pocketTX\\companion\\src\\PocketTX.Companion.VirtualController\\PocketTX.Companion.VirtualController.csproj"

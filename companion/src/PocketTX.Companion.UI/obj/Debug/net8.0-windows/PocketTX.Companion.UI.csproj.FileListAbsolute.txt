@@ -20,3 +20,9 @@ P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Vie
 P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Views\SettingsView.g.cs
 P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Views\TestControllerView.g.cs
 P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\MainWindow.baml
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Views\DashboardView.baml
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Views\MainWindow.baml
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\PocketTX.Companion.UI.dll
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\refint\PocketTX.Companion.UI.dll
+P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\PocketTX.Companion.UI.pdb

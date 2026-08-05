@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\
+P:\pro\pocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\
 PocketTX.Companion.UI
 none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
-P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\App.xaml
+P:\pro\pocketTX\companion\src\PocketTX.Companion.UI\App.xaml
 11-1910295292
 
 21246436080
-233-1228983189
+2331677901506
 Controls\GimbalVisualizer.xaml;MainWindow.xaml;Themes\Theme.Dark.xaml;Themes\Theme.Light.xaml;Views\DashboardView.xaml;Views\DiagnosticsView.xaml;Views\LogsView.xaml;Views\MainWindow.xaml;Views\ProfilesView.xaml;Views\SettingsView.xaml;Views\TestControllerView.xaml;
 
 False

@@ -6,9 +6,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="900">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24" Spacing="20">
+        <StackPanel Margin="24">
             
-            <TextBlock Text="TRANSMITTER PROFILE MANAGER" Foreground="{DynamicResource PrimaryAccentBrush}" FontSize="18" FontWeight="Bold"/>
+            <TextBlock Text="TRANSMITTER PROFILE MANAGER" Foreground="{DynamicResource PrimaryAccentBrush}" FontSize="18" FontWeight="Bold" Margin="0,0,0,16"/>
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -37,10 +37,10 @@
 
                 <!-- Profile Details & Editing -->
                 <Border Grid.Column="1" Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
-                    <StackPanel Spacing="16" DataContext="{Binding SelectedProfile}">
-                        <TextBlock Text="PROFILE DETAILS" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold"/>
+                    <StackPanel DataContext="{Binding SelectedProfile}">
+                        <TextBlock Text="PROFILE DETAILS" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" FontWeight="Bold" Margin="0,0,0,16"/>
 
-                        <Grid>
+                        <Grid Margin="0,0,0,12">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="120"/>
                                 <ColumnDefinition Width="*"/>
@@ -49,7 +49,7 @@
                             <TextBox Grid.Column="1" Text="{Binding Name, Mode=TwoWay}" Padding="8,6" Background="{DynamicResource CardHeaderBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}"/>
                         </Grid>
 
-                        <Grid>
+                        <Grid Margin="0,0,0,12">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="120"/>
                                 <ColumnDefinition Width="*"/>
@@ -58,7 +58,7 @@
                             <TextBox Grid.Column="1" Text="{Binding Author, Mode=TwoWay}" Padding="8,6" Background="{DynamicResource CardHeaderBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderBrush}"/>
                         </Grid>
 
-                        <Grid>
+                        <Grid Margin="0,0,0,12">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="120"/>
                                 <ColumnDefinition Width="*"/>
@@ -67,7 +67,7 @@
                             <Slider Grid.Column="1" Minimum="0.0" Maximum="0.10" Value="{Binding Deadband, Mode=TwoWay}" SmallChange="0.005" VerticalAlignment="Center"/>
                         </Grid>
 
-                        <Grid>
+                        <Grid Margin="0,0,0,12">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="120"/>
                                 <ColumnDefinition Width="*"/>

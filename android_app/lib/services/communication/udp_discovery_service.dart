@@ -1,6 +1,7 @@
 // ─────────────────────────────────────────────
 // PocketTX – UDP Discovery Service
-// Standalone discovery service for one-tap Chromecast-style LAN companion discovery.
+// Standalone discovery service for one-tap LAN companion discovery.
+// Supports Subnet Broadcast, Multicast, ADB Localhost, and Direct Ping.
 // ─────────────────────────────────────────────
 
 import 'dart:async';
@@ -45,12 +46,12 @@ class CompanionDeviceInfo {
 
 class UdpDiscoveryService {
   Future<List<CompanionDeviceInfo>> scanForCompanions({
-    Duration timeout = const Duration(milliseconds: 1000),
+    Duration timeout = const Duration(milliseconds: 1500),
   }) async {
     LoggerService().info(
       LogCategory.network,
       'DISCOVERY_STARTED',
-      'Broadcasting UDP beacon on port ${ProtocolConstants.discoveryPort}...',
+      'Broadcasting UDP beacons on port ${ProtocolConstants.discoveryPort}...',
     );
 
     final List<CompanionDeviceInfo> foundDevices = [];
@@ -76,7 +77,7 @@ class UdpDiscoveryService {
         EventBus().fire(CompanionDiscoveredEvent(dev));
       } catch (_) {}
 
-      // 2. Broadcast UDP ping beacon for LAN Companion
+      // 2. Setup UDP socket for LAN broadcast and subnet discovery
       final socket = await RawDatagramSocket.bind(InternetAddress.anyIPv4, 0);
       socket.broadcastEnabled = true;
 
@@ -87,11 +88,35 @@ class UdpDiscoveryService {
       );
 
       final encodedBytes = PacketCodec.encode(helloPacket);
-      socket.send(
-        encodedBytes,
-        InternetAddress('255.255.255.255'),
-        ProtocolConstants.discoveryPort,
-      );
+
+      // Global broadcast
+      try {
+        socket.send(
+          encodedBytes,
+          InternetAddress('255.255.255.255'),
+          ProtocolConstants.discoveryPort,
+        );
+      } catch (_) {}
+
+      // Subnet broadcast for all local active Wi-Fi interfaces
+      try {
+        final interfaces = await NetworkInterface.list(type: InternetAddressType.IPv4);
+        for (final interface in interfaces) {
+          for (final addr in interface.addresses) {
+            if (!addr.isLoopback) {
+              final parts = addr.address.split('.');
+              if (parts.length == 4) {
+                final subnetBroadcast = '${parts[0]}.${parts[1]}.${parts[2]}.255';
+                socket.send(
+                  encodedBytes,
+                  InternetAddress(subnetBroadcast),
+                  ProtocolConstants.discoveryPort,
+                );
+              }
+            }
+          }
+        }
+      } catch (_) {}
 
       final completer = Completer<List<CompanionDeviceInfo>>();
 
@@ -109,7 +134,7 @@ class UdpDiscoveryService {
             final hostStr = dg.address.address;
             final dev = CompanionDeviceInfo(
               deviceId: 'UDP_${hostStr}_${dg.port}',
-              deviceName: 'PocketTX Companion',
+              deviceName: 'PocketTX Companion PC',
               companionVersion: '1.0.0',
               protocolVersion: ProtocolConstants.protocolVersion,
               osName: 'Windows PC',

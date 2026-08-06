@@ -7,7 +7,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import '../../../../core/protocol/protocol_constants.dart';
-import '../../../../core/compatibility/protocol_version.dart';
 import '../../../../core/services/logger_service.dart';
 import '../../../../models/log_entry_model.dart';
 

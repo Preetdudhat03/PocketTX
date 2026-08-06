@@ -5,7 +5,6 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 import '../../core/protocol/protocol_constants.dart';
 import '../../core/protocol/packet_builder.dart';
 import '../../core/protocol/packet_codec.dart';

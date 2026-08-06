@@ -78,13 +78,43 @@ class SessionManager {
       realDeviceName = '${androidInfo.manufacturer.toUpperCase()} ${androidInfo.model}';
     } catch (_) {}
 
-    // Send HELLO handshake packet with real device model name
     final helloPacket = PacketBuilder.buildHello(
       sessionId: _sessionId,
       sequence: _sequenceNumber++,
       deviceName: realDeviceName,
     );
-    await _transportChannel.sendData(PacketCodec.encode(helloPacket));
+    final encodedHello = PacketCodec.encode(helloPacket);
+
+    // Strict Handshake Verification: Wait for ACK response from Windows Companion
+    final completer = Completer<bool>();
+    StreamSubscription? ackSubscription;
+    ackSubscription = _transportChannel.packetStream.listen((rawBytes) {
+      final packet = PacketCodec.decode(rawBytes);
+      if (packet != null && (packet.header.type == PacketType.ack || packet.header.type == PacketType.hello)) {
+        if (!completer.isCompleted) {
+          completer.complete(true);
+        }
+      }
+    });
+
+    await _transportChannel.sendData(encodedHello);
+
+    final ackReceived = await completer.future.timeout(
+      const Duration(milliseconds: 2000),
+      onTimeout: () => false,
+    );
+    await ackSubscription.cancel();
+
+    if (!ackReceived) {
+      notifier.transitionTo(ConnectionFsmState.disconnected);
+      await _transportChannel.close();
+      LoggerService().warning(
+        LogCategory.network,
+        'SESSION_HANDSHAKE_FAILED',
+        'No ACK response received from Windows Companion ($targetHost). Host unreachable.',
+      );
+      return false;
+    }
 
     notifier.transitionTo(
       ConnectionFsmState.connected,

@@ -173,7 +173,25 @@ public sealed class WifiChannel : ICommunicationChannel
                     continue; // Reject malformed packet
                 }
 
-                if (packet.Header.Type == PacketType.Heartbeat)
+                if (packet.Header.Type == PacketType.Hello)
+                {
+                    var ackPacket = new TelemetryPacket
+                    {
+                        Header = new PacketHeader
+                        {
+                            Type = PacketType.Ack,
+                            SessionId = packet.Header.SessionId,
+                            Sequence = packet.Header.Sequence
+                        }
+                    };
+                    byte[] ackBytes = PacketSerializer.Serialize(ackPacket);
+                    string txLog = $"[UDP TX ACK 18457] Sending ACK to {result.RemoteEndPoint} ({ackBytes.Length} bytes) -> Hex: {BitConverter.ToString(ackBytes)}";
+                    System.Diagnostics.Debug.WriteLine(txLog);
+                    Console.WriteLine(txLog);
+
+                    await _dataListener.SendAsync(ackBytes, ackBytes.Length, result.RemoteEndPoint);
+                }
+                else if (packet.Header.Type == PacketType.Heartbeat)
                 {
                     // Respond with Rich Heartbeat ACK (Companion timestamp, session ID, uptime ms)
                     ulong nowMs = (ulong)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();

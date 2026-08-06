@@ -57,6 +57,9 @@ public partial class App : Application
 
         var profileService = Services.GetRequiredService<IProfileService>();
         _ = profileService.LoadProfilesAsync();
+
+        // Eagerly instantiate ConnectionManager to bind UDP listeners on Ports 18456 & 18457
+        var connManager = Services.GetRequiredService<IConnectionManager>();
     }
 
     protected override async void OnExit(ExitEventArgs e)

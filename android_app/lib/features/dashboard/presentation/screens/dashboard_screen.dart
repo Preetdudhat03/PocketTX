@@ -6,7 +6,7 @@ import '../../../../core/design/typography.dart';
 import '../../../../core/design/icons.dart';
 import '../../../../core/state/app_state.dart';
 import '../../../../core/state/channel_state.dart';
-import '../../../../core/state/connection_state.dart';
+import '../../../../services/communication/connection_state_machine.dart';
 import '../../../../widgets/shared/status_badge.dart';
 import '../../../../widgets/shared/device_scan_dialog.dart';
 import '../../../../core/constants/channel_constants.dart';
@@ -16,7 +16,7 @@ class DashboardScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final connection = ref.watch(connectionStateProvider);
+    final connection = ref.watch(connectionStateMachineProvider);
     final isArmed = ref.watch(isArmedProvider);
     final channels = ref.watch(channelStateProvider);
 

@@ -53,7 +53,7 @@ abstract final class PacketBuilder {
 
     return BinaryPacket(
       header: header,
-      payload: const PacketPayload(Uint8List(0)),
+      payload: PacketPayload(Uint8List(0)),
     );
   }
 
@@ -71,7 +71,7 @@ abstract final class PacketBuilder {
 
     return BinaryPacket(
       header: header,
-      payload: const PacketPayload(Uint8List(0)),
+      payload: PacketPayload(Uint8List(0)),
     );
   }
 

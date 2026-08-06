@@ -101,13 +101,13 @@ public partial class MainViewModel : ObservableObject,
     {
         Application.Current?.Dispatcher.InvokeAsync(() =>
         {
-            IsConnected = message.IsConnected;
+            string devName = !string.IsNullOrEmpty(message.DeviceName) ? message.DeviceName : "Mobile Device";
             ConnectionBadgeText = message.ConnectionType switch
             {
-                ConnectionType.Wifi => message.IsConnected ? "Wi-Fi Connected" : "Wi-Fi Listening",
-                ConnectionType.Usb => message.IsConnected ? "USB Connected" : "USB Disconnected",
-                ConnectionType.Adb => message.IsConnected ? "ADB Connected" : "ADB Disconnected",
-                ConnectionType.Bluetooth => message.IsConnected ? "Bluetooth Connected" : "Bluetooth Disconnected",
+                ConnectionType.Wifi => message.IsConnected ? $"Connected: {devName} (Wi-Fi)" : "Wi-Fi Listening",
+                ConnectionType.Usb => message.IsConnected ? $"Connected: {devName} (USB-C)" : "USB Disconnected",
+                ConnectionType.Adb => message.IsConnected ? $"Connected: {devName} (ADB)" : "ADB Disconnected",
+                ConnectionType.Bluetooth => message.IsConnected ? $"Connected: {devName} (BT)" : "Bluetooth Disconnected",
                 _ => "Test Mode Active"
             };
         });

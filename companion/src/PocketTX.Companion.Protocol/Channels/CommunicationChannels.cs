@@ -172,8 +172,6 @@ public sealed class WifiChannel : ICommunicationChannel
                     Console.WriteLine(errLog);
                     continue; // Reject malformed packet
                 }
-                    continue; // Reject malformed packet
-                }
 
                 if (packet.Header.Type == PacketType.Heartbeat)
                 {

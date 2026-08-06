@@ -17,12 +17,16 @@ abstract final class PacketBuilder {
     required int sessionId,
     required int sequence,
   }) {
-    final payloadBuffer = Uint8List(ChannelConstants.channelCount * 2);
+    // Self-describing payload: 1 byte payloadVersion + 1 byte channelCount + (8 * 2 bytes PWM)
+    final payloadBuffer = Uint8List(2 + ChannelConstants.channelCount * 2);
+    payloadBuffer[0] = 0x01; // Payload Version
+    payloadBuffer[1] = ChannelConstants.channelCount; // Channel Count (8)
+
     final bd = ByteData.sublistView(payloadBuffer);
 
     for (var i = 0; i < ChannelConstants.channelCount; i++) {
       final pwmVal = (i < data.pwm.length) ? data.pwm[i] : 1500;
-      bd.setUint16(i * 2, pwmVal.clamp(1000, 2000), Endian.big);
+      bd.setUint16(2 + (i * 2), pwmVal.clamp(1000, 2000), Endian.big);
     }
 
     final header = PacketHeader(

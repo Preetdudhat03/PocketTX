@@ -13,7 +13,7 @@ import '../../../../models/log_entry_model.dart';
 class UdpTransportChannel {
   RawDatagramSocket? _socket;
   InternetAddress? _remoteAddress;
-  int _remotePort = ProtocolConstants.discoveryPort;
+  int _remotePort = ProtocolConstants.dataPort;
   bool _isConnected = false;
 
   final _packetController = StreamController<Uint8List>.broadcast();
@@ -27,7 +27,7 @@ class UdpTransportChannel {
     try {
       await close();
 
-      _remotePort = port ?? ProtocolConstants.discoveryPort;
+      _remotePort = port ?? ProtocolConstants.dataPort;
       if (host != null && host.isNotEmpty) {
         _remoteAddress = InternetAddress(host);
       } else {

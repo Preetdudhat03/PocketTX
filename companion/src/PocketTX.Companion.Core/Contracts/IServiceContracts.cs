@@ -70,7 +70,7 @@ public interface IStateStore
     void UpdateChannels(ChannelData channels);
     void UpdateProfile(ControllerProfile profile);
     void UpdateSettings(AppSettings settings);
-    void UpdateConnectionStatus(ConnectionType connectionType, bool isConnected);
+    void UpdateConnectionStatus(ConnectionType connectionType, bool isConnected, string deviceName = "");
     void UpdateBackend(VirtualBackendType backendType);
     void UpdateTheme(ThemeType theme);
     void UpdateSimulator(SimulatorStatus status);

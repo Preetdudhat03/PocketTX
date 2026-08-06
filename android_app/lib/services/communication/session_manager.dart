@@ -1,38 +1,37 @@
 // ─────────────────────────────────────────────
 // PocketTX – Session Manager
-// Primary coordinator owning Session ID, Handshake negotiation, HeartbeatMonitor, FailsafeEngine, and Reconnects.
+// Active connection session controller orchestrating handshakes, continuous channel stream,
+// heartbeats, sequence validation, and metrics tracking.
 // ─────────────────────────────────────────────
 
 import 'dart:async';
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'connection_state_machine.dart';
-import 'heartbeat_monitor.dart';
-import 'failsafe_engine.dart';
-import 'transport_metrics.dart';
-import 'transport/udp/udp_transport_channel.dart';
-import '../../core/protocol/packet_types.dart';
-import '../../core/protocol/packet_header.dart';
+
 import '../../core/protocol/packet_builder.dart';
 import '../../core/protocol/packet_codec.dart';
-import '../../core/compatibility/protocol_version.dart' hide PacketType;
+import '../../core/protocol/protocol_constants.dart';
 import '../../core/services/logger_service.dart';
-import '../../models/log_entry_model.dart';
+import '../../core/state/channel_state.dart';
 import '../../models/channel_data.dart';
+import '../../models/log_entry_model.dart';
+import 'connection_state_machine.dart';
+import 'failsafe_engine.dart';
+import 'heartbeat_monitor.dart';
+import 'transport/udp/udp_transport_channel.dart';
 
 class SessionManager {
   final Ref _ref;
-
   late final UdpTransportChannel _transportChannel;
-  late final HeartbeatMonitor _heartbeatMonitor;
   late final FailsafeEngine _failsafeEngine;
   late final TransportMetricsTracker _metricsTracker;
+  late final HeartbeatMonitor _heartbeatMonitor;
 
   int _sessionId = 0;
   int _sequenceNumber = 0;
-  int _reconnectCount = 0;
   StreamSubscription? _packetSub;
+  Timer? _transmissionTimer;
 
   int get sessionId => _sessionId;
   FailsafeEngine get failsafeEngine => _failsafeEngine;
@@ -79,18 +78,25 @@ class SessionManager {
 
     notifier.transitionTo(
       ConnectionFsmState.connected,
-      type: ConnectionType.wifi,
+      type: targetHost == '127.0.0.1' ? ConnectionType.usb : ConnectionType.wifi,
       deviceName: targetHost,
-      latencyMs: 5,
+      latencyMs: targetHost == '127.0.0.1' ? 1 : 5,
     );
 
     _failsafeEngine.clearFailsafe();
     _heartbeatMonitor.start();
 
+    // Auto-start continuous 100Hz background UDP channel packet transmission timer
+    _transmissionTimer?.cancel();
+    _transmissionTimer = Timer.periodic(const Duration(milliseconds: 10), (_) {
+      final currentChannels = _ref.read(channelStateProvider);
+      transmitChannelData(currentChannels);
+    });
+
     LoggerService().info(
       LogCategory.network,
       'SESSION_ESTABLISHED',
-      'Session Established! ID [$_sessionId] connected to $targetHost.',
+      'Session Established! ID [$_sessionId] streaming continuous telemetry to $targetHost.',
     );
 
     return true;
@@ -135,55 +141,39 @@ class SessionManager {
     LoggerService().warning(
       LogCategory.network,
       'HEARTBEAT_TIMEOUT',
-      'Session [$_sessionId] heartbeat timed out -> triggering failsafe & reconnecting.',
+      'Heartbeat timeout detected from Windows Companion!',
     );
-
     _failsafeEngine.triggerFailsafe('Heartbeat timeout');
-    _reconnectCount++;
-
-    final notifier = _ref.read(connectionStateMachineProvider.notifier);
-    notifier.transitionTo(ConnectionFsmState.reconnecting);
-
-    // Auto-reconnect attempt
-    Timer(const Duration(seconds: 2), () {
-      final state = _ref.read(connectionStateMachineProvider);
-      if (state.fsmState == ConnectionFsmState.reconnecting && state.deviceName != null) {
-        startSession(targetHost: state.deviceName!);
-      }
-    });
   }
 
-  Future<void> endSession({String reason = 'User disconnect'}) async {
-    _heartbeatMonitor.stop();
-    await _packetSub?.cancel();
-    _packetSub = null;
+  Future<void> endSession() async {
+    _transmissionTimer?.cancel();
+    _transmissionTimer = null;
 
     if (_transportChannel.isConnected) {
-      // Send explicit Disconnect packet to Companion
-      final discPacket = PacketBuilder.buildDisconnect(
+      final disconnectPacket = PacketBuilder.buildDisconnect(
         sessionId: _sessionId,
         sequence: _sequenceNumber++,
       );
-      await _transportChannel.sendData(PacketCodec.encode(discPacket));
+      await _transportChannel.sendData(PacketCodec.encode(disconnectPacket));
       await _transportChannel.close();
     }
 
-    _failsafeEngine.triggerFailsafe(reason);
-    _ref.read(connectionStateMachineProvider.notifier).transitionTo(
-          ConnectionFsmState.disconnected,
-          type: ConnectionType.none,
-        );
+    _heartbeatMonitor.stop();
+    _packetSub?.cancel();
 
+    _ref.read(connectionStateMachineProvider.notifier).transitionTo(ConnectionFsmState.disconnected);
     LoggerService().info(
       LogCategory.network,
       'SESSION_ENDED',
-      'Session [$_sessionId] ended ($reason). Sent explicit disconnect packet.',
+      'Session ID [$_sessionId] cleanly terminated.',
     );
-    _sessionId = 0;
   }
 
   void dispose() {
-    endSession(reason: 'Disposed');
+    endSession();
+    _transportChannel.dispose();
+    _heartbeatMonitor.dispose();
   }
 }
 

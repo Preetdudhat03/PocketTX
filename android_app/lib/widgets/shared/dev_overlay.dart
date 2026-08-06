@@ -58,7 +58,7 @@ class _OverlayPanel extends ConsumerWidget {
             _row('RATE', '${metrics.actualUpdateRateHz.toStringAsFixed(0)}Hz'),
             _row('MEM', '${metrics.memoryUsageMb}MB'),
             _row('PROFILE', profile.replaceAll('preset_', '')),
-            _row('DEVICE', '${device.model}'),
+            _row('DEVICE', device.model),
             _row('REFRESH', device.refreshRateLabel),
           ],
         ),

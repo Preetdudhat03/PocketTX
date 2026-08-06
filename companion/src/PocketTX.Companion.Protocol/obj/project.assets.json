@@ -242,11 +242,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Protocol\\PocketTX.Companion.Protocol.csproj",
+      "projectUniqueName": "p:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Protocol\\PocketTX.Companion.Protocol.csproj",
       "projectName": "PocketTX.Companion.Protocol",
-      "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Protocol\\PocketTX.Companion.Protocol.csproj",
+      "projectPath": "p:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Protocol\\PocketTX.Companion.Protocol.csproj",
       "packagesPath": "C:\\Users\\preet\\.nuget\\packages\\",
-      "outputPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Protocol\\obj\\",
+      "outputPath": "p:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Protocol\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\preet\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -261,11 +261,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj": {
-              "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj"
+            "p:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj": {
+              "projectPath": "p:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Core\\PocketTX.Companion.Core.csproj"
             },
-            "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj": {
-              "projectPath": "P:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj"
+            "p:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj": {
+              "projectPath": "p:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.Shared\\PocketTX.Companion.Shared.csproj"
             }
           }
         }

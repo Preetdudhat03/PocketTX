@@ -15,6 +15,7 @@ import '../../../../core/state/channel_state.dart';
 import '../../../../core/constants/channel_constants.dart';
 import '../../../../widgets/shared/dev_overlay.dart';
 import '../../../../widgets/shared/status_badge.dart';
+import '../../../../widgets/shared/device_scan_dialog.dart';
 import '../widgets/gimbal_widget.dart';
 import '../widgets/channel_bar.dart';
 import '../widgets/arm_button.dart';

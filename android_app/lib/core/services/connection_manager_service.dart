@@ -8,7 +8,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../contracts/phase2_contracts.dart';
-import '../compatibility/protocol_version.dart';
+import '../compatibility/protocol_version.dart' hide PacketType;
 import '../transport/i_transport_channel.dart';
 import '../transport/udp_transport_channel.dart';
 import '../transport/tcp_transport_channel.dart';

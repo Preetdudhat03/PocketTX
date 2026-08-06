@@ -9,10 +9,10 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddProtocol(this IServiceCollection services)
     {
         services.AddSingleton<ICommunicationChannel, TestModeChannel>();
-        services.AddTransient<UsbChannel>();
-        services.AddTransient<AdbChannel>();
-        services.AddTransient<BluetoothChannel>();
-        services.AddTransient<WifiChannel>();
+        services.AddSingleton<ICommunicationChannel, WifiChannel>();
+        services.AddSingleton<ICommunicationChannel, UsbChannel>();
+        services.AddSingleton<ICommunicationChannel, AdbChannel>();
+        services.AddSingleton<ICommunicationChannel, BluetoothChannel>();
         return services;
     }
 }

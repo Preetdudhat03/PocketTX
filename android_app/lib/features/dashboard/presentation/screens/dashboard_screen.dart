@@ -8,6 +8,7 @@ import '../../../../core/state/app_state.dart';
 import '../../../../core/state/channel_state.dart';
 import '../../../../core/state/connection_state.dart';
 import '../../../../widgets/shared/status_badge.dart';
+import '../../../../widgets/shared/device_scan_dialog.dart';
 import '../../../../core/constants/channel_constants.dart';
 
 class DashboardScreen extends ConsumerWidget {
@@ -33,6 +34,12 @@ class DashboardScreen extends ConsumerWidget {
                   Text('DASHBOARD',
                       style: AppTypography.h3Style(color: context.textPrimary)),
                   const Spacer(),
+                  IconButton(
+                    icon: const Icon(Icons.refresh),
+                    tooltip: 'Refresh / Scan Mobile Device Connection',
+                    onPressed: () => DeviceScanDialog.show(context),
+                  ),
+                  const SizedBox(width: AppSpacing.xs),
                   StatusBadge(
                     label: connection.statusLabel,
                     variant: connection.isConnected

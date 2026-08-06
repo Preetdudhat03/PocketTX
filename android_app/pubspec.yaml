@@ -39,7 +39,7 @@ dependencies:
   intl: ^0.19.0
 
   # Device Info
-  device_info_plus: ^10.1.0
+  device_info_plus: ^11.0.0
 
   # Performance / Display
   flutter_hooks: ^0.20.5

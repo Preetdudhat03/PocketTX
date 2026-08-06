@@ -150,7 +150,11 @@ class _DeviceScanDialogState extends ConsumerState<DeviceScanDialog> {
                   child: Center(
                     child: Column(
                       children: [
-                        CircularProgressIndicator(),
+                        SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
                         SizedBox(height: AppSpacing.md),
                         Text('Scanning UDP Broadcast & USB ports...'),
                       ],

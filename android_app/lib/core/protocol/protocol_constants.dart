@@ -4,8 +4,8 @@
 // ─────────────────────────────────────────────
 
 abstract final class ProtocolConstants {
-  static const int discoveryPort = 18456;
-  static const int dataPort = 18457;
+  static const int discoveryPort = 18456; // UDP Discovery / Broadcast beaconing
+  static const int dataPort = 18457;      // UDP Controller Data & Heartbeat stream
 
   static const int heartbeatIntervalMs = 1000;
   static const int heartbeatTimeoutMs = 5000;

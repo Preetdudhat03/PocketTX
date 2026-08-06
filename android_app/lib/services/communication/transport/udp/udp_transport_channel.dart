@@ -27,9 +27,19 @@ class UdpTransportChannel {
     try {
       await close();
 
-      _remotePort = port ?? ProtocolConstants.dataPort;
+      _remotePort = ProtocolConstants.dataPort;
       if (host != null && host.isNotEmpty) {
-        _remoteAddress = InternetAddress(host);
+        final parsed = InternetAddress.tryParse(host);
+        if (parsed != null) {
+          _remoteAddress = parsed;
+        } else {
+          try {
+            final list = await InternetAddress.lookup(host);
+            _remoteAddress = list.isNotEmpty ? list.first : InternetAddress('255.255.255.255');
+          } catch (_) {
+            _remoteAddress = InternetAddress('255.255.255.255');
+          }
+        }
       } else {
         _remoteAddress = InternetAddress('255.255.255.255');
       }

@@ -6,15 +6,15 @@ void main() {
   group('ConnectionStateMachine', () {
     test('starts in Disconnected state by default', () {
       final notifier = ConnectionStateMachineNotifier();
-      expect(notifier.debugState.fsmState, equals(ConnectionFsmState.disconnected));
-      expect(notifier.debugState.isConnected, isFalse);
+      expect(notifier.state.fsmState, equals(ConnectionFsmState.disconnected));
+      expect(notifier.state.isConnected, isFalse);
     });
 
     test('transitions through finite state machine lifecycle correctly', () {
       final notifier = ConnectionStateMachineNotifier();
 
       notifier.transitionTo(ConnectionFsmState.scanning);
-      expect(notifier.debugState.fsmState, equals(ConnectionFsmState.scanning));
+      expect(notifier.state.fsmState, equals(ConnectionFsmState.scanning));
 
       notifier.transitionTo(
         ConnectionFsmState.connected,
@@ -22,13 +22,13 @@ void main() {
         deviceName: '192.168.1.10',
         latencyMs: 12,
       );
-      expect(notifier.debugState.fsmState, equals(ConnectionFsmState.connected));
-      expect(notifier.debugState.isConnected, isTrue);
-      expect(notifier.debugState.deviceName, equals('192.168.1.10'));
+      expect(notifier.state.fsmState, equals(ConnectionFsmState.connected));
+      expect(notifier.state.isConnected, isTrue);
+      expect(notifier.state.deviceName, equals('192.168.1.10'));
 
       notifier.transitionTo(ConnectionFsmState.reconnecting);
-      expect(notifier.debugState.fsmState, equals(ConnectionFsmState.reconnecting));
-      expect(notifier.debugState.isConnected, isFalse);
+      expect(notifier.state.fsmState, equals(ConnectionFsmState.reconnecting));
+      expect(notifier.state.isConnected, isFalse);
     });
   });
 }

@@ -55,6 +55,7 @@ public sealed class ConnectionManager : IConnectionManager
             if (_activeChannel.Type != ConnectionType.Usb)
             {
                 _stateStore.UpdateConnectionStatus(ConnectionType.Usb, true);
+                _logger.LogInfo("Mobile device connected over USB-C / Wi-Fi! Auto-switched to active input stream.", "ConnectionManager");
             }
 
             if (packet.Header.Type == PacketType.ChannelData && packet.Payload.Length >= 16)
@@ -129,7 +130,7 @@ public sealed class ConnectionManager : IConnectionManager
 
     public async Task ScanDevicesAsync(CancellationToken cancellationToken = default)
     {
-        _logger.LogInfo("Scanning USB-C / ADB / WiFi for mobile devices...", "DeviceScanner");
+        _logger.LogInfo("Scanning USB-C / ADB / WiFi ports for mobile devices...", "DeviceScanner");
 
         var wifiChan = _channels.FirstOrDefault(c => c.Type == ConnectionType.Wifi);
         if (wifiChan != null && !wifiChan.IsConnected)
@@ -144,11 +145,11 @@ public sealed class ConnectionManager : IConnectionManager
         {
             _activeChannel = physicalChannel;
             _stateStore.UpdateConnectionStatus(_activeChannel.Type, true);
-            _logger.LogInfo($"Mobile device found on {_activeChannel.Type}!", "DeviceScanner");
+            _logger.LogInfo($"USB-C / Wi-Fi listener active ({_activeChannel.Type})! Ready for input streaming.", "DeviceScanner");
         }
         else
         {
-            _logger.LogWarning("No mobile device detected. USB-C listening mode active.", "DeviceScanner");
+            _logger.LogInfo("USB-C / Wi-Fi socket listener active (18456 / 18457). Open PocketTX on phone and tap CONNECT.", "DeviceScanner");
             _stateStore.UpdateConnectionStatus(ConnectionType.Usb, true);
         }
     }

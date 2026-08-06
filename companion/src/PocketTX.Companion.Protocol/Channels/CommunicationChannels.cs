@@ -84,8 +84,11 @@ public sealed class WifiChannel : ICommunicationChannel
             _ = DataLoopAsync(_cts.Token);
             return Task.FromResult(true);
         }
-        catch
+        catch (Exception ex)
         {
+            string errStr = $"[WifiChannel.OpenAsync Fatal Exception] {ex}";
+            System.Diagnostics.Debug.WriteLine(errStr);
+            Console.WriteLine(errStr);
             IsConnected = false;
             ConnectionStateChanged?.Invoke(this, false);
             return Task.FromResult(false);

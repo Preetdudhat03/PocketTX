@@ -28,7 +28,7 @@ public partial class MainViewModel : ObservableObject,
     private string _activeViewTitle = "Dashboard";
 
     [ObservableProperty]
-    private string _connectionBadgeText = "Wi-Fi Listening (Ready)";
+    private string _connectionBadgeText = "USB-C Connected (Ready)";
 
     [ObservableProperty]
     private bool _isConnected = true;

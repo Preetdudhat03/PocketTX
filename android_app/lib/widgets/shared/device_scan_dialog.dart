@@ -57,6 +57,24 @@ class _DeviceScanDialogState extends ConsumerState<DeviceScanDialog> {
     final companionService = ref.read(companionServiceProvider);
     final devices = await companionService.scanDevices();
 
+    final defaultIp = _ipController.text.trim();
+    if (defaultIp.isNotEmpty && !devices.any((d) => d.ipAddress == defaultIp)) {
+      devices.insert(
+        0,
+        CompanionDeviceInfo(
+          deviceId: 'LAN_DEFAULT_$defaultIp',
+          deviceName: 'PocketTX Companion PC',
+          companionVersion: '1.0.0',
+          protocolVersion: ProtocolConstants.protocolVersion,
+          osName: 'Windows PC',
+          ipAddress: defaultIp,
+          port: ProtocolConstants.dataPort,
+          pingMs: 1,
+          lastSeen: DateTime.now(),
+        ),
+      );
+    }
+
     if (mounted) {
       setState(() {
         _foundDevices = devices;

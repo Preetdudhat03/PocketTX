@@ -43,7 +43,7 @@ class UdpTransportChannel implements ITransportChannel {
       if (host != null && host.isNotEmpty) {
         _remoteAddress = InternetAddress(host);
       } else {
-        _remoteAddress = InternetAddress.parse('255.255.255.255');
+        _remoteAddress = InternetAddress('255.255.255.255');
       }
 
       _socket = await RawDatagramSocket.bind(InternetAddress.anyIPv4, 0);

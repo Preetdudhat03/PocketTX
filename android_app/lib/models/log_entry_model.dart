@@ -15,6 +15,7 @@ enum LogCategory {
   settings,
   diagnostics,
   communication,
+  network,
   physics,
   storage,
 }

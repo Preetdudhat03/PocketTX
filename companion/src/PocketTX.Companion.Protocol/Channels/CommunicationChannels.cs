@@ -112,6 +112,7 @@ public sealed class WifiChannel : ICommunicationChannel
                         byte[] ackBytes = PacketSerializer.Serialize(ackPacket);
                         await _discoveryListener.SendAsync(ackBytes, ackBytes.Length, result.RemoteEndPoint);
                     }
+                    PacketReceived?.Invoke(this, result.Buffer);
                 }
             }
             catch (OperationCanceledException)

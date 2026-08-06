@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pockettx_app/core/design/theme_tokens.dart';
 import 'package:pockettx_app/core/design/spacing.dart';

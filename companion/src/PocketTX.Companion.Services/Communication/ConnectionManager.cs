@@ -29,37 +29,33 @@ public sealed class ConnectionManager : IConnectionManager
         _virtualController = virtualController;
         _logger = logger;
 
-        // Default to WifiChannel if available, fallback to TestMode
+        // Default connection mode: USB-C (USB / ADB)
+        var usbChan = _channels.FirstOrDefault(c => c.Type == ConnectionType.Usb);
         var wifiChan = _channels.FirstOrDefault(c => c.Type == ConnectionType.Wifi);
-        _activeChannel = wifiChan ?? _channels.FirstOrDefault(c => c.Type == ConnectionType.TestMode) ?? new TestModeChannel();
+        _activeChannel = usbChan ?? wifiChan ?? new TestModeChannel();
 
-        // Subscribe to packet events across channels
         foreach (var chan in _channels)
         {
             chan.PacketReceived += OnPacketReceived;
         }
 
-        // Auto-start Wi-Fi UDP listener on ports 18456 & 18457
         if (wifiChan != null)
         {
             _ = wifiChan.OpenAsync();
-            _stateStore.UpdateConnectionStatus(ConnectionType.Wifi, true);
         }
+        _stateStore.UpdateConnectionStatus(ConnectionType.Usb, true);
     }
 
     private void OnPacketReceived(object? sender, byte[] rawBytes)
     {
-        // Auto-switch active channel to Wi-Fi on incoming mobile packet
-        if (sender is WifiChannel wifiChannel && _activeChannel.Type != ConnectionType.Wifi)
-        {
-            _activeChannel = wifiChannel;
-            _stateStore.UpdateConnectionStatus(ConnectionType.Wifi, true);
-            _logger.LogInfo("Auto-switched active connection channel to Wi-Fi on incoming mobile packet.", "ConnectionManager");
-        }
-
         if (PacketSerializer.TryDeserialize(rawBytes, out var packet) && packet != null)
         {
             _stateStore.UpdateDiagnostics(d => d.LastPacketReceivedTime = DateTime.UtcNow);
+
+            if (_activeChannel.Type != ConnectionType.Usb)
+            {
+                _stateStore.UpdateConnectionStatus(ConnectionType.Usb, true);
+            }
 
             if (packet.Header.Type == PacketType.ChannelData && packet.Payload.Length >= 16)
             {
@@ -96,8 +92,8 @@ public sealed class ConnectionManager : IConnectionManager
         var targetChannel = _channels.FirstOrDefault(c => c.Type == connectionType);
         if (targetChannel == null)
         {
-            _logger.LogWarning($"Requested connection channel '{connectionType}' not registered, falling back to TestMode.", "ConnectionManager");
-            targetChannel = new TestModeChannel();
+            _logger.LogWarning($"Requested connection channel '{connectionType}' not registered, falling back to USB-C.", "ConnectionManager");
+            targetChannel = new UsbChannel();
         }
 
         _activeChannel = targetChannel;
@@ -133,7 +129,7 @@ public sealed class ConnectionManager : IConnectionManager
 
     public async Task ScanDevicesAsync(CancellationToken cancellationToken = default)
     {
-        _logger.LogInfo("Scanning USB / ADB / WiFi / Bluetooth for mobile devices...", "DeviceScanner");
+        _logger.LogInfo("Scanning USB-C / ADB / WiFi for mobile devices...", "DeviceScanner");
 
         var wifiChan = _channels.FirstOrDefault(c => c.Type == ConnectionType.Wifi);
         if (wifiChan != null && !wifiChan.IsConnected)
@@ -152,8 +148,8 @@ public sealed class ConnectionManager : IConnectionManager
         }
         else
         {
-            _logger.LogWarning("No mobile device detected. Test Mode (Simulation) active.", "DeviceScanner");
-            _stateStore.UpdateConnectionStatus(ConnectionType.TestMode, true);
+            _logger.LogWarning("No mobile device detected. USB-C listening mode active.", "DeviceScanner");
+            _stateStore.UpdateConnectionStatus(ConnectionType.Usb, true);
         }
     }
 }

@@ -47,10 +47,21 @@ class UdpTransportChannel {
       _socket = await RawDatagramSocket.bind(InternetAddress.anyIPv4, 0);
       _socket?.broadcastEnabled = true;
 
+      LoggerService().info(
+        LogCategory.network,
+        'UDP_SOCKET_BOUND',
+        'UDP socket bound on local port ${_socket?.port} (Remote Target: ${_remoteAddress?.address}:$_remotePort)',
+      );
+
       _socket?.listen((RawSocketEvent event) {
         if (event == RawSocketEvent.read) {
           final dg = _socket?.receive();
           if (dg != null) {
+            LoggerService().info(
+              LogCategory.network,
+              'UDP_RAW_RX',
+              '[UDP RX Socket] Received ${dg.data.length} bytes from ${dg.address.address}:${dg.port} -> Hex: ${dg.data}',
+            );
             _packetController.add(dg.data);
           }
         }
@@ -75,8 +86,18 @@ class UdpTransportChannel {
     if (_socket == null || _remoteAddress == null) return false;
     try {
       final sent = _socket!.send(data, _remoteAddress!, _remotePort);
+      LoggerService().info(
+        LogCategory.network,
+        'UDP_RAW_TX',
+        '[UDP TX Socket] Sent $sent/${data.length} bytes to ${_remoteAddress!.address}:$_remotePort -> Hex: $data',
+      );
       return sent > 0;
     } catch (e) {
+      LoggerService().error(
+        LogCategory.network,
+        'UDP_TX_FAILED',
+        '[UDP TX Socket Error] Failed sending bytes to ${_remoteAddress?.address}:$_remotePort: $e',
+      );
       return false;
     }
   }

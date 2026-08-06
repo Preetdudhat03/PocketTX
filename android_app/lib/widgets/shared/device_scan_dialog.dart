@@ -85,8 +85,13 @@ class _DeviceScanDialogState extends ConsumerState<DeviceScanDialog> {
   }
 
   void _connectManualIp() {
-    final rawIp = _ipController.text.trim();
+    var rawIp = _ipController.text.trim();
     if (rawIp.isEmpty) return;
+
+    rawIp = rawIp.replaceAll(RegExp(r'https?://'), '');
+    if (rawIp.contains(':')) {
+      rawIp = rawIp.split(':').first;
+    }
 
     final manualDev = CompanionDeviceInfo(
       deviceId: 'MANUAL_$rawIp',
@@ -95,7 +100,7 @@ class _DeviceScanDialogState extends ConsumerState<DeviceScanDialog> {
       protocolVersion: ProtocolConstants.protocolVersion,
       osName: 'Windows PC',
       ipAddress: rawIp,
-      port: ProtocolConstants.discoveryPort,
+      port: ProtocolConstants.dataPort,
       pingMs: 1,
       lastSeen: DateTime.now(),
     );

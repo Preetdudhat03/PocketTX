@@ -66,11 +66,12 @@ public enum VirtualBackendType
 
 public enum PacketType : byte
 {
-    Heartbeat = 0x01,
-    ChannelData = 0x02,
-    TelemetryRequest = 0x03,
-    TelemetryResponse = 0x04,
-    Ack = 0x06
+    Hello = 0x01,
+    Heartbeat = 0x02,
+    ChannelData = 0x03,
+    Telemetry = 0x04,
+    Ack = 0x05,
+    Disconnect = 0x06
 }
 
 [System.Flags]

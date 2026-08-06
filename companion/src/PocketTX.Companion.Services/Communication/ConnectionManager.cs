@@ -1,6 +1,9 @@
+using System.Buffers.Binary;
 using PocketTX.Companion.Core.Contracts;
 using PocketTX.Companion.Core.Enums;
+using PocketTX.Companion.Core.Models;
 using PocketTX.Companion.Protocol.Channels;
+using PocketTX.Companion.Protocol.Serializers;
 
 namespace PocketTX.Companion.Services.Communication;
 
@@ -8,6 +11,7 @@ public sealed class ConnectionManager : IConnectionManager
 {
     private readonly IEnumerable<ICommunicationChannel> _channels;
     private readonly IStateStore _stateStore;
+    private readonly IVirtualController _virtualController;
     private readonly ILoggerService _logger;
     private ICommunicationChannel _activeChannel;
 
@@ -17,12 +21,40 @@ public sealed class ConnectionManager : IConnectionManager
     public ConnectionManager(
         IEnumerable<ICommunicationChannel> channels,
         IStateStore stateStore,
+        IVirtualController virtualController,
         ILoggerService logger)
     {
         _channels = channels;
         _stateStore = stateStore;
+        _virtualController = virtualController;
         _logger = logger;
         _activeChannel = _channels.FirstOrDefault(c => c.Type == ConnectionType.TestMode) ?? new TestModeChannel();
+        SubscribeChannel(_activeChannel);
+    }
+
+    private void SubscribeChannel(ICommunicationChannel channel)
+    {
+        channel.PacketReceived -= OnPacketReceived;
+        channel.PacketReceived += OnPacketReceived;
+    }
+
+    private void OnPacketReceived(object? sender, byte[] rawBytes)
+    {
+        if (PacketSerializer.TryDeserialize(rawBytes, out var packet) && packet != null)
+        {
+            if (packet.Header.Type == PacketType.ChannelData && packet.Payload.Length >= 16)
+            {
+                var channelData = new ChannelData();
+                for (int i = 0; i < 8; i++)
+                {
+                    ushort pwm = BinaryPrimitives.ReadUInt16BigEndian(packet.Payload.AsSpan(i * 2, 2));
+                    channelData.SetChannelPwm(i, pwm);
+                }
+
+                _stateStore.UpdateChannels(channelData);
+                _ = _virtualController.UpdateInputAsync(channelData);
+            }
+        }
     }
 
     public async Task SwitchConnectionAsync(ConnectionType connectionType, CancellationToken cancellationToken = default)
@@ -40,6 +72,7 @@ public sealed class ConnectionManager : IConnectionManager
         }
 
         _activeChannel = targetChannel;
+        SubscribeChannel(_activeChannel);
         _stateStore.UpdateConnectionStatus(_activeChannel.Type, _activeChannel.IsConnected);
         _logger.LogInfo($"Switched active connection channel to {_activeChannel.Type}.", "ConnectionManager");
     }
@@ -74,13 +107,20 @@ public sealed class ConnectionManager : IConnectionManager
     {
         _logger.LogInfo("Scanning USB / ADB / WiFi / Bluetooth for mobile devices...", "DeviceScanner");
 
-        // Simulate 500ms device discovery scan across interfaces
-        await Task.Delay(500, cancellationToken);
+        // Try opening WiFi UDP channel if not already open
+        var wifiChan = _channels.FirstOrDefault(c => c.Type == ConnectionType.Wifi);
+        if (wifiChan != null && !wifiChan.IsConnected)
+        {
+            await wifiChan.OpenAsync(cancellationToken);
+        }
+
+        await Task.Delay(300, cancellationToken);
 
         var physicalChannel = _channels.FirstOrDefault(c => c.Type != ConnectionType.TestMode && c.IsConnected);
         if (physicalChannel != null)
         {
             _activeChannel = physicalChannel;
+            SubscribeChannel(_activeChannel);
             _stateStore.UpdateConnectionStatus(_activeChannel.Type, true);
             _logger.LogInfo($"Mobile device found on {_activeChannel.Type}!", "DeviceScanner");
         }

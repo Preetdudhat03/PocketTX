@@ -42,8 +42,11 @@ class SpringPhysics implements IStickPhysics {
   void update({Offset? target, required double dtSeconds}) {
     if (target != null) {
       _isPressed = true;
-      // While touched: directly follow finger with light lag for feel
-      _position = Offset.lerp(_position, target, (1.0 - pow(0.01, dtSeconds)).clamp(0.0, 1.0))!;
+      // Direct 1:1 touch response with instant full deflection
+      _position = Offset(
+        target.dx.clamp(-1.0, 1.0),
+        target.dy.clamp(-1.0, 1.0),
+      );
       _velocity = Offset.zero;
     } else {
       _isPressed = false;

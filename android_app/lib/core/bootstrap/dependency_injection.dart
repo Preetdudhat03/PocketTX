@@ -46,3 +46,4 @@ final loggerServiceProvider = Provider<LoggerService>(
 final hapticServiceProvider = Provider<HapticService>(
   (_) => DependencyInjection.hapticService,
 );
+

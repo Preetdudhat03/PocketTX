@@ -47,6 +47,18 @@ class ChannelData extends Equatable {
     );
   }
 
+  /// Creates ChannelData from PWM values list.
+  factory ChannelData.fromPwm(List<int> pwm) {
+    assert(pwm.length == ChannelConstants.channelCount);
+    final clampedPwm = pwm.map((p) => p.clamp(1000, 2000)).toList();
+    final norm = clampedPwm.map(ChannelConstants.pwmToNormalized).toList();
+    return ChannelData._(
+      normalized: List.unmodifiable(norm),
+      pwm: List.unmodifiable(clampedPwm),
+      timestamp: DateTime.now(),
+    );
+  }
+
   /// Returns a copy with updated [index] channel value.
   ChannelData withChannel(int index, double normalizedValue) {
     assert(index >= 0 && index < ChannelConstants.channelCount);

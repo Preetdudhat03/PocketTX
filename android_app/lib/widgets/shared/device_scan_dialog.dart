@@ -1,6 +1,6 @@
 // ─────────────────────────────────────────────
 // PocketTX – Device Scan & Connection Dialog
-// Discovers Windows Companion devices on LAN / USB / ADB.
+// Discovers Windows Companion devices on LAN / USB using UdpDiscoveryService & CompanionDeviceInfo.
 // ─────────────────────────────────────────────
 
 import 'package:flutter/material.dart';
@@ -10,9 +10,9 @@ import '../../core/design/spacing.dart';
 import '../../core/design/typography.dart';
 import '../../core/design/radius.dart';
 import '../../core/design/icons.dart';
-import '../../core/compatibility/protocol_version.dart';
-import '../../core/services/connection_manager_service.dart';
-import '../../core/state/connection_state.dart';
+import '../../services/communication/udp_discovery_service.dart';
+import '../../services/communication/companion_service.dart';
+import '../../services/communication/connection_state_machine.dart';
 
 class DeviceScanDialog extends ConsumerStatefulWidget {
   const DeviceScanDialog({super.key});
@@ -30,19 +30,12 @@ class DeviceScanDialog extends ConsumerStatefulWidget {
 
 class _DeviceScanDialogState extends ConsumerState<DeviceScanDialog> {
   bool _isScanning = false;
-  List<String> _foundDevices = [];
-  final TextEditingController _customIpController = TextEditingController();
+  List<CompanionDeviceInfo> _foundDevices = [];
 
   @override
   void initState() {
     super.initState();
     _startScan();
-  }
-
-  @override
-  void dispose() {
-    _customIpController.dispose();
-    super.dispose();
   }
 
   Future<void> _startScan() async {
@@ -51,8 +44,8 @@ class _DeviceScanDialogState extends ConsumerState<DeviceScanDialog> {
       _foundDevices.clear();
     });
 
-    final connManager = ref.read(connectionManagerServiceProvider);
-    final devices = await connManager.scanDevices();
+    final companionService = ref.read(companionServiceProvider);
+    final devices = await companionService.scanDevices();
 
     if (mounted) {
       setState(() {
@@ -62,32 +55,18 @@ class _DeviceScanDialogState extends ConsumerState<DeviceScanDialog> {
     }
   }
 
-  Future<void> _connectTo(String deviceString) async {
-    final connManager = ref.read(connectionManagerServiceProvider);
-    ConnectionType type = ConnectionType.wifi;
-    String? host;
+  Future<void> _connectTo(CompanionDeviceInfo device) async {
+    final companionService = ref.read(companionServiceProvider);
+    final success = await companionService.connectToCompanion(device);
 
-    if (deviceString.contains('127.0.0.1') || deviceString.contains('USB')) {
-      type = ConnectionType.adb;
-      host = '127.0.0.1';
-    } else {
-      type = ConnectionType.wifi;
-      final match = RegExp(r'\((.*?)\)').firstMatch(deviceString);
-      if (match != null) {
-        final rawHostPort = match.group(1)!;
-        host = rawHostPort.split(':').first;
-      }
-    }
-
-    final success = await connManager.connect(type, targetHost: host);
     if (mounted) {
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
             success
-                ? 'Connected to companion endpoint!'
-                : 'Connection failed. Please verify Windows Companion is running.',
+                ? 'Connected to ${device.displayName}!'
+                : 'Connection failed. Verify Windows Companion is running.',
           ),
           backgroundColor: success ? AppColors.accentGreen : AppColors.error,
         ),
@@ -97,7 +76,7 @@ class _DeviceScanDialogState extends ConsumerState<DeviceScanDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final currentConn = ref.watch(connectionStateProvider);
+    final currentConn = ref.watch(connectionStateMachineProvider);
 
     return Dialog(
       backgroundColor: context.cardBg,
@@ -135,7 +114,6 @@ class _DeviceScanDialogState extends ConsumerState<DeviceScanDialog> {
             ),
             const SizedBox(height: AppSpacing.lg),
 
-            // Scan indicator / device list
             if (_isScanning)
               const Padding(
                 padding: EdgeInsets.all(AppSpacing.xl),
@@ -185,10 +163,12 @@ class _DeviceScanDialogState extends ConsumerState<DeviceScanDialog> {
                         ),
                         child: ListTile(
                           leading: Icon(
-                            dev.contains('USB') ? Icons.usb : Icons.wifi,
+                            dev.ipAddress == '127.0.0.1' ? Icons.usb : Icons.wifi,
                             color: AppColors.accentCyan,
                           ),
-                          title: Text(dev, style: AppTypography.bodyStyle(color: context.textPrimary)),
+                          title: Text(dev.displayName, style: AppTypography.bodyStyle(color: context.textPrimary)),
+                          subtitle: Text('Ping: ${dev.pingMs}ms | OS: ${dev.osName}',
+                              style: AppTypography.captionStyle(color: context.textTertiary)),
                           trailing: ElevatedButton(
                             onPressed: () => _connectTo(dev),
                             child: const Text('CONNECT'),
@@ -213,7 +193,7 @@ class _DeviceScanDialogState extends ConsumerState<DeviceScanDialog> {
                 if (currentConn.isConnected)
                   TextButton(
                     onPressed: () async {
-                      await ref.read(connectionManagerServiceProvider).disconnect();
+                      await ref.read(companionServiceProvider).disconnect();
                       if (mounted) Navigator.of(context).pop();
                     },
                     style: TextButton.styleFrom(foregroundColor: AppColors.error),

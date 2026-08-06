@@ -8,7 +8,9 @@ using System.Windows;
 
 namespace PocketTX.Companion.UI.ViewModels;
 
-public partial class MainViewModel : ObservableObject, IRecipient<ThemeChangedMessage>
+public partial class MainViewModel : ObservableObject,
+    IRecipient<ThemeChangedMessage>,
+    IRecipient<ConnectionStateChangedMessage>
 {
     private readonly IStateStore _stateStore;
 
@@ -26,7 +28,7 @@ public partial class MainViewModel : ObservableObject, IRecipient<ThemeChangedMe
     private string _activeViewTitle = "Dashboard";
 
     [ObservableProperty]
-    private string _connectionBadgeText = "Test Mode Active";
+    private string _connectionBadgeText = "Wi-Fi Listening (Ready)";
 
     [ObservableProperty]
     private bool _isConnected = true;
@@ -95,6 +97,22 @@ public partial class MainViewModel : ObservableObject, IRecipient<ThemeChangedMe
         });
     }
 
+    public void Receive(ConnectionStateChangedMessage message)
+    {
+        Application.Current?.Dispatcher.InvokeAsync(() =>
+        {
+            IsConnected = message.IsConnected;
+            ConnectionBadgeText = message.ConnectionType switch
+            {
+                ConnectionType.Wifi => message.IsConnected ? "Wi-Fi Connected" : "Wi-Fi Listening",
+                ConnectionType.Usb => message.IsConnected ? "USB Connected" : "USB Disconnected",
+                ConnectionType.Adb => message.IsConnected ? "ADB Connected" : "ADB Disconnected",
+                ConnectionType.Bluetooth => message.IsConnected ? "Bluetooth Connected" : "Bluetooth Disconnected",
+                _ => "Test Mode Active"
+            };
+        });
+    }
+
     public static void ApplyThemeResource(ThemeType theme)
     {
         if (Application.Current == null) return;
@@ -112,7 +130,6 @@ public partial class MainViewModel : ObservableObject, IRecipient<ThemeChangedMe
                 Source = new Uri(themeUri, UriKind.Relative)
             };
 
-            // Safely swap theme dictionaries without wiping all app resources
             var existingTheme = Application.Current.Resources.MergedDictionaries
                 .FirstOrDefault(d => d.Source != null && d.Source.OriginalString.Contains("Theme."));
 

@@ -62,6 +62,7 @@ class _GimbalWidgetState extends ConsumerState<GimbalWidget>
   void _onPanStart(DragStartDetails d) {
     final pos = _touchToNorm(d.localPosition);
     _physics.snapTo(pos);
+    _publishChannels();
     HapticService().light();
     setState(() {});
   }

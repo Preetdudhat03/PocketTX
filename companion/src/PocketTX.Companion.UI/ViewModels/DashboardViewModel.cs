@@ -103,7 +103,8 @@ public partial class DashboardViewModel : ObservableObject,
     {
         Application.Current?.Dispatcher.InvokeAsync(() =>
         {
-            ConnectionStatusText = $"{message.ConnectionType} ({(message.IsConnected ? "Connected" : "Disconnected")})";
+            string devName = !string.IsNullOrEmpty(message.DeviceName) ? message.DeviceName : "Mobile Device";
+            ConnectionStatusText = message.IsConnected ? $"{devName} ({message.ConnectionType})" : "Disconnected";
             IsConnected = message.IsConnected;
         });
     }

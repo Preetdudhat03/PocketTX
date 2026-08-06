@@ -70,11 +70,18 @@ class SessionManager {
     _packetSub?.cancel();
     _packetSub = _transportChannel.packetStream.listen(_handleIncomingRawPacket);
 
-    // Send HELLO handshake packet
+    String realDeviceName = 'PocketTX Phone';
+    try {
+      final deviceInfo = DeviceInfoPlugin();
+      final androidInfo = await deviceInfo.androidInfo;
+      realDeviceName = '${androidInfo.manufacturer.toUpperCase()} ${androidInfo.model}';
+    } catch (_) {}
+
+    // Send HELLO handshake packet with real device model name
     final helloPacket = PacketBuilder.buildHello(
       sessionId: _sessionId,
       sequence: _sequenceNumber++,
-      deviceName: 'PocketTX Android Client',
+      deviceName: realDeviceName,
     );
     await _transportChannel.sendData(PacketCodec.encode(helloPacket));
 

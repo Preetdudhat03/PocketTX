@@ -33,6 +33,10 @@ class _GimbalWidgetState extends ConsumerState<GimbalWidget>
   late Ticker _ticker;
   DateTime _lastTick = DateTime.now();
 
+  /// Active touch target position while thumb is down on screen.
+  /// Null when thumb is removed.
+  Offset? _activeTouchTarget;
+
   @override
   void initState() {
     super.initState();
@@ -50,8 +54,11 @@ class _GimbalWidgetState extends ConsumerState<GimbalWidget>
     final dt = now.difference(_lastTick).inMicroseconds / 1000000.0;
     _lastTick = now;
 
-    // Update physics (no touch = null target = spring/hold applies)
-    _physics.update(target: null, dtSeconds: dt.clamp(0.0001, 0.05));
+    // Update physics with active touch target (null when thumb is removed)
+    _physics.update(
+      target: _activeTouchTarget,
+      dtSeconds: dt.clamp(0.0001, 0.05),
+    );
 
     // Publish channel output
     _publishChannels();
@@ -61,6 +68,7 @@ class _GimbalWidgetState extends ConsumerState<GimbalWidget>
 
   void _onPanStart(DragStartDetails d) {
     final pos = _touchToNorm(d.localPosition);
+    _activeTouchTarget = pos;
     _physics.snapTo(pos);
     _publishChannels();
     HapticService().light();
@@ -69,18 +77,29 @@ class _GimbalWidgetState extends ConsumerState<GimbalWidget>
 
   void _onPanUpdate(DragUpdateDetails d) {
     final pos = _touchToNorm(d.localPosition);
+    _activeTouchTarget = pos;
     _physics.update(target: pos, dtSeconds: 0.016);
     _publishChannels();
   }
 
   void _onPanEnd(DragEndDetails _) {
-    // Physics takes over (spring return or free-stay)
+    _activeTouchTarget = null; // Thumb removed: spring physics takes over
+    _physics.update(target: null, dtSeconds: 0.016);
+    _publishChannels();
+    setState(() {});
+  }
+
+  void _onPanCancel() {
+    _activeTouchTarget = null; // Touch cancelled: spring physics takes over
+    _physics.update(target: null, dtSeconds: 0.016);
+    _publishChannels();
     setState(() {});
   }
 
   Offset _touchToNorm(Offset local) {
     final center = widget.size / 2;
-    final usableRadius = (center - 8) * 0.85;
+    // Map touch radius so touching near visual track edge reaches 100% full 2000us (+1.0) / 1000us (-1.0)
+    final usableRadius = (center - 8) * 0.75;
     return Offset(
       ((local.dx - center) / usableRadius).clamp(-1.0, 1.0),
       -((local.dy - center) / usableRadius).clamp(-1.0, 1.0), // invert Y: up = positive
@@ -116,6 +135,7 @@ class _GimbalWidgetState extends ConsumerState<GimbalWidget>
         onPanStart: _onPanStart,
         onPanUpdate: _onPanUpdate,
         onPanEnd: _onPanEnd,
+        onPanCancel: _onPanCancel,
         child: GimbalRenderer(
           position: _physics.position,
           isPressed: _physics.isPressed,
@@ -127,7 +147,6 @@ class _GimbalWidgetState extends ConsumerState<GimbalWidget>
 }
 
 /// Pure rendering widget — draws the gimbal track and knob.
-/// Zero calculations inside.
 class GimbalRenderer extends StatelessWidget {
   final Offset position; // -1.0 to +1.0 on both axes
   final bool isPressed;
@@ -199,7 +218,7 @@ class _GimbalPainter extends CustomPainter {
         Offset(center.dx + trackRadius, center.dy), crossPaint);
 
     // ── Knob position ───────────────────────────
-    final usableRadius = trackRadius * 0.85;
+    final usableRadius = trackRadius * 0.75;
     final knobOffset = Offset(
       center.dx + position.dx * usableRadius,
       center.dy - position.dy * usableRadius,

@@ -11,7 +11,6 @@ import 'core/state/app_state.dart';
 import 'core/state/theme_state.dart';
 import 'core/state/diagnostics_state.dart';
 import 'core/services/haptic_service.dart';
-import 'models/app_settings.dart';
 import 'app.dart';
 
 void main() async {

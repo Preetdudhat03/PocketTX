@@ -137,10 +137,12 @@ class _TopBar extends StatelessWidget {
             style: AppTypography.controlLabelStyle(color: AppColors.primary),
           ),
           const SizedBox(width: AppSpacing.sm),
-          Text(
-            'LOCAL TEST MODE',
-            style: AppTypography.controlLabelStyle(
-                color: AppColors.darkTextTertiary),
+          IconButton(
+            icon: const Icon(Icons.refresh, size: 18),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+            tooltip: 'Refresh / Scan Mobile Device Connection',
+            onPressed: () => DeviceScanDialog.show(context),
           ),
           const Spacer(),
           StatusBadge(

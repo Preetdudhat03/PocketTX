@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +7,6 @@ import 'package:pockettx_app/core/physics/spring_physics.dart';
 import 'package:pockettx_app/core/physics/ratchet_physics.dart';
 import 'package:pockettx_app/core/physics/i_stick_physics.dart';
 import 'package:pockettx_app/core/state/channel_state.dart';
-import 'package:pockettx_app/core/state/app_state.dart';
 import 'package:pockettx_app/core/services/haptic_service.dart';
 import 'package:pockettx_app/core/constants/channel_constants.dart';
 

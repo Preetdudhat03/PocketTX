@@ -33,7 +33,7 @@ class AppLifecycleObserver extends WidgetsBindingObserver {
         'LIFECYCLE_PAUSED',
         'App backgrounded or paused -> triggering failsafe & sending disconnect packet.',
       );
-      ref.read(sessionManagerProvider).endSession(reason: 'App backgrounded (${state.name})');
+      ref.read(sessionManagerProvider).endSession();
     }
   }
 }

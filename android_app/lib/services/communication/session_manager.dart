@@ -176,7 +176,7 @@ class SessionManager {
   void dispose() {
     endSession();
     _transportChannel.dispose();
-    _heartbeatMonitor.dispose();
+    _heartbeatMonitor.stop();
   }
 }
 

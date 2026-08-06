@@ -5,8 +5,8 @@ import 'package:pockettx_app/core/constants/channel_constants.dart';
 
 void main() {
   group('StickModeMapper', () {
-    final left = const StickPosition(x: 0.5, y: 0.8);  // x=yaw/roll, y=throttle/pitch
-    final right = const StickPosition(x: -0.3, y: 0.6);
+    const left = StickPosition(x: 0.5, y: 0.8);  // x=yaw/roll, y=throttle/pitch
+    const right = StickPosition(x: -0.3, y: 0.6);
 
     test('Mode 2 maps left-Y to throttle, left-X to yaw', () {
       final ch = StickModeMapper.map(

@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Sockets;
+using System.Buffers.Binary;
 using PocketTX.Companion.Core.Contracts;
 using PocketTX.Companion.Core.Enums;
 using PocketTX.Companion.Protocol.Packets;
@@ -42,12 +43,16 @@ public sealed class TestModeChannel : ICommunicationChannel
 
 /// <summary>
 /// Active Wi-Fi / UDP Socket Channel for mobile app binary protocol communication.
+/// Port 18456 = UDP Discovery Broadcasts
+/// Port 18457 = Real-time Controller Data & Heartbeats
 /// </summary>
 public sealed class WifiChannel : ICommunicationChannel
 {
-    private UdpClient? _udpListener;
+    private UdpClient? _discoveryListener;
+    private UdpClient? _dataListener;
     private CancellationTokenSource? _cts;
     private IPEndPoint? _clientEndpoint;
+    private readonly DateTime _startTime = DateTime.UtcNow;
 
     public ConnectionType Type => ConnectionType.Wifi;
     public bool IsConnected { get; private set; }
@@ -61,13 +66,18 @@ public sealed class WifiChannel : ICommunicationChannel
 
         try
         {
-            _udpListener = new UdpClient(18456);
-            _udpListener.EnableBroadcast = true;
+            _discoveryListener = new UdpClient(18456);
+            _discoveryListener.EnableBroadcast = true;
+
+            _dataListener = new UdpClient(18457);
+            _dataListener.EnableBroadcast = true;
+
             _cts = new CancellationTokenSource();
             IsConnected = true;
             ConnectionStateChanged?.Invoke(this, true);
 
-            _ = ListenLoopAsync(_cts.Token);
+            _ = DiscoveryLoopAsync(_cts.Token);
+            _ = DataLoopAsync(_cts.Token);
             return Task.FromResult(true);
         }
         catch
@@ -78,19 +88,18 @@ public sealed class WifiChannel : ICommunicationChannel
         }
     }
 
-    private async Task ListenLoopAsync(CancellationToken token)
+    private async Task DiscoveryLoopAsync(CancellationToken token)
     {
-        while (!token.IsCancellationRequested && _udpListener != null)
+        while (!token.IsCancellationRequested && _discoveryListener != null)
         {
             try
             {
-                var result = await _udpListener.ReceiveAsync(token);
-                _clientEndpoint = result.RemoteEndPoint;
-
+                var result = await _discoveryListener.ReceiveAsync(token);
                 if (PacketSerializer.TryDeserialize(result.Buffer, out var packet) && packet != null)
                 {
                     if (packet.Header.Type == PacketType.Hello)
                     {
+                        _clientEndpoint = result.RemoteEndPoint;
                         var ackPacket = new TelemetryPacket
                         {
                             Header = new PacketHeader
@@ -101,20 +110,8 @@ public sealed class WifiChannel : ICommunicationChannel
                             }
                         };
                         byte[] ackBytes = PacketSerializer.Serialize(ackPacket);
-                        await _udpListener.SendAsync(ackBytes, ackBytes.Length, _clientEndpoint);
+                        await _discoveryListener.SendAsync(ackBytes, ackBytes.Length, result.RemoteEndPoint);
                     }
-                    else if (packet.Header.Type == PacketType.Heartbeat)
-                    {
-                        byte[] hbBytes = PacketSerializer.Serialize(packet);
-                        await _udpListener.SendAsync(hbBytes, hbBytes.Length, _clientEndpoint);
-                    }
-                    else if (packet.Header.Type == PacketType.Disconnect)
-                    {
-                        IsConnected = false;
-                        ConnectionStateChanged?.Invoke(this, false);
-                    }
-
-                    PacketReceived?.Invoke(this, result.Buffer);
                 }
             }
             catch (OperationCanceledException)
@@ -123,7 +120,65 @@ public sealed class WifiChannel : ICommunicationChannel
             }
             catch
             {
-                // Ignore transient socket glitches
+                // Continue loop
+            }
+        }
+    }
+
+    private async Task DataLoopAsync(CancellationToken token)
+    {
+        while (!token.IsCancellationRequested && _dataListener != null)
+        {
+            try
+            {
+                var result = await _dataListener.ReceiveAsync(token);
+                _clientEndpoint = result.RemoteEndPoint;
+
+                // Strict Packet Validation pipeline
+                if (!PacketSerializer.TryDeserialize(result.Buffer, out var packet) || packet == null)
+                {
+                    continue; // Reject malformed packet
+                }
+
+                if (packet.Header.Type == PacketType.Heartbeat)
+                {
+                    // Respond with Rich Heartbeat ACK (Companion timestamp, session ID, uptime ms)
+                    ulong nowMs = (ulong)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                    ulong uptimeMs = (ulong)(DateTime.UtcNow - _startTime).TotalMilliseconds;
+
+                    byte[] hbAckPayload = new byte[16];
+                    BinaryPrimitives.WriteUInt64BigEndian(hbAckPayload.AsSpan(0, 8), nowMs);
+                    BinaryPrimitives.WriteUInt64BigEndian(hbAckPayload.AsSpan(8, 8), uptimeMs);
+
+                    var hbAck = new TelemetryPacket
+                    {
+                        Header = new PacketHeader
+                        {
+                            Type = PacketType.Heartbeat,
+                            SessionId = packet.Header.SessionId,
+                            Sequence = packet.Header.Sequence,
+                            PayloadLength = 16
+                        },
+                        Payload = hbAckPayload
+                    };
+                    byte[] hbBytes = PacketSerializer.Serialize(hbAck);
+                    await _dataListener.SendAsync(hbBytes, hbBytes.Length, result.RemoteEndPoint);
+                }
+                else if (packet.Header.Type == PacketType.Disconnect)
+                {
+                    IsConnected = false;
+                    ConnectionStateChanged?.Invoke(this, false);
+                }
+
+                PacketReceived?.Invoke(this, result.Buffer);
+            }
+            catch (OperationCanceledException)
+            {
+                break;
+            }
+            catch
+            {
+                // Continue loop
             }
         }
     }
@@ -131,8 +186,11 @@ public sealed class WifiChannel : ICommunicationChannel
     public Task CloseAsync(CancellationToken cancellationToken = default)
     {
         _cts?.Cancel();
-        _udpListener?.Close();
-        _udpListener = null;
+        _discoveryListener?.Close();
+        _discoveryListener = null;
+
+        _dataListener?.Close();
+        _dataListener = null;
 
         if (IsConnected)
         {
@@ -144,10 +202,10 @@ public sealed class WifiChannel : ICommunicationChannel
 
     public async Task<bool> SendDataAsync(byte[] data, CancellationToken cancellationToken = default)
     {
-        if (!IsConnected || _udpListener == null || _clientEndpoint == null) return false;
+        if (!IsConnected || _dataListener == null || _clientEndpoint == null) return false;
         try
         {
-            await _udpListener.SendAsync(data, data.Length, _clientEndpoint);
+            await _dataListener.SendAsync(data, data.Length, _clientEndpoint);
             return true;
         }
         catch

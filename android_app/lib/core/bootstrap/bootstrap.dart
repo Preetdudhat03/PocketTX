@@ -3,7 +3,6 @@
 // Entry point for async app startup before runApp.
 // ─────────────────────────────────────────────
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'app_initializer.dart';

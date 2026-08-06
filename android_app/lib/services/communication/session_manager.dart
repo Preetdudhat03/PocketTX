@@ -16,7 +16,7 @@ import '../../core/protocol/packet_types.dart';
 import '../../core/protocol/packet_header.dart';
 import '../../core/protocol/packet_builder.dart';
 import '../../core/protocol/packet_codec.dart';
-import '../../core/compatibility/protocol_version.dart';
+import '../../core/compatibility/protocol_version.dart' hide PacketType;
 import '../../core/services/logger_service.dart';
 import '../../models/log_entry_model.dart';
 import '../../models/channel_data.dart';

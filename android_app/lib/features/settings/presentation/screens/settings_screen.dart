@@ -35,7 +35,7 @@ class SettingsScreen extends ConsumerWidget {
                 label: 'Dark Mode',
                 child: Switch(
                   value: settings.themeMode == AppThemeMode.dark,
-                  activeColor: AppColors.primary,
+                  activeThumbColor: AppColors.primary,
                   onChanged: (v) {
                     final mode = v ? AppThemeMode.dark : AppThemeMode.light;
                     appNotifier.updateSettings(settings.copyWith(themeMode: mode));
@@ -50,7 +50,7 @@ class SettingsScreen extends ConsumerWidget {
                 label: 'Haptic Feedback',
                 child: Switch(
                   value: settings.hapticsEnabled,
-                  activeColor: AppColors.primary,
+                  activeThumbColor: AppColors.primary,
                   onChanged: (v) {
                     appNotifier.updateSettings(settings.copyWith(hapticsEnabled: v));
                     HapticService().setEnabled(v);
@@ -88,7 +88,7 @@ class SettingsScreen extends ConsumerWidget {
                 label: 'Dev Overlay',
                 child: Switch(
                   value: settings.devOverlayEnabled,
-                  activeColor: AppColors.primary,
+                  activeThumbColor: AppColors.primary,
                   onChanged: (v) {
                     appNotifier.updateSettings(
                         settings.copyWith(devOverlayEnabled: v));

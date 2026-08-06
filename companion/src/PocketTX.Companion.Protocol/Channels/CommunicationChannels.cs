@@ -99,6 +99,11 @@ public sealed class WifiChannel : ICommunicationChannel
             try
             {
                 var result = await _discoveryListener.ReceiveAsync(token);
+                string hexDump = BitConverter.ToString(result.Buffer);
+                string logMsg = $"[UDP RX Discovery 18456] Received {result.Buffer.Length} bytes from {result.RemoteEndPoint} -> Hex: {hexDump}";
+                System.Diagnostics.Debug.WriteLine(logMsg);
+                Console.WriteLine(logMsg);
+
                 if (PacketSerializer.TryDeserialize(result.Buffer, out var packet) && packet != null)
                 {
                     if (packet.Header.Type == PacketType.Hello)
@@ -114,18 +119,30 @@ public sealed class WifiChannel : ICommunicationChannel
                             }
                         };
                         byte[] ackBytes = PacketSerializer.Serialize(ackPacket);
+                        string txLog = $"[UDP TX ACK 18456] Sending ACK to {result.RemoteEndPoint} ({ackBytes.Length} bytes) -> Hex: {BitConverter.ToString(ackBytes)}";
+                        System.Diagnostics.Debug.WriteLine(txLog);
+                        Console.WriteLine(txLog);
+
                         await _discoveryListener.SendAsync(ackBytes, ackBytes.Length, result.RemoteEndPoint);
                     }
                     PacketReceived?.Invoke(this, result.Buffer);
+                }
+                else
+                {
+                    string errLog = $"[UDP RX Discovery 18456] Deserialization failed for {result.Buffer.Length} bytes from {result.RemoteEndPoint}";
+                    System.Diagnostics.Debug.WriteLine(errLog);
+                    Console.WriteLine(errLog);
                 }
             }
             catch (OperationCanceledException)
             {
                 break;
             }
-            catch
+            catch (Exception ex)
             {
-                // Continue loop
+                string excLog = $"[UDP RX Discovery 18456 Error] {ex.Message}";
+                System.Diagnostics.Debug.WriteLine(excLog);
+                Console.WriteLine(excLog);
             }
         }
     }
@@ -139,9 +156,19 @@ public sealed class WifiChannel : ICommunicationChannel
                 var result = await _dataListener.ReceiveAsync(token);
                 _clientEndpoint = result.RemoteEndPoint;
 
+                string hexDump = BitConverter.ToString(result.Buffer);
+                string logMsg = $"[UDP RX Data 18457] Received {result.Buffer.Length} bytes from {result.RemoteEndPoint} -> Hex: {hexDump}";
+                System.Diagnostics.Debug.WriteLine(logMsg);
+                Console.WriteLine(logMsg);
+
                 // Strict Packet Validation pipeline
                 if (!PacketSerializer.TryDeserialize(result.Buffer, out var packet) || packet == null)
                 {
+                    string errLog = $"[UDP RX Data 18457] Validation failed for {result.Buffer.Length} bytes from {result.RemoteEndPoint}";
+                    System.Diagnostics.Debug.WriteLine(errLog);
+                    Console.WriteLine(errLog);
+                    continue; // Reject malformed packet
+                }
                     continue; // Reject malformed packet
                 }
 

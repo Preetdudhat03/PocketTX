@@ -78,10 +78,11 @@ class _GimbalWidgetState extends ConsumerState<GimbalWidget>
   }
 
   Offset _touchToNorm(Offset local) {
-    final half = widget.size / 2;
+    final center = widget.size / 2;
+    final usableRadius = (center - 8) * 0.85;
     return Offset(
-      ((local.dx - half) / half).clamp(-1.0, 1.0),
-      -((local.dy - half) / half).clamp(-1.0, 1.0), // invert Y: up = positive
+      ((local.dx - center) / usableRadius).clamp(-1.0, 1.0),
+      -((local.dy - center) / usableRadius).clamp(-1.0, 1.0), // invert Y: up = positive
     );
   }
 
@@ -197,9 +198,10 @@ class _GimbalPainter extends CustomPainter {
         Offset(center.dx + trackRadius, center.dy), crossPaint);
 
     // ── Knob position ───────────────────────────
+    final usableRadius = trackRadius * 0.85;
     final knobOffset = Offset(
-      center.dx + position.dx * trackRadius * 0.8,
-      center.dy - position.dy * trackRadius * 0.8,
+      center.dx + position.dx * usableRadius,
+      center.dy - position.dy * usableRadius,
     );
 
     // Glow when pressed

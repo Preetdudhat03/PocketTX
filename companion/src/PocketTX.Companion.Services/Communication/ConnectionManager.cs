@@ -28,20 +28,39 @@ public sealed class ConnectionManager : IConnectionManager
         _stateStore = stateStore;
         _virtualController = virtualController;
         _logger = logger;
-        _activeChannel = _channels.FirstOrDefault(c => c.Type == ConnectionType.TestMode) ?? new TestModeChannel();
-        SubscribeChannel(_activeChannel);
-    }
 
-    private void SubscribeChannel(ICommunicationChannel channel)
-    {
-        channel.PacketReceived -= OnPacketReceived;
-        channel.PacketReceived += OnPacketReceived;
+        // Default to WifiChannel if available, fallback to TestMode
+        var wifiChan = _channels.FirstOrDefault(c => c.Type == ConnectionType.Wifi);
+        _activeChannel = wifiChan ?? _channels.FirstOrDefault(c => c.Type == ConnectionType.TestMode) ?? new TestModeChannel();
+
+        // Subscribe to packet events across channels
+        foreach (var chan in _channels)
+        {
+            chan.PacketReceived += OnPacketReceived;
+        }
+
+        // Auto-start Wi-Fi UDP listener on ports 18456 & 18457
+        if (wifiChan != null)
+        {
+            _ = wifiChan.OpenAsync();
+            _stateStore.UpdateConnectionStatus(ConnectionType.Wifi, true);
+        }
     }
 
     private void OnPacketReceived(object? sender, byte[] rawBytes)
     {
+        // Auto-switch active channel to Wi-Fi on incoming mobile packet
+        if (sender is WifiChannel wifiChannel && _activeChannel.Type != ConnectionType.Wifi)
+        {
+            _activeChannel = wifiChannel;
+            _stateStore.UpdateConnectionStatus(ConnectionType.Wifi, true);
+            _logger.LogInfo("Auto-switched active connection channel to Wi-Fi on incoming mobile packet.", "ConnectionManager");
+        }
+
         if (PacketSerializer.TryDeserialize(rawBytes, out var packet) && packet != null)
         {
+            _stateStore.UpdateDiagnostics(d => d.LastPacketReceivedTime = DateTime.UtcNow);
+
             if (packet.Header.Type == PacketType.ChannelData && packet.Payload.Length >= 16)
             {
                 var channelData = new ChannelData();
@@ -69,7 +88,7 @@ public sealed class ConnectionManager : IConnectionManager
 
     public async Task SwitchConnectionAsync(ConnectionType connectionType, CancellationToken cancellationToken = default)
     {
-        if (_activeChannel.IsConnected)
+        if (_activeChannel.IsConnected && _activeChannel.Type != connectionType)
         {
             await DisconnectAsync(cancellationToken);
         }
@@ -82,7 +101,6 @@ public sealed class ConnectionManager : IConnectionManager
         }
 
         _activeChannel = targetChannel;
-        SubscribeChannel(_activeChannel);
         _stateStore.UpdateConnectionStatus(_activeChannel.Type, _activeChannel.IsConnected);
         _logger.LogInfo($"Switched active connection channel to {_activeChannel.Type}.", "ConnectionManager");
     }
@@ -117,7 +135,6 @@ public sealed class ConnectionManager : IConnectionManager
     {
         _logger.LogInfo("Scanning USB / ADB / WiFi / Bluetooth for mobile devices...", "DeviceScanner");
 
-        // Try opening WiFi UDP channel if not already open
         var wifiChan = _channels.FirstOrDefault(c => c.Type == ConnectionType.Wifi);
         if (wifiChan != null && !wifiChan.IsConnected)
         {
@@ -130,7 +147,6 @@ public sealed class ConnectionManager : IConnectionManager
         if (physicalChannel != null)
         {
             _activeChannel = physicalChannel;
-            SubscribeChannel(_activeChannel);
             _stateStore.UpdateConnectionStatus(_activeChannel.Type, true);
             _logger.LogInfo($"Mobile device found on {_activeChannel.Type}!", "DeviceScanner");
         }

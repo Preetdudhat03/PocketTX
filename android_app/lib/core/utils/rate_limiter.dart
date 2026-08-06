@@ -12,9 +12,9 @@ class RateLimiter {
       : _intervalMicroseconds = (1000000 / targetHz).round();
 
   /// Returns true if enough time has passed to send the next packet.
-  bool shouldProcess() {
-    final now = DateTime.now().microsecondsSinceEpoch;
-    if (now - _lastTickMicroseconds >= _intervalMicroseconds) {
+  bool shouldProcess([int? nowMicroseconds]) {
+    final now = nowMicroseconds ?? DateTime.now().microsecondsSinceEpoch;
+    if (_lastTickMicroseconds == 0 || (now - _lastTickMicroseconds >= _intervalMicroseconds)) {
       _lastTickMicroseconds = now;
       return true;
     }

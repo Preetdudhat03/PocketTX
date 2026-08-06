@@ -65,14 +65,20 @@ public sealed class ApplicationState : IStateStore
         _messenger.Send(new ThemeChangedMessage(settings.Theme));
     }
 
-    public void UpdateConnectionStatus(ConnectionType connectionType, bool isConnected)
+    public string ConnectedDeviceName { get; private set; } = "";
+
+    public void UpdateConnectionStatus(ConnectionType connectionType, bool isConnected, string deviceName = "")
     {
         lock (_lock)
         {
             CurrentConnection = connectionType;
             IsConnected = isConnected;
+            if (!string.IsNullOrEmpty(deviceName))
+            {
+                ConnectedDeviceName = deviceName;
+            }
         }
-        _messenger.Send(new ConnectionStateChangedMessage(connectionType, isConnected));
+        _messenger.Send(new ConnectionStateChangedMessage(connectionType, isConnected, ConnectedDeviceName));
     }
 
     public void UpdateBackend(VirtualBackendType backendType)

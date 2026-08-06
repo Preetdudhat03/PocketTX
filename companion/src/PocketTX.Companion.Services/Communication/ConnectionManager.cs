@@ -52,10 +52,15 @@ public sealed class ConnectionManager : IConnectionManager
         {
             _stateStore.UpdateDiagnostics(d => d.LastPacketReceivedTime = DateTime.UtcNow);
 
-            if (_activeChannel.Type != ConnectionType.Usb)
+            if (packet.Header.Type == PacketType.Hello)
             {
-                _stateStore.UpdateConnectionStatus(ConnectionType.Usb, true);
-                _logger.LogInfo("Mobile device connected over USB-C / Wi-Fi! Auto-switched to active input stream.", "ConnectionManager");
+                string devName = packet.Payload.Length > 0 ? System.Text.Encoding.UTF8.GetString(packet.Payload) : "Mobile Device";
+                _stateStore.UpdateConnectionStatus(ConnectionType.Wifi, true, devName);
+                _logger.LogInfo($"Mobile device connected: {devName} (Wi-Fi)!", "ConnectionManager");
+            }
+            else if (packet.Header.Type == PacketType.ChannelData)
+            {
+                _stateStore.UpdateConnectionStatus(ConnectionType.Wifi, true);
             }
 
             if (packet.Header.Type == PacketType.ChannelData && packet.Payload.Length >= 16)

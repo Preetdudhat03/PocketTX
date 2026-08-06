@@ -45,9 +45,19 @@ public sealed class ConnectionManager : IConnectionManager
             if (packet.Header.Type == PacketType.ChannelData && packet.Payload.Length >= 16)
             {
                 var channelData = new ChannelData();
-                for (int i = 0; i < 8; i++)
+                int offset = 0;
+                int count = 8;
+
+                // Self-describing payload header: [0: version (0x01)], [1: count (8)]
+                if (packet.Payload.Length >= 18 && packet.Payload[0] == 0x01)
                 {
-                    ushort pwm = BinaryPrimitives.ReadUInt16BigEndian(packet.Payload.AsSpan(i * 2, 2));
+                    offset = 2;
+                    count = Math.Min((int)packet.Payload[1], 8);
+                }
+
+                for (int i = 0; i < count; i++)
+                {
+                    ushort pwm = BinaryPrimitives.ReadUInt16BigEndian(packet.Payload.AsSpan(offset + (i * 2), 2));
                     channelData.SetChannelPwm(i, pwm);
                 }
 

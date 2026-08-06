@@ -66,10 +66,14 @@ public sealed class WifiChannel : ICommunicationChannel
 
         try
         {
-            _discoveryListener = new UdpClient(18456);
+            _discoveryListener = new UdpClient();
+            _discoveryListener.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            _discoveryListener.Client.Bind(new IPEndPoint(IPAddress.Any, 18456));
             _discoveryListener.EnableBroadcast = true;
 
-            _dataListener = new UdpClient(18457);
+            _dataListener = new UdpClient();
+            _dataListener.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            _dataListener.Client.Bind(new IPEndPoint(IPAddress.Any, 18457));
             _dataListener.EnableBroadcast = true;
 
             _cts = new CancellationTokenSource();

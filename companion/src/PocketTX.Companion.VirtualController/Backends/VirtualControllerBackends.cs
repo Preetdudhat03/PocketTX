@@ -55,7 +55,7 @@ public sealed class SimulatedVirtualControllerBackend : IVirtualControllerBacken
     }
 }
 
-}
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ViGEmBus Virtual Xbox 360 Controller Backend

@@ -1,4 +1,7 @@
 using System.Runtime.InteropServices;
+using Nefarius.ViGEm.Client;
+using Nefarius.ViGEm.Client.Targets;
+using Nefarius.ViGEm.Client.Targets.Xbox360;
 using PocketTX.Companion.Core.Contracts;
 using PocketTX.Companion.Core.Enums;
 

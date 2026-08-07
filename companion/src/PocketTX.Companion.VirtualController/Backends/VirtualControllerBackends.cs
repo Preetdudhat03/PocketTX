@@ -100,7 +100,7 @@ public sealed class ViGEmBackend : IVirtualControllerBackend
         try
         {
             // Map normalized [-1.0, 1.0] float values to short [-32768, 32767]
-            short ScaleToShort(float norm) => (short)Math.Clamp((int)(norm * 32767f), -32768, 32767);
+            short ScaleToShort(float norm) => (short)System.Math.Clamp((int)(norm * 32767f), -32768, 32767);
 
             // Channel 0: Roll / Aileron -> LeftThumbX
             if (normalizedChannels.Length > 0)

@@ -52,22 +52,116 @@ public sealed class SimulatedVirtualControllerBackend : IVirtualControllerBacken
     }
 }
 
+using Nefarius.ViGEm.Client;
+using Nefarius.ViGEm.Client.Targets;
+using Nefarius.ViGEm.Client.Targets.Xbox360;
+
 // ─────────────────────────────────────────────────────────────────────────────
-// Future stubs
+// ViGEmBus Virtual Xbox 360 Controller Backend
 // ─────────────────────────────────────────────────────────────────────────────
 
-/// <summary>Future ViGEmBus virtual controller backend stub.</summary>
+/// <summary>
+/// ViGEmBus virtual controller backend. Emulates a native Xbox 360 Controller in Windows.
+/// Instantly recognized by PicaSim, RealFlight, Liftoff, Freerider, and all DirectInput/XInput simulators.
+/// </summary>
 public sealed class ViGEmBackend : IVirtualControllerBackend
 {
+    private ViGEmClient? _client;
+    private IXbox360Controller? _controller;
+
     public VirtualBackendType Type => VirtualBackendType.ViGEm;
-    public bool IsAvailable => false;
-    public bool IsConnected => false;
+    public bool IsAvailable => true;
+    public bool IsConnected { get; private me; }
 
     public Task<bool> InitializeAsync(CancellationToken cancellationToken = default)
-        => Task.FromException<bool>(new NotSupportedException("ViGEmBus backend will be integrated in a future phase."));
-    public Task UpdateChannelsAsync(float[] normalizedChannels, bool[] switches, CancellationToken cancellationToken = default) => Task.CompletedTask;
-    public Task ResetAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
-    public Task ShutdownAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
+    {
+        try
+        {
+            _client = new ViGEmClient();
+            _controller = _client.CreateXbox360Controller();
+            _controller.Connect();
+            IsConnected = true;
+            Console.WriteLine("[ViGEmBus] Xbox 360 Virtual Controller connected successfully to Windows!");
+            return Task.FromResult(true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[ViGEmBus] Initialization failed: {ex.Message}");
+            IsConnected = false;
+            return Task.FromResult(false);
+        }
+    }
+
+    public Task UpdateChannelsAsync(float[] normalizedChannels, bool[] switches, CancellationToken cancellationToken = default)
+    {
+        if (!IsConnected || _controller == null) return Task.CompletedTask;
+
+        try
+        {
+            // Map normalized [-1.0, 1.0] float values to short [-32768, 32767]
+            short ScaleToShort(float norm) => (short)Math.Clamp((int)(norm * 32767f), -32768, 32767);
+
+            // Channel 0: Roll / Aileron -> LeftThumbX
+            if (normalizedChannels.Length > 0)
+                _controller.SetAxisValue(Xbox360Axis.LeftThumbX, ScaleToShort(normalizedChannels[0]));
+
+            // Channel 1: Pitch / Elevator -> LeftThumbY
+            if (normalizedChannels.Length > 1)
+                _controller.SetAxisValue(Xbox360Axis.LeftThumbY, ScaleToShort(normalizedChannels[1]));
+
+            // Channel 2: Throttle -> RightThumbY
+            if (normalizedChannels.Length > 2)
+                _controller.SetAxisValue(Xbox360Axis.RightThumbY, ScaleToShort(normalizedChannels[2]));
+
+            // Channel 3: Yaw / Rudder -> RightThumbX
+            if (normalizedChannels.Length > 3)
+                _controller.SetAxisValue(Xbox360Axis.RightThumbX, ScaleToShort(normalizedChannels[3]));
+
+            // Map switches / auxiliary channels
+            if (switches.Length > 0) _controller.SetButtonState(Xbox360Button.A, switches[0]);
+            if (switches.Length > 1) _controller.SetButtonState(Xbox360Button.B, switches[1]);
+            if (switches.Length > 2) _controller.SetButtonState(Xbox360Button.X, switches[2]);
+            if (switches.Length > 3) _controller.SetButtonState(Xbox360Button.Y, switches[3]);
+
+            _controller.SubmitReport();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[ViGEmBus] UpdateChannels error: {ex.Message}");
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public Task ResetAsync(CancellationToken cancellationToken = default)
+    {
+        if (!IsConnected || _controller == null) return Task.CompletedTask;
+
+        _controller.SetAxisValue(Xbox360Axis.LeftThumbX, 0);
+        _controller.SetAxisValue(Xbox360Axis.LeftThumbY, 0);
+        _controller.SetAxisValue(Xbox360Axis.RightThumbY, -32768); // Throttle low
+        _controller.SetAxisValue(Xbox360Axis.RightThumbX, 0);
+        _controller.SubmitReport();
+
+        return Task.CompletedTask;
+    }
+
+    public Task ShutdownAsync(CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            _controller?.Disconnect();
+            _client?.Dispose();
+        }
+        catch {}
+        finally
+        {
+            _controller = null;
+            _client = null;
+            IsConnected = false;
+        }
+        return Task.CompletedTask;
+    }
 }
 
 /// <summary>Future HID Injector virtual controller backend stub.</summary>

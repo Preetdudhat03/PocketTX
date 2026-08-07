@@ -266,17 +266,152 @@ public sealed class WifiChannel : ICommunicationChannel
     }
 }
 
+/// <summary>
+/// USB/ADB Wired Channel — TCP server on port 18458.
+/// Phone connects via: adb reverse tcp:18458 tcp:18458
+/// Frames are 2-byte big-endian length-prefixed for TCP stream reassembly.
+/// </summary>
 public sealed class UsbChannel : ICommunicationChannel
 {
+    private const int TcpPort = 18458;
+
+    private TcpListener? _listener;
+    private TcpClient? _client;
+    private NetworkStream? _stream;
+    private CancellationTokenSource? _cts;
+
     public ConnectionType Type => ConnectionType.Usb;
-    public bool IsConnected => false;
+    public bool IsConnected { get; private set; }
+
     public event EventHandler<byte[]>? PacketReceived;
     public event EventHandler<bool>? ConnectionStateChanged;
 
-    public Task<bool> OpenAsync(CancellationToken cancellationToken = default) => Task.FromResult(false);
-    public Task CloseAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
-    public Task<bool> SendDataAsync(byte[] data, CancellationToken cancellationToken = default) => Task.FromResult(false);
+    public Task<bool> OpenAsync(CancellationToken cancellationToken = default)
+    {
+        if (IsConnected) return Task.FromResult(true);
+        try
+        {
+            _cts = new CancellationTokenSource();
+            _listener = new TcpListener(IPAddress.Any, TcpPort);
+            _listener.Start();
+            IsConnected = true;
+            ConnectionStateChanged?.Invoke(this, true);
+            Console.WriteLine($"[USB TCP] Listening on port {TcpPort}. Run: adb reverse tcp:{TcpPort} tcp:{TcpPort}");
+            _ = AcceptLoopAsync(_cts.Token);
+            return Task.FromResult(true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[USB TCP] OpenAsync failed: {ex.Message}");
+            return Task.FromResult(false);
+        }
+    }
+
+    private async Task AcceptLoopAsync(CancellationToken token)
+    {
+        while (!token.IsCancellationRequested)
+        {
+            try
+            {
+                var client = await _listener!.AcceptTcpClientAsync(token);
+                // Only one phone at a time — drop previous client
+                _client?.Close();
+                _client = client;
+                _stream = client.GetStream();
+                Console.WriteLine($"[USB TCP] Phone connected from {client.Client.RemoteEndPoint}");
+                _ = ReadLoopAsync(_stream, token);
+            }
+            catch (OperationCanceledException) { break; }
+            catch (Exception ex) { Console.WriteLine($"[USB TCP] AcceptLoop error: {ex.Message}"); }
+        }
+    }
+
+    private async Task ReadLoopAsync(NetworkStream stream, CancellationToken token)
+    {
+        var lenBuf = new byte[2];
+        while (!token.IsCancellationRequested)
+        {
+            try
+            {
+                // Read 2-byte frame length
+                int read = 0;
+                while (read < 2)
+                {
+                    int n = await stream.ReadAsync(lenBuf.AsMemory(read, 2 - read), token);
+                    if (n == 0) { Console.WriteLine("[USB TCP] Client disconnected."); return; }
+                    read += n;
+                }
+                int payloadLen = (lenBuf[0] << 8) | lenBuf[1];
+                if (payloadLen <= 0 || payloadLen > 4096) continue;
+
+                // Read full payload
+                var payload = new byte[payloadLen];
+                read = 0;
+                while (read < payloadLen)
+                {
+                    int n = await stream.ReadAsync(payload.AsMemory(read, payloadLen - read), token);
+                    if (n == 0) { Console.WriteLine("[USB TCP] Client disconnected mid-frame."); return; }
+                    read += n;
+                }
+
+                string hexDump = BitConverter.ToString(payload);
+                Console.WriteLine($"[USB TCP RX] Received {payloadLen} bytes -> Hex: {hexDump}");
+
+                if (PacketSerializer.TryDeserialize(payload, out var packet) && packet != null)
+                {
+                    if (packet.Header.Type == PacketType.Hello)
+                    {
+                        var ack = new TelemetryPacket
+                        {
+                            Header = new PacketHeader
+                            {
+                                Type = PacketType.Ack,
+                                SessionId = packet.Header.SessionId,
+                                Sequence = packet.Header.Sequence
+                            }
+                        };
+                        byte[] ackBytes = PacketSerializer.Serialize(ack);
+                        await SendFrameAsync(ackBytes, token);
+                        Console.WriteLine($"[USB TCP TX] Sent ACK ({ackBytes.Length} bytes) -> Hex: {BitConverter.ToString(ackBytes)}");
+                    }
+                    PacketReceived?.Invoke(this, payload);
+                }
+            }
+            catch (OperationCanceledException) { break; }
+            catch (Exception ex) { Console.WriteLine($"[USB TCP] ReadLoop error: {ex.Message}"); break; }
+        }
+    }
+
+    private async Task SendFrameAsync(byte[] data, CancellationToken token = default)
+    {
+        if (_stream == null) return;
+        var frame = new byte[2 + data.Length];
+        frame[0] = (byte)(data.Length >> 8);
+        frame[1] = (byte)(data.Length & 0xFF);
+        Array.Copy(data, 0, frame, 2, data.Length);
+        await _stream.WriteAsync(frame, token);
+        await _stream.FlushAsync(token);
+    }
+
+    public Task CloseAsync(CancellationToken cancellationToken = default)
+    {
+        _cts?.Cancel();
+        _stream?.Close();
+        _client?.Close();
+        _listener?.Stop();
+        _client = null; _stream = null; _listener = null;
+        if (IsConnected) { IsConnected = false; ConnectionStateChanged?.Invoke(this, false); }
+        return Task.CompletedTask;
+    }
+
+    public async Task<bool> SendDataAsync(byte[] data, CancellationToken cancellationToken = default)
+    {
+        if (_stream == null) return false;
+        try { await SendFrameAsync(data, cancellationToken); return true; }
+        catch { return false; }
+    }
 }
+
 
 public sealed class AdbChannel : ICommunicationChannel
 {

@@ -38,7 +38,7 @@ class _DeviceScanDialogState extends ConsumerState<DeviceScanDialog> {
   @override
   void initState() {
     super.initState();
-    _ipController = TextEditingController(text: '192.168.29.48');
+    _ipController = TextEditingController(text: '127.0.0.1');
     _startScan();
   }
 

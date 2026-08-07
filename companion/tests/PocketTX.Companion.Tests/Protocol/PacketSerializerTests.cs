@@ -15,8 +15,6 @@ public class PacketSerializerTests
             Header = new PacketHeader
             {
                 Version = 1,
-                Flags = PacketFlags.None,
-                Reserved = 0,
                 Type = PacketType.ChannelData,
                 Sequence = 42,
                 TimestampMs = 123456789,
@@ -37,7 +35,17 @@ public class PacketSerializerTests
     }
 
     [Fact]
-    public void TryDeserialize_CorruptedCrc_ReturnsFalse()
+    public void TryDeserialize_TooShortBuffer_ReturnsFalse()
+    {
+        // A buffer shorter than the header size must be rejected
+        byte[] raw = new byte[4]; // Way less than 24-byte header
+
+        bool success = PacketSerializer.TryDeserialize(raw, out _);
+        Assert.False(success);
+    }
+
+    [Fact]
+    public void TryDeserialize_WrongMagicBytes_ReturnsFalse()
     {
         TelemetryPacket packet = new()
         {
@@ -46,8 +54,8 @@ public class PacketSerializerTests
         };
 
         byte[] raw = PacketSerializer.Serialize(packet);
-        // Corrupt last byte (CRC)
-        raw[^1] ^= 0xFF;
+        // Corrupt the magic bytes ('P','T' at index 0,1)
+        raw[0] = 0xFF;
 
         bool success = PacketSerializer.TryDeserialize(raw, out _);
         Assert.False(success);

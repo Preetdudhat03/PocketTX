@@ -19,7 +19,9 @@ public sealed class VirtualControllerManager : IVirtualController
 
     public VirtualControllerManager()
     {
-        _activeBackend = BackendFactory.CreateBackend(VirtualBackendType.Simulation);
+        // Try vJoy first (real HID joystick visible to simulators like PicaSim).
+        // Fall back to in-memory simulation if vJoy driver is not installed.
+        _activeBackend = BackendFactory.CreateBackend(VirtualBackendType.VJoy);
     }
 
     public async Task ConnectAsync(VirtualBackendType backendType, CancellationToken cancellationToken = default)

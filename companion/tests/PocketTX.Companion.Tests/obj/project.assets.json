@@ -7184,11 +7184,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "P:\\pro\\PocketTX\\companion\\tests\\PocketTX.Companion.Tests\\PocketTX.Companion.Tests.csproj",
+      "projectUniqueName": "p:\\pro\\PocketTX\\companion\\tests\\PocketTX.Companion.Tests\\PocketTX.Companion.Tests.csproj",
       "projectName": "PocketTX.Companion.Tests",
-      "projectPath": "P:\\pro\\PocketTX\\companion\\tests\\PocketTX.Companion.Tests\\PocketTX.Companion.Tests.csproj",
+      "projectPath": "p:\\pro\\PocketTX\\companion\\tests\\PocketTX.Companion.Tests\\PocketTX.Companion.Tests.csproj",
       "packagesPath": "C:\\Users\\preet\\.nuget\\packages\\",
-      "outputPath": "P:\\pro\\PocketTX\\companion\\tests\\PocketTX.Companion.Tests\\obj\\",
+      "outputPath": "p:\\pro\\PocketTX\\companion\\tests\\PocketTX.Companion.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\preet\\AppData\\Roaming\\NuGet\\NuGet.Config"

@@ -24,10 +24,13 @@ import 'failsafe_engine.dart';
 import 'heartbeat_monitor.dart';
 import 'transport_metrics.dart';
 import 'transport/udp/udp_transport_channel.dart';
+import 'transport/tcp/tcp_transport_channel.dart';
 
 class SessionManager {
   final Ref _ref;
-  late final UdpTransportChannel _transportChannel;
+  UdpTransportChannel? _udpChannel;
+  TcpTransportChannel? _tcpChannel;
+  bool _usingTcp = false;
   late final FailsafeEngine _failsafeEngine;
   late final TransportMetricsTracker _metricsTracker;
   late final HeartbeatMonitor _heartbeatMonitor;
@@ -42,27 +45,52 @@ class SessionManager {
   TransportMetricsTracker get metricsTracker => _metricsTracker;
 
   SessionManager(this._ref) {
-    _transportChannel = UdpTransportChannel();
     _failsafeEngine = FailsafeEngine();
     _metricsTracker = TransportMetricsTracker();
     _heartbeatMonitor = HeartbeatMonitor(onTimeout: _handleHeartbeatTimeout);
+  }
+
+  // ── Transport helpers ──────────────────────────────────────────────────────
+  bool get _transportConnected =>
+      _usingTcp ? (_tcpChannel?.isConnected ?? false) : (_udpChannel?.isConnected ?? false);
+
+  Stream<Uint8List> get _packetStream =>
+      _usingTcp ? _tcpChannel!.packetStream : _udpChannel!.packetStream;
+
+  Future<bool> _sendRaw(Uint8List data) =>
+      _usingTcp ? _tcpChannel!.sendData(data) : _udpChannel!.sendData(data);
+
+  Future<void> _closeTransport() async {
+    await _udpChannel?.close();
+    await _tcpChannel?.close();
   }
 
   Future<bool> startSession({required String targetHost, int? port}) async {
     final notifier = _ref.read(connectionStateMachineProvider.notifier);
     notifier.transitionTo(ConnectionFsmState.connecting, deviceName: targetHost);
 
-    _sessionId = Random().nextInt(0x7FFFFFFF); // 31-bit random Session ID
+    _sessionId = Random().nextInt(0x7FFFFFFF);
     _sequenceNumber = 0;
     _metricsTracker.reset();
+
+    // Auto-select transport: TCP for USB (127.0.0.1), UDP for Wi-Fi
+    _usingTcp = (targetHost == '127.0.0.1' || targetHost == 'localhost');
 
     LoggerService().info(
       LogCategory.network,
       'SESSION_STARTING',
-      'Starting session ID [$_sessionId] with Windows Companion ($targetHost)...',
+      'Starting session [$_sessionId] with Companion ($targetHost) via ${_usingTcp ? 'TCP/USB' : 'UDP/WiFi'}...',
     );
 
-    final opened = await _transportChannel.open(host: targetHost, port: port);
+    bool opened;
+    if (_usingTcp) {
+      _tcpChannel = TcpTransportChannel();
+      opened = await _tcpChannel!.open(host: targetHost);
+    } else {
+      _udpChannel = UdpTransportChannel();
+      opened = await _udpChannel!.open(host: targetHost, port: port);
+    }
+
     if (!opened) {
       notifier.transitionTo(ConnectionFsmState.disconnected);
       _failsafeEngine.triggerFailsafe('Failed to open transport socket');
@@ -70,7 +98,7 @@ class SessionManager {
     }
 
     _packetSub?.cancel();
-    _packetSub = _transportChannel.packetStream.listen(_handleIncomingRawPacket);
+    _packetSub = _packetStream.listen(_handleIncomingRawPacket);
 
     String realDeviceName = 'PocketTX Phone';
     try {
@@ -89,7 +117,7 @@ class SessionManager {
     // Strict Handshake Verification: Wait for ACK response from Windows Companion
     final completer = Completer<bool>();
     StreamSubscription? ackSubscription;
-    ackSubscription = _transportChannel.packetStream.listen((rawBytes) {
+    ackSubscription = _packetStream.listen((rawBytes) {
       final packet = PacketCodec.decode(rawBytes);
       if (packet != null && (packet.header.type == PacketType.ack || packet.header.type == PacketType.hello)) {
         if (!completer.isCompleted) {
@@ -98,17 +126,17 @@ class SessionManager {
       }
     });
 
-    await _transportChannel.sendData(encodedHello);
+    await _sendRaw(encodedHello);
 
     final ackReceived = await completer.future.timeout(
-      const Duration(milliseconds: 2000),
+      const Duration(milliseconds: 3000),
       onTimeout: () => false,
     );
     await ackSubscription.cancel();
 
     if (!ackReceived) {
       notifier.transitionTo(ConnectionFsmState.disconnected);
-      await _transportChannel.close();
+      await _closeTransport();
       LoggerService().warning(
         LogCategory.network,
         'SESSION_HANDSHAKE_FAILED',
@@ -145,9 +173,7 @@ class SessionManager {
 
   void transmitChannelData(ChannelData channelData) {
     final fsm = _ref.read(connectionStateMachineProvider);
-    if (!fsm.isConnected || !_transportChannel.isConnected) {
-      return;
-    }
+    if (!fsm.isConnected || !_transportConnected) return;
 
     final packet = PacketBuilder.buildChannelData(
       data: channelData,
@@ -155,7 +181,7 @@ class SessionManager {
       sequence: _sequenceNumber++,
     );
 
-    _transportChannel.sendData(PacketCodec.encode(packet));
+    _sendRaw(PacketCodec.encode(packet));
     _metricsTracker.incrementTxPacket();
   }
 
@@ -191,13 +217,13 @@ class SessionManager {
     _transmissionTimer?.cancel();
     _transmissionTimer = null;
 
-    if (_transportChannel.isConnected) {
+    if (_transportConnected) {
       final disconnectPacket = PacketBuilder.buildDisconnect(
         sessionId: _sessionId,
         sequence: _sequenceNumber++,
       );
-      await _transportChannel.sendData(PacketCodec.encode(disconnectPacket));
-      await _transportChannel.close();
+      await _sendRaw(PacketCodec.encode(disconnectPacket));
+      await _closeTransport();
     }
 
     _heartbeatMonitor.stop();
@@ -213,7 +239,8 @@ class SessionManager {
 
   void dispose() {
     endSession();
-    _transportChannel.dispose();
+    _udpChannel?.dispose();
+    _tcpChannel?.dispose();
     _heartbeatMonitor.stop();
   }
 }

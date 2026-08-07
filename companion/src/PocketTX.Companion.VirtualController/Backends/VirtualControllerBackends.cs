@@ -55,9 +55,7 @@ public sealed class SimulatedVirtualControllerBackend : IVirtualControllerBacken
     }
 }
 
-using Nefarius.ViGEm.Client;
-using Nefarius.ViGEm.Client.Targets;
-using Nefarius.ViGEm.Client.Targets.Xbox360;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ViGEmBus Virtual Xbox 360 Controller Backend

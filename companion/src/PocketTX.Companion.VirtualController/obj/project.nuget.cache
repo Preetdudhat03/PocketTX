@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "c2u1cujFi4Q=",
+  "dgSpecHash": "el+xsY+Cetg=",
   "success": true,
   "projectFilePath": "p:\\pro\\PocketTX\\companion\\src\\PocketTX.Companion.VirtualController\\PocketTX.Companion.VirtualController.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\preet\\.nuget\\packages\\communitytoolkit.mvvm\\8.2.2\\communitytoolkit.mvvm.8.2.2.nupkg.sha512",
     "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.10\\microsoft.extensions.dependencyinjection.abstractions.10.0.10.nupkg.sha512",
-    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512"
+    "C:\\Users\\preet\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\preet\\.nuget\\packages\\nefarius.vigem.client\\1.21.256\\nefarius.vigem.client.1.21.256.nupkg.sha512"
   ],
   "logs": []
 }

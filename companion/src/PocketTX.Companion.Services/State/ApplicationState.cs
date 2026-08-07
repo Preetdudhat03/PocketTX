@@ -22,7 +22,7 @@ public sealed class ApplicationState : IStateStore
     public DiagnosticMetrics Diagnostics { get; private set; } = new();
 
     public ConnectionType CurrentConnection { get; private set; } = ConnectionType.Usb;
-    public VirtualBackendType CurrentBackend { get; private set; } = VirtualBackendType.Simulation;
+    public VirtualBackendType CurrentBackend { get; private set; } = VirtualBackendType.ViGEm;
     public ThemeType CurrentTheme { get; private set; } = ThemeType.Dark;
     public bool IsConnected { get; private set; } = true;
 

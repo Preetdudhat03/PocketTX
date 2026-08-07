@@ -39,10 +39,10 @@ public sealed class ConnectionManager : IConnectionManager
             chan.PacketReceived += OnPacketReceived;
         }
 
-        if (wifiChan != null)
-        {
-            _ = wifiChan.OpenAsync();
-        }
+        // Start both channels immediately — WiFi UDP (18456/18457) and USB TCP (18458)
+        if (wifiChan != null) _ = wifiChan.OpenAsync();
+        if (usbChan != null)  _ = usbChan.OpenAsync();
+
         _stateStore.UpdateConnectionStatus(ConnectionType.Usb, true);
     }
 

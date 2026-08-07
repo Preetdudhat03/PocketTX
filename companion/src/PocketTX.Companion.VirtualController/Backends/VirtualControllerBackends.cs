@@ -80,7 +80,14 @@ public sealed class ViGEmBackend : IVirtualControllerBackend
         {
             _client = new ViGEmClient();
             _controller = _client.CreateXbox360Controller();
-            _controller.Connect();
+            try
+            {
+                _controller.Connect();
+            }
+            catch (System.ComponentModel.Win32Exception wex) when (wex.NativeErrorCode == 0 || wex.Message.Contains("completed successfully"))
+            {
+                Console.WriteLine($"[ViGEmBus] Win32Exception 0 ignored: {wex.Message}");
+            }
             IsConnected = true;
             Console.WriteLine("[ViGEmBus] Xbox 360 Virtual Controller connected successfully to Windows!");
             return Task.FromResult(true);

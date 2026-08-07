@@ -314,22 +314,27 @@ public sealed class UsbChannel : ICommunicationChannel
             try
             {
                 var client = await _listener!.AcceptTcpClientAsync(token);
-                // Only one phone at a time — drop previous client
-                _client?.Close();
+                Console.WriteLine($"[USB TCP] Phone connected from {client.Client.RemoteEndPoint}");
+
+                // If previous client is dead or replaced, close old one
+                if (_client != null && !_client.Connected)
+                {
+                    _client.Close();
+                }
+
                 _client = client;
                 _stream = client.GetStream();
-                Console.WriteLine($"[USB TCP] Phone connected from {client.Client.RemoteEndPoint}");
-                _ = ReadLoopAsync(_stream, token);
+                _ = ReadLoopAsync(client, _stream, token);
             }
             catch (OperationCanceledException) { break; }
             catch (Exception ex) { Console.WriteLine($"[USB TCP] AcceptLoop error: {ex.Message}"); }
         }
     }
 
-    private async Task ReadLoopAsync(NetworkStream stream, CancellationToken token)
+    private async Task ReadLoopAsync(TcpClient client, NetworkStream stream, CancellationToken token)
     {
         var lenBuf = new byte[2];
-        while (!token.IsCancellationRequested)
+        while (!token.IsCancellationRequested && client.Connected)
         {
             try
             {
@@ -371,10 +376,17 @@ public sealed class UsbChannel : ICommunicationChannel
                             }
                         };
                         byte[] ackBytes = PacketSerializer.Serialize(ack);
-                        await SendFrameAsync(ackBytes, token);
+                        await SendFrameAsync(stream, ackBytes, token);
                         Console.WriteLine($"[USB TCP TX] Sent ACK ({ackBytes.Length} bytes) -> Hex: {BitConverter.ToString(ackBytes)}");
                     }
-                    PacketReceived?.Invoke(this, payload);
+                    try
+                    {
+                        PacketReceived?.Invoke(this, payload);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[USB TCP] PacketReceived handler error: {ex.Message}");
+                    }
                 }
             }
             catch (OperationCanceledException) { break; }
@@ -382,15 +394,21 @@ public sealed class UsbChannel : ICommunicationChannel
         }
     }
 
-    private async Task SendFrameAsync(byte[] data, CancellationToken token = default)
+    private async Task SendFrameAsync(NetworkStream stream, byte[] data, CancellationToken token = default)
     {
-        if (_stream == null) return;
-        var frame = new byte[2 + data.Length];
-        frame[0] = (byte)(data.Length >> 8);
-        frame[1] = (byte)(data.Length & 0xFF);
-        Array.Copy(data, 0, frame, 2, data.Length);
-        await _stream.WriteAsync(frame, token);
-        await _stream.FlushAsync(token);
+        try
+        {
+            var frame = new byte[2 + data.Length];
+            frame[0] = (byte)(data.Length >> 8);
+            frame[1] = (byte)(data.Length & 0xFF);
+            Array.Copy(data, 0, frame, 2, data.Length);
+            await stream.WriteAsync(frame, token);
+            await stream.FlushAsync(token);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[USB TCP TX Error] {ex.Message}");
+        }
     }
 
     public Task CloseAsync(CancellationToken cancellationToken = default)
@@ -407,7 +425,11 @@ public sealed class UsbChannel : ICommunicationChannel
     public async Task<bool> SendDataAsync(byte[] data, CancellationToken cancellationToken = default)
     {
         if (_stream == null) return false;
-        try { await SendFrameAsync(data, cancellationToken); return true; }
+        try
+        {
+            await SendFrameAsync(_stream, data, cancellationToken);
+            return true;
+        }
         catch { return false; }
     }
 }

@@ -48,6 +48,8 @@ public sealed class ConnectionManager : IConnectionManager
 
     private void OnPacketReceived(object? sender, byte[] rawBytes)
     {
+        var channelType = (sender as ICommunicationChannel)?.Type ?? ConnectionType.Usb;
+
         if (PacketSerializer.TryDeserialize(rawBytes, out var packet) && packet != null)
         {
             _stateStore.UpdateDiagnostics(d => d.LastPacketReceivedTime = DateTime.UtcNow);
@@ -55,12 +57,12 @@ public sealed class ConnectionManager : IConnectionManager
             if (packet.Header.Type == PacketType.Hello)
             {
                 string devName = packet.Payload.Length > 0 ? System.Text.Encoding.UTF8.GetString(packet.Payload) : "Mobile Device";
-                _stateStore.UpdateConnectionStatus(ConnectionType.Wifi, true, devName);
-                _logger.LogInfo($"Mobile device connected: {devName} (Wi-Fi)!", "ConnectionManager");
+                _stateStore.UpdateConnectionStatus(channelType, true, devName);
+                _logger.LogInfo($"Mobile device connected: {devName} ({channelType})!", "ConnectionManager");
             }
             else if (packet.Header.Type == PacketType.ChannelData)
             {
-                _stateStore.UpdateConnectionStatus(ConnectionType.Wifi, true);
+                _stateStore.UpdateConnectionStatus(channelType, true);
             }
 
             if (packet.Header.Type == PacketType.ChannelData && packet.Payload.Length >= 16)

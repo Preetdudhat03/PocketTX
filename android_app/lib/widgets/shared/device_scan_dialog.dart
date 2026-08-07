@@ -39,7 +39,9 @@ class _DeviceScanDialogState extends ConsumerState<DeviceScanDialog> {
   void initState() {
     super.initState();
     _ipController = TextEditingController(text: '127.0.0.1');
-    _startScan();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _startScan();
+    });
   }
 
   @override

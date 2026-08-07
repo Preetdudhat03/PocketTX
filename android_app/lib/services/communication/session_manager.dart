@@ -14,7 +14,6 @@ import '../../core/compatibility/protocol_version.dart' hide PacketType;
 import '../../core/protocol/packet_builder.dart';
 import '../../core/protocol/packet_codec.dart';
 import '../../core/protocol/packet_types.dart';
-import '../../core/protocol/protocol_constants.dart';
 import '../../core/services/logger_service.dart';
 import '../../core/state/channel_state.dart';
 import '../../models/channel_data.dart';

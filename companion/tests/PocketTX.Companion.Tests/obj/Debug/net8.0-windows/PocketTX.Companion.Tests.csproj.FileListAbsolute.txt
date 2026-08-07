@@ -145,3 +145,4 @@ P:\pro\PocketTX\companion\tests\PocketTX.Companion.Tests\obj\Debug\net8.0-window
 P:\pro\PocketTX\companion\tests\PocketTX.Companion.Tests\obj\Debug\net8.0-windows\PocketTX.Companion.Tests.pdb
 P:\pro\PocketTX\companion\tests\PocketTX.Companion.Tests\obj\Debug\net8.0-windows\PocketTX.Companion.Tests.genruntimeconfig.cache
 P:\pro\PocketTX\companion\tests\PocketTX.Companion.Tests\obj\Debug\net8.0-windows\ref\PocketTX.Companion.Tests.dll
+p:\pro\PocketTX\companion\tests\PocketTX.Companion.Tests\bin\Debug\net8.0-windows\Nefarius.ViGEm.Client.dll

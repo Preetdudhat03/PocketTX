@@ -83,3 +83,4 @@ P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\Poc
 P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\PocketTX.A0D33B8C.Up2Date
 P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\PocketTX.Companion.UI.genruntimeconfig.cache
 P:\pro\PocketTX\companion\src\PocketTX.Companion.UI\obj\Debug\net8.0-windows\ref\PocketTX.Companion.UI.dll
+p:\pro\PocketTX\companion\src\PocketTX.Companion.UI\bin\Debug\net8.0-windows\Nefarius.ViGEm.Client.dll

@@ -71,7 +71,7 @@ public sealed class ViGEmBackend : IVirtualControllerBackend
 
     public VirtualBackendType Type => VirtualBackendType.ViGEm;
     public bool IsAvailable => true;
-    public bool IsConnected { get; private me; }
+    public bool IsConnected { get; private set; }
 
     public Task<bool> InitializeAsync(CancellationToken cancellationToken = default)
     {

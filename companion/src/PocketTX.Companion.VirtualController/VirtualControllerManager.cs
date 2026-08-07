@@ -19,9 +19,9 @@ public sealed class VirtualControllerManager : IVirtualController
 
     public VirtualControllerManager()
     {
-        // Try vJoy first (real HID joystick visible to simulators like PicaSim).
-        // Fall back to in-memory simulation if vJoy driver is not installed.
-        _activeBackend = BackendFactory.CreateBackend(VirtualBackendType.VJoy);
+        // Try ViGEm first (Xbox 360 virtual controller), fallback to vJoy, then Simulation
+        _activeBackend = BackendFactory.CreateBackend(VirtualBackendType.ViGEm);
+        _ = ConnectAsync(VirtualBackendType.ViGEm);
     }
 
     public async Task ConnectAsync(VirtualBackendType backendType, CancellationToken cancellationToken = default)
@@ -36,15 +36,27 @@ public sealed class VirtualControllerManager : IVirtualController
 
             _activeBackend = BackendFactory.CreateBackend(backendType);
 
+            bool ok = false;
             try
             {
-                await _activeBackend.InitializeAsync(cancellationToken);
+                ok = await _activeBackend.InitializeAsync(cancellationToken);
             }
-            catch
+            catch {}
+
+            if (!ok)
             {
-                // Fallback to simulation backend if hardware/service backend fails
-                _activeBackend = BackendFactory.CreateBackend(VirtualBackendType.Simulation);
-                await _activeBackend.InitializeAsync(cancellationToken);
+                // Fallback to vJoy if ViGEm fails, then Simulation
+                if (backendType == VirtualBackendType.ViGEm)
+                {
+                    _activeBackend = BackendFactory.CreateBackend(VirtualBackendType.VJoy);
+                    try { ok = await _activeBackend.InitializeAsync(cancellationToken); } catch {}
+                }
+
+                if (!ok)
+                {
+                    _activeBackend = BackendFactory.CreateBackend(VirtualBackendType.Simulation);
+                    await _activeBackend.InitializeAsync(cancellationToken);
+                }
             }
         }
         finally

@@ -6,24 +6,27 @@ PocketTX transforms your smartphone into a virtual RC transmitter with ultra-low
 
 ---
 
-## ✨ Features
-
-- **⚡ Ultra-Low Latency Streaming**: Transmits stick positions and auxiliary switches at **250Hz (4ms interval)**.
-- **🔌 Dual Connection Modes**:
-  - **Wired USB Mode**: Zero-lag connection via length-prefixed TCP framed over ADB reverse tunnel (`127.0.0.1:18458`).
-  - **Wireless Wi-Fi Mode**: Low-latency UDP broadcast & direct unicast streaming (`18456 / 18457`).
-- **🎮 Native Windows Controller Emulation**: Integrates with **ViGEmBus** to present an **Xbox 360 Controller** directly to Windows OS (`joy.cpl`).
-- **🎛️ Flight Transmitter Customization**:
-  - Stick Modes: Mode 1, Mode 2 (Default), Mode 3, Mode 4.
-  - Fine Tuning: Exponential (Expo), Neutral Deadband, End-point Trims, and Channel Reversing.
-  - Interactive Calibration Wizard.
-- **🛡️ Failsafe & Monitoring Engine**:
-  - Heartbeat monitor with auto-disarm and failsafe fallback.
-  - Live latency (ping), packet drop rate, and throughput metrics display.
+## 📌 Table of Contents
+1. [✨ What is PocketTX?](#-what-is-pockettx)
+2. [📦 Prerequisites & Direct Downloads](#-prerequisites--direct-downloads)
+3. [🚀 Step-by-Step Setup Guide (Layman Friendly)](#-step-by-step-setup-guide-layman-friendly)
+   - [Step 1: Install ViGEmBus Driver (Xbox Controller Emulation)](#step-1-install-vigembus-driver-xbox-controller-emulation)
+   - [Step 2: Enable USB Debugging on Your Android Phone](#step-2-enable-usb-debugging-on-your-android-phone)
+   - [Step 3: Setup ADB & USB Reverse Port Forwarding](#step-3-setup-adb--usb-reverse-port-forwarding)
+   - [Step 4: Launch the Windows Companion App](#step-4-launch-the-windows-companion-app)
+   - [Step 5: Connect from PocketTX Android App](#step-5-connect-from-pockettx-android-app)
+4. [🎮 Simulator Setup Guides](#-simulator-setup-guides)
+5. [🕹️ Testing Stick Response & Latency on PC](#%EF%B8%8F-testing-stick-response--latency-on-pc)
+6. [🛠️ Troubleshooting Guide](#%EF%B8%8F-troubleshooting-guide)
+7. [📡 Technical Network Reference](#-technical-network-reference)
 
 ---
 
-## 🏗️ System Architecture
+## ✨ What is PocketTX?
+
+PocketTX consists of two parts working together:
+1. **PocketTX Android App**: Runs on your phone, giving you touch gimbals and switches that stream inputs at **250Hz (every 4 milliseconds)**.
+2. **PocketTX Companion App**: Runs on your Windows PC. It receives input over USB or Wi-Fi and creates a **Virtual Xbox 360 Controller** in Windows (`joy.cpl`), allowing any PC simulator to detect your phone as a real joystick.
 
 ```
 ┌───────────────────────────────────────┐
@@ -31,7 +34,7 @@ PocketTX transforms your smartphone into a virtual RC transmitter with ultra-low
 │       (PocketTX Mobile App)           │
 └──────────────────┬────────────────────┘
                    │
-         [ USB Cable / ADB Tunnel ]
+         [ USB Cable / ADB Tunnel ]  <── (Recommended Zero-Lag Mode)
          (TCP 127.0.0.1:18458)
                    OR
          [ Wi-Fi / Local Network ]
@@ -59,161 +62,203 @@ PocketTX transforms your smartphone into a virtual RC transmitter with ultra-low
 
 ---
 
-## 📋 Prerequisites & Requirements
+## 📦 Prerequisites & Direct Downloads
 
-### Windows PC
-* **OS**: Windows 10 / 11 (64-bit)
-* **Runtime**: [.NET 8.0 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/8.0) or SDK
-* **Driver**: **ViGEmBus Driver** (`v1.21.442` or newer)
-* **ADB**: Android Platform Tools (`adb.exe`) added to System PATH
+### On Windows PC
+| Requirement | Why it's needed | Direct Download Link |
+| :--- | :--- | :--- |
+| **Windows 10 / 11 (64-bit)** | Operating System | — |
+| **.NET 8.0 Desktop Runtime** | Required to run the Windows Companion App | [Download .NET 8.0 Runtime](https://dotnet.microsoft.com/download/dotnet/8.0) |
+| **ViGEmBus Driver (v1.21.442)** | Emulates Xbox 360 Controller in Windows | [Download ViGEmBus Installer (.exe)](https://github.com/nefarius/ViGEmBus/releases/download/v1.21.442.0/ViGEmBus_1.21.442_x64_x86_arm64.exe) |
+| **Android Platform Tools (ADB)** | Allows USB communication between Phone and PC | Included with Android Studio, SDK, or [SDK Platform-Tools](https://developer.android.com/tools/releases/platform-tools) |
 
-### Android Phone
-* **OS**: Android 8.0 (Oreo) or higher
-* **Setting**: **USB Debugging** enabled (*Developer Options*)
-* **Cable**: Quality USB Data Cable (USB-C to USB-A / USB-C)
+### On Android Phone
+* **Android OS**: Android 8.0 (Oreo) or higher.
+* **USB Debugging**: Enabled in Developer Options.
+* **USB Data Cable**: High quality USB-C / Micro-USB cable (must support data transfer, not charge-only).
 
 ---
 
-## 🚀 Step-by-Step Setup Guide
+## 🚀 Step-by-Step Setup Guide (Layman Friendly)
 
-### 1️⃣ Install ViGEmBus Driver on Windows
-ViGEmBus allows PocketTX Companion to create a virtual Xbox 360 Controller in Windows.
+Follow these exact steps in order for first-time setup:
 
-1. Download the official installer: [ViGEmBus_1.21.442_x64_x86_arm64.exe](https://github.com/nefarius/ViGEmBus/releases/download/v1.21.442.0/ViGEmBus_1.21.442_x64_x86_arm64.exe)
+### Step 1: Install ViGEmBus Driver (Xbox Controller Emulation)
+*ViGEmBus allows your PC to treat PocketTX as a real physical Xbox 360 gamepad.*
+
+1. Download the official installer: [ViGEmBus_1.21.442_x64_x86_arm64.exe](https://github.com/nefarius/ViGEmBus/releases/download/v1.21.442.0/ViGEmBus_1.21.442_x64_x86_arm64.exe).
 2. Run the installer, accept the Administrator prompt, and click **Install**.
 3. Verify driver status in PowerShell:
    ```powershell
    Get-Service ViGEmBus
    ```
-   *(Status should read `Running`)*
+   *(Status should display `Running`)*.
 
 ---
 
-### 2️⃣ Configure ADB Reverse Tunnel for Wired USB Mode
+### Step 2: Enable USB Debugging on Your Android Phone
 
-1. Connect your Android phone to your PC via USB cable.
-2. Enable **USB Debugging** on your phone (*Settings ➔ Developer Options ➔ USB Debugging*).
-3. Open PowerShell / Command Prompt and set up port forwarding:
-   ```powershell
-   adb reverse tcp:18456 tcp:18456
-   adb reverse tcp:18457 tcp:18457
-   adb reverse tcp:18458 tcp:18458
-   ```
-4. Verify the active tunnels:
-   ```powershell
-   adb reverse --list
-   ```
-   *Expected Output:*
-   ```text
-   UsbFfs tcp:18456 tcp:18456
-   UsbFfs tcp:18457 tcp:18457
-   UsbFfs tcp:18458 tcp:18458
-   ```
+1. On your Android phone, open **Settings**.
+2. Scroll down to **About Phone** (or *System ➔ About Phone*).
+3. Find **Build Number** and tap it **7 times** continuously until a message pops up: *"You are now a developer!"*.
+4. Go back to **Settings ➔ System ➔ Developer Options**.
+5. Find **USB Debugging** and turn the switch **ON**.
+6. Connect your phone to your PC using a USB data cable.
+7. Set the USB connection mode on your phone to **File Transfer / MTP** (not *Charge Only*).
+8. Look at your phone screen: a popup will appear asking **"Allow USB Debugging?"**. Check **Always allow from this computer** and tap **Allow**.
 
 ---
 
-### 3️⃣ Build & Launch Windows Companion App
+### Step 3: Setup ADB & USB Reverse Port Forwarding
 
-1. Clone or open the repository:
-   ```cmd
-   git clone https://github.com/Preetdudhat03/PocketTX.git
+> 💡 **What is ADB Reverse Forwarding?**
+> When your phone connects over USB, typing `127.0.0.1` inside the phone app points to the phone itself. ADB reverse forwarding tells your computer to forward port `18458` through the USB cable directly into the Windows Companion App.
+
+#### Option A: Automatically Add ADB to Windows PATH (One-Time Command)
+Open PowerShell on your PC and run:
+```powershell
+$userPath = [Environment]::GetEnvironmentVariable("PATH", "User"); if ($userPath -notlike "*platform-tools*") { [Environment]::SetEnvironmentVariable("PATH", "$userPath;C:\Users\$env:USERNAME\AppData\Local\Android\Sdk\platform-tools", "User") }
+```
+
+#### Option B: Set Up USB Ports
+In PowerShell, set up port forwarding by running:
+```powershell
+& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" reverse tcp:18456 tcp:18456
+& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" reverse tcp:18457 tcp:18457
+& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" reverse tcp:18458 tcp:18458
+```
+*(Or simply type `adb reverse tcp:18458 tcp:18458` if ADB is already in your PATH)*.
+
+#### Verify Connected Phone:
+Check if your phone is detected:
+```powershell
+adb devices
+```
+*Expected Output:*
+```text
+List of devices attached
+RZCW61V9PAN    device
+```
+
+Check active USB tunnels:
+```powershell
+adb reverse --list
+```
+*Expected Output:*
+```text
+UsbFfs tcp:18458 tcp:18458
+```
+
+---
+
+### Step 4: Launch the Windows Companion App
+
+1. Open PowerShell / Command Prompt and navigate to the project directory:
+   ```powershell
    cd PocketTX\companion
    ```
-2. Build the solution using .NET CLI:
-   ```cmd
-   dotnet build PocketTX.Companion.sln -c Debug
-   ```
-3. Run the Windows Companion UI:
-   ```cmd
+2. Build and launch the Companion UI:
+   ```powershell
    dotnet run --project src\PocketTX.Companion.UI\PocketTX.Companion.UI.csproj
    ```
-   *The Companion window will display `Active Backend: ViGEm (Xbox 360 Controller)`.*
+3. The Companion window will open and display: **`Active Backend: ViGEm (Xbox 360 Controller)`**. Keep this app open in the background while flying.
 
 ---
 
-### 4️⃣ Install & Launch PocketTX Android App
+### Step 5: Connect from PocketTX Android App
 
-1. Navigate to the `android_app` directory:
-   ```cmd
-   cd ..\android_app
-   ```
-2. Build and run on your connected Android device:
-   ```cmd
-   flutter run --debug
-   ```
-3. In the PocketTX phone app:
-   - Tap **CONNECT**.
-   - Select **127.0.0.1** (or enter your PC's IP address for Wi-Fi).
-   - Tap **CONNECT**.
-4. The PocketTX Companion UI will show: **`Connected: [Your Phone Model] (USB-C)`**!
+1. Launch **PocketTX** on your Android phone.
+2. Tap **CONNECT**.
+3. Select **`127.0.0.1`** (for Wired USB) or enter your PC's local IP address (for Wireless Wi-Fi).
+4. Tap **CONNECT**.
+5. The PocketTX Companion UI on Windows will immediately update: **`Connected: [Your Phone Model] (USB-C)`**!
 
 ---
 
-## 🎮 Simulator Setup (PicaSim, Liftoff, RealFlight)
+## 🎮 Simulator Setup Guides
 
-### PicaSim Setup
-1. Launch **PicaSim** on your PC.
+### 🚁 PicaSim Setup
+1. Launch **PicaSim** on your Windows PC.
 2. Go to **Options ➔ Controller**.
 3. Set **Mode** to **Joystick**.
 4. Click **Joystick Setup** and select **Xbox 360 Controller for Windows** from the dropdown menu.
-5. Move your phone touch sticks to verify channel response:
+5. Move your phone touch joysticks to verify channel response:
    - **Left Stick Y**: Throttle
    - **Left Stick X**: Rudder (Yaw)
    - **Right Stick Y**: Elevator (Pitch)
    - **Right Stick X**: Aileron (Roll)
 
-### Liftoff / FPV Freerider / VelociDrone / Uncrashed Setup
+### 🛸 Liftoff / FPV Freerider / VelociDrone / Uncrashed Setup
 1. Launch the simulator.
 2. Go to **Controls / Calibration**.
 3. Select **Xbox 360 Controller / Gamepad**.
-4. Follow the simulator's calibration wizard by centering and moving the sticks when prompted.
+4. Follow the in-game calibration wizard by centering and moving the sticks when prompted.
 
 ---
 
-## 📡 Network & Protocol Reference
+## 🕹️ Testing Stick Response & Latency on PC
 
-| Transport | Connection Type | Port | Description |
-|-----------|-----------------|------|-------------|
-| **TCP**   | Wired USB (ADB) | `18458` | Length-prefixed 2-byte framed binary stream |
-| **UDP**   | Wi-Fi Unicast   | `18456` | Direct low-latency channel telemetry data |
-| **UDP**   | LAN Discovery   | `18457` | Beacon discovery & broadcast ping |
+PocketTX Companion includes an **Interactive Gimbal Visualizer** to test responsiveness and latency:
 
-### Binary Packet Structure (24-Byte Header)
-```text
-Offset | Field        | Type   | Value / Description
--------|--------------|--------|----------------─────────────────
-0..1   | Magic Bytes  | 2 Bytes| 0x50, 0x54 ('P', 'T')
-2      | Version      | 1 Byte | 0x01 (Protocol Version)
-3      | Type         | 1 Byte | 0x01 (Hello), 0x03 (ChannelData), 0x05 (ACK)
-4..7   | Session ID   | UInt32 | Big-Endian Session Identifier
-8..11  | Sequence     | UInt32 | Incremental Sequence Counter
-12..19 | Timestamp    | UInt64 | Epoch Milliseconds
-20..21 | Payload Len  | UInt16 | Length of attached payload
-22..23 | Reserved     | 2 Bytes| Reserved alignment (0x0000)
-24..N  | Payload      | Bytes  | UTF-8 Device Name or Channel Data
+1. Open **PocketTX Companion** on your PC.
+2. Click **TEST CONTROLLER MODE** in the navigation sidebar.
+3. You will see live **LEFT STICK (THROTTLE / YAW)** and **RIGHT STICK (PITCH / ROLL)** visualizers with a real-time Telemetry Bar (`⚡ LATENCY: 1.2 ms`, `📡 PACKET RATE: 250 Hz`).
+4. **Mouse Drag Simulation**: Click and drag the stick dots directly on your PC screen to simulate stick input without holding the phone.
+5. **Live Phone Motion**: Move your phone's touch joysticks to watch the blue dots track your physical touch movements on screen in real-time with zero UI lag.
+
+---
+
+## 🛠️ Troubleshooting Guide
+
+### ❓ Error: `adb : The term 'adb' is not recognized`
+**Cause**: Android Platform Tools is installed but its folder path is not added to your Windows PATH environment variable.
+
+**Fix**: Use the full path to `adb.exe` in PowerShell:
+```powershell
+& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" reverse tcp:18458 tcp:18458
+```
+Or run this command to permanently add ADB to your Windows PATH:
+```powershell
+$userPath = [Environment]::GetEnvironmentVariable("PATH", "User"); if ($userPath -notlike "*platform-tools*") { [Environment]::SetEnvironmentVariable("PATH", "$userPath;C:\Users\$env:USERNAME\AppData\Local\Android\Sdk\platform-tools", "User") }
 ```
 
 ---
 
-## 🛠️ Troubleshooting
+### ❓ Error: `"Connection failed. Verify Windows Companion is running."`
+**Cause**: The Windows Companion app isn't running, or ADB reverse port forwarding has not been executed.
 
-### ❓ "SESSION_HANDSHAKE_FAILED" or "Host Unreachable"
-- Verify ADB reverse tunnels are active: `adb reverse --list`.
-- If using Wi-Fi, ensure PC Windows Firewall permits inbound traffic on UDP ports `18456` and `18457`.
+**Fix**:
+1. Make sure PocketTX Companion is open on your PC.
+2. Run `adb reverse tcp:18458 tcp:18458` in PowerShell.
+3. In the phone app, connect to **`127.0.0.1`**.
 
-### ❓ PicaSim doesn't list Xbox 360 Controller
-- Check Windows Device Manager / PowerShell:
-  ```powershell
-  Get-PnpDevice | Where-Object { $_.FriendlyName -like "*Xbox*" }
-  ```
-- If status is not `OK`, restart the PocketTX Companion app so ViGEmBus initializes properly.
+---
+
+### ❓ `adb devices` shows `unauthorized`
+**Cause**: The USB debugging prompt was not accepted on your Android phone.
+
+**Fix**: Unlock your phone screen, disconnect and reconnect the USB cable, and tap **"Always Allow from this Computer"** when prompted.
+
+---
 
 ### ❓ Windows Firewall prompt blocked the connection
-- Run PowerShell as Administrator to add firewall rules:
-  ```powershell
-  New-NetFirewallRule -DisplayName "PocketTX UDP" -Direction Inbound -Protocol UDP -LocalPort 18456,18457 -Action Allow
-  New-NetFirewallRule -DisplayName "PocketTX TCP" -Direction Inbound -Protocol TCP -LocalPort 18458 -Action Allow
-  ```
+**Cause**: Windows Firewall blocked incoming UDP/TCP traffic on Wi-Fi.
+
+**Fix**: Run PowerShell as Administrator to add explicit Firewall permissions:
+```powershell
+New-NetFirewallRule -DisplayName "PocketTX UDP" -Direction Inbound -Protocol UDP -LocalPort 18456,18457 -Action Allow
+New-NetFirewallRule -DisplayName "PocketTX TCP" -Direction Inbound -Protocol TCP -LocalPort 18458 -Action Allow
+```
+
+---
+
+## 📡 Technical Network Reference
+
+| Transport | Connection Type | Port | Description |
+|-----------|-----------------|------|-------------|
+| **TCP**   | Wired USB (ADB) | `18458` | Length-prefixed 2-byte framed binary stream over ADB tunnel |
+| **UDP**   | Wi-Fi Unicast   | `18456` | Direct low-latency channel telemetry stream |
+| **UDP**   | LAN Discovery   | `18457` | Beacon discovery & broadcast ping |
 
 ---
 

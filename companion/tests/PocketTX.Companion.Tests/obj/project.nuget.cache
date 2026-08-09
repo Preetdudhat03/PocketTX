@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "obEKlmB+zGE=",
+  "dgSpecHash": "gbfvURAyf70=",
   "success": true,
-  "projectFilePath": "p:\\pro\\PocketTX\\companion\\tests\\PocketTX.Companion.Tests\\PocketTX.Companion.Tests.csproj",
+  "projectFilePath": "P:\\pro\\PocketTX\\companion\\tests\\PocketTX.Companion.Tests\\PocketTX.Companion.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\preet\\.nuget\\packages\\communitytoolkit.mvvm\\8.2.2\\communitytoolkit.mvvm.8.2.2.nupkg.sha512",
     "C:\\Users\\preet\\.nuget\\packages\\microsoft.codecoverage\\17.8.0\\microsoft.codecoverage.17.8.0.nupkg.sha512",

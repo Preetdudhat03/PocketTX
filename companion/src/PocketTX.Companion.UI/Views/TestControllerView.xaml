@@ -80,7 +80,7 @@
             <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20" Margin="0,0,0,16">
                 <StackPanel>
                     <TextBlock Text="💡 Click &amp; drag the stick dots to test stick response, or move your phone joysticks in real-time!"
-                               Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11" System.Windows.Controls.TextBlock.TextAlignment="Center" Margin="0,0,0,16"/>
+                               Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11" TextAlignment="Center" Margin="0,0,0,16"/>
 
                     <Grid>
                         <Grid.ColumnDefinitions>

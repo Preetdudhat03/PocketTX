@@ -59,6 +59,9 @@ public partial class TestControllerViewModel : ObservableObject,
     public ushort ThrottlePwm => ChannelData.NormalizedToPwm(ThrottleNormalized);
     public ushort YawPwm => ChannelData.NormalizedToPwm(YawNormalized);
 
+    public string ArmText => IsArmed ? "ARMED" : "DISARMED";
+    public string BeeperText => IsBeeperActive ? "ON" : "OFF";
+
     public TestControllerViewModel(IStateStore stateStore, ILoggerService logger, IMessenger messenger)
     {
         _stateStore = stateStore;
@@ -89,13 +92,22 @@ public partial class TestControllerViewModel : ObservableObject,
                 PitchNormalized = message.ChannelData.NormalizedValues.Length > 1 ? message.ChannelData.NormalizedValues[1] : 0.0f;
                 ThrottleNormalized = message.ChannelData.NormalizedValues.Length > 2 ? message.ChannelData.NormalizedValues[2] : -1.0f;
                 YawNormalized = message.ChannelData.NormalizedValues.Length > 3 ? message.ChannelData.NormalizedValues[3] : 0.0f;
-                IsArmed = message.ChannelData.DigitalSwitches.Length > 0 && message.ChannelData.DigitalSwitches[0];
-                IsBeeperActive = message.ChannelData.DigitalSwitches.Length > 1 && message.ChannelData.DigitalSwitches[1];
+                
+                if (message.ChannelData.DigitalSwitches != null && message.ChannelData.DigitalSwitches.Length > 0)
+                {
+                    IsArmed = message.ChannelData.DigitalSwitches[0];
+                    if (message.ChannelData.DigitalSwitches.Length > 1)
+                    {
+                        IsBeeperActive = message.ChannelData.DigitalSwitches[1];
+                    }
+                }
 
                 OnPropertyChanged(nameof(RollPwm));
                 OnPropertyChanged(nameof(PitchPwm));
                 OnPropertyChanged(nameof(ThrottlePwm));
                 OnPropertyChanged(nameof(YawPwm));
+                OnPropertyChanged(nameof(ArmText));
+                OnPropertyChanged(nameof(BeeperText));
             }
             finally
             {
@@ -133,7 +145,8 @@ public partial class TestControllerViewModel : ObservableObject,
     private void ToggleArm()
     {
         IsArmed = !IsArmed;
-        _logger.LogInfo($"Toggle ARM switch: {(IsArmed ? "ARMED" : "DISARMED")}", "TestController");
+        OnPropertyChanged(nameof(ArmText));
+        _logger.LogInfo($"Toggle ARM switch: {ArmText}", "TestController");
         PushChannelUpdate();
     }
 
@@ -141,7 +154,8 @@ public partial class TestControllerViewModel : ObservableObject,
     private void ToggleBeeper()
     {
         IsBeeperActive = !IsBeeperActive;
-        _logger.LogInfo($"Toggle BEEPER switch: {(IsBeeperActive ? "ON" : "OFF")}", "TestController");
+        OnPropertyChanged(nameof(BeeperText));
+        _logger.LogInfo($"Toggle BEEPER switch: {BeeperText}", "TestController");
         PushChannelUpdate();
     }
 
@@ -171,6 +185,9 @@ public partial class TestControllerViewModel : ObservableObject,
             IsArmed = false;
             IsBeeperActive = false;
             FlightModeText = "Acro";
+
+            OnPropertyChanged(nameof(ArmText));
+            OnPropertyChanged(nameof(BeeperText));
         }
         finally
         {
@@ -185,23 +202,33 @@ public partial class TestControllerViewModel : ObservableObject,
     {
         if (_isInternalUpdating) return;
 
-        OnPropertyChanged(nameof(RollPwm));
-        OnPropertyChanged(nameof(PitchPwm));
-        OnPropertyChanged(nameof(ThrottlePwm));
-        OnPropertyChanged(nameof(YawPwm));
+        _isInternalUpdating = true;
+        try
+        {
+            OnPropertyChanged(nameof(RollPwm));
+            OnPropertyChanged(nameof(PitchPwm));
+            OnPropertyChanged(nameof(ThrottlePwm));
+            OnPropertyChanged(nameof(YawPwm));
+            OnPropertyChanged(nameof(ArmText));
+            OnPropertyChanged(nameof(BeeperText));
 
-        ChannelData channels = new();
-        channels.SetChannelNormalized(0, RollNormalized);
-        channels.SetChannelNormalized(1, PitchNormalized);
-        channels.SetChannelNormalized(2, ThrottleNormalized);
-        channels.SetChannelNormalized(3, YawNormalized);
+            ChannelData channels = new();
+            channels.SetChannelNormalized(0, RollNormalized);
+            channels.SetChannelNormalized(1, PitchNormalized);
+            channels.SetChannelNormalized(2, ThrottleNormalized);
+            channels.SetChannelNormalized(3, YawNormalized);
 
-        channels.DigitalSwitches[0] = IsArmed;
-        channels.DigitalSwitches[1] = IsBeeperActive;
-        channels.SetChannelNormalized(4, IsArmed ? 1.0f : -1.0f);
-        channels.SetChannelNormalized(5, IsBeeperActive ? 1.0f : -1.0f);
+            channels.DigitalSwitches[0] = IsArmed;
+            channels.DigitalSwitches[1] = IsBeeperActive;
+            channels.SetChannelNormalized(4, IsArmed ? 1.0f : -1.0f);
+            channels.SetChannelNormalized(5, IsBeeperActive ? 1.0f : -1.0f);
 
-        _stateStore.UpdateChannels(channels);
+            _stateStore.UpdateChannels(channels);
+        }
+        finally
+        {
+            _isInternalUpdating = false;
+        }
     }
 }
 

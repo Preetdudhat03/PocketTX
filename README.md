@@ -9,7 +9,7 @@ PocketTX transforms your smartphone into a virtual RC transmitter with ultra-low
 ## 📌 Table of Contents
 1. [✨ What is PocketTX?](#-what-is-pockettx)
 2. [📦 Prerequisites & Direct Downloads](#-prerequisites--direct-downloads)
-3. [🚀 Step-by-Step Setup Guide (Layman Friendly)](#-step-by-step-setup-guide-layman-friendly)
+3. [🚀 Step-by-Step Setup Guide <!--(Layman Friendly)-->](#-step-by-step-setup-guide-layman-friendly)
    - [Step 1: Install ViGEmBus Driver (Xbox Controller Emulation)](#step-1-install-vigembus-driver-xbox-controller-emulation)
    - [Step 2: Enable USB Debugging on Your Android Phone](#step-2-enable-usb-debugging-on-your-android-phone)
    - [Step 3: Setup ADB & USB Reverse Port Forwarding](#step-3-setup-adb--usb-reverse-port-forwarding)
@@ -79,7 +79,7 @@ PocketTX consists of two parts working together:
 
 ---
 
-## 🚀 Step-by-Step Setup Guide (Layman Friendly)
+## 🚀 Step-by-Step Setup Guide <!--(Layman Friendly) -->
 
 Follow these exact steps in order for first-time setup:
 

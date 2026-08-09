@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PocketTX.Companion.VirtualController")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7e9d6f3852fadc05fe842f03a29c3688ac3dadaf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a5bf31747d9f59e71811945ee33ae519dbc5028c")]
 [assembly: System.Reflection.AssemblyProductAttribute("PocketTX.Companion.VirtualController")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PocketTX.Companion.VirtualController")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

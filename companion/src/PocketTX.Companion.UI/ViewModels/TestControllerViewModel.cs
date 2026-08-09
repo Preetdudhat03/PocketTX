@@ -85,12 +85,12 @@ public partial class TestControllerViewModel : ObservableObject,
             _isInternalUpdating = true;
             try
             {
-                RollNormalized = message.ChannelData.GetChannelNormalized(0);
-                PitchNormalized = message.ChannelData.GetChannelNormalized(1);
-                ThrottleNormalized = message.ChannelData.GetChannelNormalized(2);
-                YawNormalized = message.ChannelData.GetChannelNormalized(3);
-                IsArmed = message.ChannelData.DigitalSwitches[0];
-                IsBeeperActive = message.ChannelData.DigitalSwitches[1];
+                RollNormalized = message.ChannelData.NormalizedValues.Length > 0 ? message.ChannelData.NormalizedValues[0] : 0.0f;
+                PitchNormalized = message.ChannelData.NormalizedValues.Length > 1 ? message.ChannelData.NormalizedValues[1] : 0.0f;
+                ThrottleNormalized = message.ChannelData.NormalizedValues.Length > 2 ? message.ChannelData.NormalizedValues[2] : -1.0f;
+                YawNormalized = message.ChannelData.NormalizedValues.Length > 3 ? message.ChannelData.NormalizedValues[3] : 0.0f;
+                IsArmed = message.ChannelData.DigitalSwitches.Length > 0 && message.ChannelData.DigitalSwitches[0];
+                IsBeeperActive = message.ChannelData.DigitalSwitches.Length > 1 && message.ChannelData.DigitalSwitches[1];
 
                 OnPropertyChanged(nameof(RollPwm));
                 OnPropertyChanged(nameof(PitchPwm));

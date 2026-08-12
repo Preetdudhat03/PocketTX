@@ -24,6 +24,7 @@ import 'heartbeat_monitor.dart';
 import 'transport_metrics.dart';
 import 'transport/udp/udp_transport_channel.dart';
 import 'transport/tcp/tcp_transport_channel.dart';
+import 'udp_discovery_service.dart';
 
 class SessionManager {
   final Ref _ref;

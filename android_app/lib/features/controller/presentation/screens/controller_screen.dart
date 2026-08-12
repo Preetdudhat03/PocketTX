@@ -56,8 +56,8 @@ class _ControllerScreenState extends ConsumerState<ControllerScreen> {
                     //final dynamicGimbalSize = (constraints.maxHeight * 0.94).clamp(240.0, 340.0);
                     //final sideWidth = (constraints.maxWidth * 0.40).clamp(dynamicGimbalSize + 16.0, 400.0);
 
-                    final dynamicGimbalSize = (constraints.maxHeight * 0.98).clamp(260.0, 420.0);
-                    final sideWidth = (constraints.maxWidth * 0.42).clamp(dynamicGimbalSize + 16.0, 450.0);
+                    //final dynamicGimbalSize = (constraints.maxHeight * 0.98).clamp(260.0, 420.0);
+                    //final sideWidth = (constraints.maxWidth * 0.42).clamp(dynamicGimbalSize + 16.0, 450.0);
 
                     return Row(
                       children: [

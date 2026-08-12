@@ -107,8 +107,8 @@ public partial class GimbalVisualizer : UserControl
         double posX = centerX + (XValue * (centerX - 16.0));
         double posY = centerY - (YValue * (centerY - 16.0));
 
-        Canvas.SetLeft(StickDot, posX - 10.0);
-        Canvas.SetTop(StickDot, posY - 10.0);
+        Canvas.SetLeft(StickDotCanvas, posX - 11.0);
+        Canvas.SetTop(StickDotCanvas, posY - 11.0);
 
         // Update vector line from center to dot
         StickVectorLine.X1 = centerX;

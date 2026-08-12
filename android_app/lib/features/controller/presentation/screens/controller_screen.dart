@@ -167,7 +167,13 @@ class _BeeperButton extends ConsumerWidget {
       label: beeperOn ? 'Beeper active, tap to deactivate' : 'Tap to activate beeper',
       button: true,
       child: GestureDetector(
-        onTap: () => notifier.setBeeperActive(!beeperOn),
+        onTap: () {
+          notifier.setBeeperActive(!beeperOn);
+          ref.read(channelStateProvider.notifier).updateChannel(
+            ChannelConstants.chAux2,
+            !beeperOn ? 1.0 : -1.0,
+          );
+        },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 150),
           width: AppSpacing.touchTarget,

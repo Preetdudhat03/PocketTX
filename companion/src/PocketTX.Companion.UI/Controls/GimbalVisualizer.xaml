@@ -4,64 +4,93 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="200">
+             d:DesignHeight="220" d:DesignWidth="220">
     
-    <Border Background="{DynamicResource CardHeaderBackgroundBrush}"
-            BorderBrush="{DynamicResource BorderBrush}"
-            BorderThickness="2"
-            CornerRadius="12"
-            Padding="8">
-        <Grid x:Name="ContainerGrid" 
-              Background="Transparent"
-              Cursor="Hand"
-              ClipToBounds="True"
-              MouseDown="ContainerGrid_MouseDown"
-              MouseMove="ContainerGrid_MouseMove"
-              MouseUp="ContainerGrid_MouseUp"
-              MouseLeave="ContainerGrid_MouseLeave">
-            
-            <!-- Concentric Guide Rings -->
-            <Ellipse Width="140" Height="140" Stroke="{DynamicResource BorderBrush}" StrokeThickness="1" StrokeDashArray="2 2" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.4"/>
-            <Ellipse Width="80" Height="80" Stroke="{DynamicResource BorderBrush}" StrokeThickness="1" StrokeDashArray="2 2" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.4"/>
+    <!-- Outer CNC Aluminum Bezel -->
+    <Border BorderBrush="#3A465E"
+            BorderThickness="3"
+            CornerRadius="16"
+            Padding="6">
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#1A202C" Offset="0.0"/>
+                <GradientStop Color="#0F131C" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Border.Background>
 
-            <!-- Crosshair Grid Lines -->
-            <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1" Height="1" VerticalAlignment="Center" Opacity="0.7"/>
-            <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0" Width="1" HorizontalAlignment="Center" Opacity="0.7"/>
+        <!-- Recessed 3D Gimbal Well Cup -->
+        <Border CornerRadius="12" BorderBrush="#2D3748" BorderThickness="1.5">
+            <Border.Background>
+                <RadialGradientBrush Center="0.5,0.5" RadiusX="0.8" RadiusY="0.8">
+                    <GradientStop Color="#0D1117" Offset="0.0"/>
+                    <GradientStop Color="#141923" Offset="0.7"/>
+                    <GradientStop Color="#1F2837" Offset="1.0"/>
+                </RadialGradientBrush>
+            </Border.Background>
 
-            <!-- Center Neutral Circle -->
-            <Ellipse Width="16" Height="16" Stroke="{DynamicResource PrimaryAccentBrush}" StrokeThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.6"/>
+            <Grid x:Name="ContainerGrid" 
+                  Background="Transparent"
+                  Cursor="Hand"
+                  ClipToBounds="True"
+                  MouseDown="ContainerGrid_MouseDown"
+                  MouseMove="ContainerGrid_MouseMove"
+                  MouseUp="ContainerGrid_MouseUp"
+                  MouseLeave="ContainerGrid_MouseLeave">
+                
+                <!-- Concentric Travel Rings -->
+                <Ellipse Width="150" Height="150" Stroke="{DynamicResource BorderBrush}" StrokeThickness="1" StrokeDashArray="2 2" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.3"/>
+                <Ellipse Width="80" Height="80" Stroke="{DynamicResource BorderBrush}" StrokeThickness="1" StrokeDashArray="2 2" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.3"/>
 
-            <!-- Dynamic Stick Vector Trail Line -->
-            <Canvas>
-                <Line x:Name="StickVectorLine"
-                      Stroke="{DynamicResource PrimaryAccentBrush}"
-                      StrokeThickness="1.5"
-                      Opacity="0.5"
-                      StrokeDashArray="2 1"/>
+                <!-- Crosshair Grid Lines -->
+                <Border BorderBrush="{DynamicResource PrimaryAccentBrush}" BorderThickness="0,0,0,1" Height="1" VerticalAlignment="Center" Opacity="0.3"/>
+                <Border BorderBrush="{DynamicResource PrimaryAccentBrush}" BorderThickness="0,0,1,0" Width="1" HorizontalAlignment="Center" Opacity="0.3"/>
 
-                <!-- Gimbal Stick Dot -->
-                <Ellipse x:Name="StickDot"
-                         Width="20" Height="20"
-                         Fill="{DynamicResource PrimaryAccentBrush}"
-                         Stroke="#FFFFFF"
-                         StrokeThickness="2.5">
-                    <Ellipse.Effect>
-                        <DropShadowEffect x:Name="DotGlow" Color="#5B8DEF" BlurRadius="12" ShadowDepth="0" Opacity="0.9"/>
-                    </Ellipse.Effect>
-                </Ellipse>
-            </Canvas>
-            
-            <!-- Title Header -->
-            <TextBlock x:Name="TitleLabel" Text="GIMBAL"
-                       Foreground="{DynamicResource TextMutedBrush}"
-                       FontSize="10" FontWeight="Bold"
-                       HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4"/>
+                <!-- Center Deadband Ring -->
+                <Ellipse Width="16" Height="16" Stroke="{DynamicResource PrimaryAccentBrush}" StrokeThickness="1.5" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5"/>
 
-            <!-- Live Position Indicator Badge -->
-            <Border x:Name="PosBadge" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="4"
-                    Background="#1F2A3E" CornerRadius="4" Padding="4,2">
-                <TextBlock x:Name="PosText" Text="0, 0" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="9" FontFamily="Consolas"/>
-            </Border>
-        </Grid>
+                <!-- Dynamic 3D Metal Shaft Vector Line -->
+                <Canvas>
+                    <Line x:Name="StickVectorLine"
+                          Stroke="#A0AEC0"
+                          StrokeThickness="2.5"
+                          Opacity="0.6"
+                          StrokeDashArray="3 1"/>
+
+                    <!-- Realistic CNC Stick Head Knob -->
+                    <Grid x:Name="StickDotCanvas">
+                        <Ellipse x:Name="StickDot"
+                                 Width="22" Height="22"
+                                 Stroke="#FFFFFF"
+                                 StrokeThickness="2">
+                            <Ellipse.Fill>
+                                <RadialGradientBrush Center="0.3,0.3" RadiusX="0.7" RadiusY="0.7">
+                                    <GradientStop Color="#5B8DEF" Offset="0.0"/>
+                                    <GradientStop Color="#2563EB" Offset="0.6"/>
+                                    <GradientStop Color="#1E40AF" Offset="1.0"/>
+                                </RadialGradientBrush>
+                            </Ellipse.Fill>
+                            <Ellipse.Effect>
+                                <DropShadowEffect x:Name="DotGlow" Color="#5B8DEF" BlurRadius="10" ShadowDepth="2" Opacity="0.8"/>
+                            </Ellipse.Effect>
+                        </Ellipse>
+
+                        <!-- Center Crown Highlight Cap -->
+                        <Ellipse Width="6" Height="6" Fill="#FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                    </Grid>
+                </Canvas>
+                
+                <!-- Title Header -->
+                <TextBlock x:Name="TitleLabel" Text="GIMBAL"
+                           Foreground="{DynamicResource TextMutedBrush}"
+                           FontSize="10" FontWeight="Bold"
+                           HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8,6,0,0"/>
+
+                <!-- Live Position Indicator Badge -->
+                <Border x:Name="PosBadge" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="6"
+                        Background="#1A2232" BorderBrush="#2D3748" BorderThickness="1" CornerRadius="4" Padding="5,2">
+                    <TextBlock x:Name="PosText" Text="0.00, 0.00" Foreground="{DynamicResource PrimaryAccentBrush}" FontSize="9" FontWeight="Bold" FontFamily="Consolas"/>
+                </Border>
+            </Grid>
+        </Border>
     </Border>
 </UserControl>

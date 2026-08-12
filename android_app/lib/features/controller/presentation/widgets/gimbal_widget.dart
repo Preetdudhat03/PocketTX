@@ -195,62 +195,185 @@ class _GimbalPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
-    final trackRadius = size.width / 2 - 8;
-    final knobRadius = isPressed ? 18.0 : 14.0;
+    final outerRadius = size.width / 2 - 4;
+    final trackRadius = outerRadius - 10;
+    final usableRadius = trackRadius * 0.78;
+    final knobRadius = isPressed ? 18.0 : 15.0;
 
-    // ── Outer ring ─────────────────────────────
+    // ── 1. Recessed 3D Gimbal Well / Cup Shader ─────────────────
+    final wellGradient = RadialGradient(
+      center: Alignment.center,
+      radius: 0.9,
+      colors: [
+        const Color(0xFF0F131C),
+        const Color(0xFF181F2E),
+        const Color(0xFF232C3F),
+      ],
+      stops: const [0.0, 0.7, 1.0],
+    );
     canvas.drawCircle(
       center,
       trackRadius,
+      Paint()..shader = wellGradient.createShader(Rect.fromCircle(center: center, radius: trackRadius)),
+    );
+
+    // ── 2. Outer Metallic CNC Aluminum Bezel Ring ────────────────
+    final metalRingPaint = Paint()
+      ..color = trackColor.withValues(alpha: 0.8)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4.0;
+    canvas.drawCircle(center, outerRadius - 2, metalRingPaint);
+
+    final innerHighlightPaint = Paint()
+      ..color = Colors.white.withValues(alpha: 0.15)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.0;
+    canvas.drawCircle(center, outerRadius - 4, innerHighlightPaint);
+
+    // ── 3. Degree Notches / Angle Ticks (12 ticks: 30° increments) ─
+    final tickPaint = Paint()
+      ..color = primaryColor.withValues(alpha: 0.6)
+      ..strokeWidth = 1.5
+      ..strokeCap = StrokeCap.round;
+
+    for (int deg = 0; deg < 360; deg += 30) {
+      final rad = deg * (3.141592653589793 / 180.0);
+      final isMajor = deg % 90 == 0;
+      final tickLen = isMajor ? 6.0 : 3.5;
+      final p1 = Offset(
+        center.dx + (outerRadius - 2) * mathCos(rad),
+        center.dy + (outerRadius - 2) * mathSin(rad),
+      );
+      final p2 = Offset(
+        center.dx + (outerRadius - 2 - tickLen) * mathCos(rad),
+        center.dy + (outerRadius - 2 - tickLen) * mathSin(rad),
+      );
+      canvas.drawLine(p1, p2, isMajor ? (tickPaint..strokeWidth = 2.0) : (tickPaint..strokeWidth = 1.2));
+    }
+
+    // ── 4. Concentric Travel Rings & Crosshairs ──────────────────
+    final ringPaint = Paint()
+      ..color = Colors.white.withValues(alpha: 0.1)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.0;
+    canvas.drawCircle(center, usableRadius, ringPaint);
+    canvas.drawCircle(center, usableRadius * 0.5, ringPaint);
+
+    final crossPaint = Paint()
+      ..color = primaryColor.withValues(alpha: 0.3)
+      ..strokeWidth = 1.0;
+    canvas.drawLine(
+      Offset(center.dx, center.dy - trackRadius + 4),
+      Offset(center.dx, center.dy + trackRadius - 4),
+      crossPaint,
+    );
+    canvas.drawLine(
+      Offset(center.dx - trackRadius + 4, center.dy),
+      Offset(center.dx + trackRadius - 4, center.dy),
+      crossPaint,
+    );
+
+    // Center Neutral Ring (Deadband circle)
+    canvas.drawCircle(
+      center,
+      8.0,
       Paint()
-        ..color = trackColor
+        ..color = primaryColor.withValues(alpha: 0.4)
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1.5,
     );
 
-    // ── Crosshair lines ─────────────────────────
-    final crossPaint = Paint()
-      ..color = trackColor.withValues(alpha: 0.5)
-      ..strokeWidth = 1;
-    canvas.drawLine(Offset(center.dx, center.dy - trackRadius),
-        Offset(center.dx, center.dy + trackRadius), crossPaint);
-    canvas.drawLine(Offset(center.dx - trackRadius, center.dy),
-        Offset(center.dx + trackRadius, center.dy), crossPaint);
-
-    // ── Knob position ───────────────────────────
-    final usableRadius = trackRadius * 0.75;
+    // ── 5. Stick Head Offset Calculation ──────────────────────────
     final knobOffset = Offset(
       center.dx + position.dx * usableRadius,
       center.dy - position.dy * usableRadius,
     );
 
-    // Glow when pressed
+    // ── 6. 3D Metal Stick Shaft Line ──────────────────────────────
+    final shaftPaint = Paint()
+      ..color = Colors.white.withValues(alpha: 0.25)
+      ..strokeWidth = 3.5
+      ..strokeCap = StrokeCap.round;
+    canvas.drawLine(center, knobOffset, shaftPaint);
+
+    // ── 7. Realistic CNC Knurled Crown Stick Head ───────────────────
+    // Ambient Drop Shadow
+    canvas.drawCircle(
+      knobOffset.translate(0, 3),
+      knobRadius + 2,
+      Paint()
+        ..color = Colors.black.withValues(alpha: 0.5)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 6),
+    );
+
+    // Pressed Glow Effect
     if (isPressed) {
       canvas.drawCircle(
         knobOffset,
-        knobRadius + 6,
+        knobRadius + 8,
         Paint()
-          ..color = primaryColor.withValues(alpha: 0.15)
-          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8),
+          ..color = primaryColor.withValues(alpha: 0.25)
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10),
       );
     }
 
-    // Knob body
+    // Outer CNC Aluminum Ring
     canvas.drawCircle(
       knobOffset,
       knobRadius,
-      Paint()..color = isPressed ? primaryColor : primaryColor.withValues(alpha: 0.7),
+      Paint()..color = const Color(0xFF2A3447),
     );
-
-    // Knob center dot
     canvas.drawCircle(
       knobOffset,
-      4,
-      Paint()..color = Colors.white.withValues(alpha: 0.8),
+      knobRadius,
+      Paint()
+        ..color = isPressed ? primaryColor : primaryColor.withValues(alpha: 0.85)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2.5,
+    );
+
+    // Knurled Crown Teeth Pattern (8 radial teeth)
+    final toothPaint = Paint()
+      ..color = Colors.white.withValues(alpha: 0.6)
+      ..strokeWidth = 1.5;
+    for (int i = 0; i < 8; i++) {
+      final rad = i * (3.141592653589793 / 4.0);
+      final p1 = Offset(
+        knobOffset.dx + (knobRadius - 4) * mathCos(rad),
+        knobOffset.dy + (knobRadius - 4) * mathSin(rad),
+      );
+      final p2 = Offset(
+        knobOffset.dx + (knobRadius - 1) * mathCos(rad),
+        knobOffset.dy + (knobRadius - 1) * mathSin(rad),
+      );
+      canvas.drawLine(p1, p2, toothPaint);
+    }
+
+    // Inner Metallic Crown Body
+    canvas.drawCircle(
+      knobOffset,
+      knobRadius - 4,
+      Paint()..color = isPressed ? primaryColor : const Color(0xFF1E2638),
+    );
+
+    // Center Silver Cap Highlight Dot
+    canvas.drawCircle(
+      knobOffset,
+      3.5,
+      Paint()..color = Colors.white,
     );
   }
+
+  double mathCos(double rad) => double.parse(SystemMath.cos(rad).toString());
+  double mathSin(double rad) => double.parse(SystemMath.sin(rad).toString());
 
   @override
   bool shouldRepaint(_GimbalPainter old) =>
       old.position != position || old.isPressed != isPressed;
 }
+
+class SystemMath {
+  static double cos(double rad) => double.parse((stdMathCos(rad)).toString());
+  static double sin(double rad) => double.parse((stdMathSin(rad)).toString());
+}
+

@@ -10,6 +10,8 @@ import '../../../../core/design/typography.dart';
 import '../../../../core/design/radius.dart';
 import '../../../../core/design/icons.dart';
 import '../../../../core/state/app_state.dart';
+import '../../../../core/state/channel_state.dart';
+import '../../../../core/constants/channel_constants.dart';
 import '../../../../core/services/haptic_service.dart';
 
 class ArmButton extends ConsumerWidget {
@@ -25,6 +27,11 @@ class ArmButton extends ConsumerWidget {
       child: GestureDetector(
         onTap: () {
           ref.read(appStateProvider.notifier).toggleArmed();
+          final isArmedNow = ref.read(appStateProvider).isArmed;
+          ref.read(channelStateProvider.notifier).updateChannel(
+            ChannelConstants.chAux1,
+            isArmedNow ? 1.0 : -1.0,
+          );
           HapticService().medium();
         },
         child: AnimatedContainer(

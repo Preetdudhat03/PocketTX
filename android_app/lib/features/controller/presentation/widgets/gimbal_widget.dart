@@ -2,14 +2,14 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pockettx_app/core/design/theme_tokens.dart';
-import 'package:pockettx_app/core/design/spacing.dart';
-import 'package:pockettx_app/core/physics/spring_physics.dart';
-import 'package:pockettx_app/core/physics/ratchet_physics.dart';
-import 'package:pockettx_app/core/physics/i_stick_physics.dart';
-import 'package:pockettx_app/core/state/channel_state.dart';
-import 'package:pockettx_app/core/services/haptic_service.dart';
-import 'package:pockettx_app/core/constants/channel_constants.dart';
+import 'package:PocketTX/core/design/theme_tokens.dart';
+import 'package:PocketTX/core/design/spacing.dart';
+import 'package:PocketTX/core/physics/spring_physics.dart';
+import 'package:PocketTX/core/physics/ratchet_physics.dart';
+import 'package:PocketTX/core/physics/i_stick_physics.dart';
+import 'package:PocketTX/core/state/channel_state.dart';
+import 'package:PocketTX/core/services/haptic_service.dart';
+import 'package:PocketTX/core/constants/channel_constants.dart';
 
 /// Pure rendering gimbal widget — all physics is delegated to IStickPhysics.
 class GimbalWidget extends ConsumerStatefulWidget {

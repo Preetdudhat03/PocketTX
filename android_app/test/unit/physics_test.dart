@@ -4,6 +4,8 @@ import 'package:PocketTX/core/physics/ratchet_physics.dart';
 import 'package:PocketTX/core/physics/fixed_physics.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   group('SpringPhysics', () {
     test('initializes at rest position', () {
       final p = SpringPhysics();

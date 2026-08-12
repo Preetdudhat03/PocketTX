@@ -4,10 +4,10 @@
 // ─────────────────────────────────────────────
 
 import 'package:flutter/material.dart';
-import 'package:pockettx_app/core/design/theme_tokens.dart';
-import 'package:pockettx_app/core/design/spacing.dart';
-import 'package:pockettx_app/core/design/radius.dart';
-import 'package:pockettx_app/core/design/typography.dart';
+import 'package:PocketTX/core/design/theme_tokens.dart';
+import 'package:PocketTX/core/design/spacing.dart';
+import 'package:PocketTX/core/design/radius.dart';
+import 'package:PocketTX/core/design/typography.dart';
 
 enum BadgeVariant { success, warning, error, info, neutral }
 

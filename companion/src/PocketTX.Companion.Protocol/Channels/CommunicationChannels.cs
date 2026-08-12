@@ -296,7 +296,11 @@ public sealed class UsbChannel : ICommunicationChannel
             _listener.Start();
             IsConnected = true;
             ConnectionStateChanged?.Invoke(this, true);
-            Console.WriteLine($"[USB TCP] Listening on port {TcpPort}. Run: adb reverse tcp:{TcpPort} tcp:{TcpPort}");
+            
+            // Automatically execute ADB reverse port forwarding on Windows PC
+            TryEnsureAdbReverse();
+
+            Console.WriteLine($"[USB TCP] Listening on port {TcpPort}. Active ports: {TcpPort}, 18456, 18457.");
             _ = AcceptLoopAsync(_cts.Token);
             return Task.FromResult(true);
         }
@@ -304,6 +308,41 @@ public sealed class UsbChannel : ICommunicationChannel
         {
             Console.WriteLine($"[USB TCP] OpenAsync failed: {ex.Message}");
             return Task.FromResult(false);
+        }
+    }
+
+    private static void TryEnsureAdbReverse()
+    {
+        try
+        {
+            string adbPath = "adb";
+            string userLocalAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string defaultSdkAdb = Path.Combine(userLocalAppData, "Android", "Sdk", "platform-tools", "adb.exe");
+            if (File.Exists(defaultSdkAdb))
+            {
+                adbPath = defaultSdkAdb;
+            }
+
+            int[] ports = new[] { 18458, 18456, 18457 };
+            foreach (var port in ports)
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = adbPath,
+                    Arguments = $"reverse tcp:{port} tcp:{port}",
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
+                };
+                using var proc = Process.Start(psi);
+                proc?.WaitForExit(1000);
+            }
+            Console.WriteLine("[USB TCP] Auto-executed ADB reverse port forwarding for ports 18458, 18456, 18457.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[USB TCP] Note: Auto ADB reverse skipped ({ex.Message}).");
         }
     }
 

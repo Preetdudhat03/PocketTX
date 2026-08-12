@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pockettx_app/services/communication/failsafe_engine.dart';
+import 'package:PocketTX/services/communication/failsafe_engine.dart';
 
 void main() {
   group('FailsafeEngine', () {

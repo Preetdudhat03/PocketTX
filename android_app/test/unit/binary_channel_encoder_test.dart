@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pockettx_app/core/protocol/binary_channel_encoder.dart';
+import 'package:PocketTX/core/protocol/binary_channel_encoder.dart';
 
 void main() {
   group('BinaryChannelEncoder', () {

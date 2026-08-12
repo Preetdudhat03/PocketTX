@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pockettx_app/app.dart';
+import 'package:PocketTX/app.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {

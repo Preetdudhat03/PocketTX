@@ -34,7 +34,7 @@ abstract final class AppSpacing {
   static const double iconSizeLg = 32.0;
   static const double channelBarHeight = 6.0;
   static const double channelBarHeightLg = 8.0;
-  static const double gimbalSize = 260.0;
+  static const double gimbalSize = 0.0;
   static const double gimbalSizeSm = 160.0;
   static const double statusDotSize = 8.0;
 }

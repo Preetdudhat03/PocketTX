@@ -238,16 +238,16 @@ class _GimbalPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round;
 
     for (int deg = 0; deg < 360; deg += 30) {
-      final rad = deg * (3.141592653589793 / 180.0);
+      final rad = deg * (math.pi / 180.0);
       final isMajor = deg % 90 == 0;
       final tickLen = isMajor ? 6.0 : 3.5;
       final p1 = Offset(
-        center.dx + (outerRadius - 2) * mathCos(rad),
-        center.dy + (outerRadius - 2) * mathSin(rad),
+        center.dx + (outerRadius - 2) * math.cos(rad),
+        center.dy + (outerRadius - 2) * math.sin(rad),
       );
       final p2 = Offset(
-        center.dx + (outerRadius - 2 - tickLen) * mathCos(rad),
-        center.dy + (outerRadius - 2 - tickLen) * mathSin(rad),
+        center.dx + (outerRadius - 2 - tickLen) * math.cos(rad),
+        center.dy + (outerRadius - 2 - tickLen) * math.sin(rad),
       );
       canvas.drawLine(p1, p2, isMajor ? (tickPaint..strokeWidth = 2.0) : (tickPaint..strokeWidth = 1.2));
     }
@@ -338,14 +338,14 @@ class _GimbalPainter extends CustomPainter {
       ..color = Colors.white.withValues(alpha: 0.6)
       ..strokeWidth = 1.5;
     for (int i = 0; i < 8; i++) {
-      final rad = i * (3.141592653589793 / 4.0);
+      final rad = i * (math.pi / 4.0);
       final p1 = Offset(
-        knobOffset.dx + (knobRadius - 4) * mathCos(rad),
-        knobOffset.dy + (knobRadius - 4) * mathSin(rad),
+        knobOffset.dx + (knobRadius - 4) * math.cos(rad),
+        knobOffset.dy + (knobRadius - 4) * math.sin(rad),
       );
       final p2 = Offset(
-        knobOffset.dx + (knobRadius - 1) * mathCos(rad),
-        knobOffset.dy + (knobRadius - 1) * mathSin(rad),
+        knobOffset.dx + (knobRadius - 1) * math.cos(rad),
+        knobOffset.dy + (knobRadius - 1) * math.sin(rad),
       );
       canvas.drawLine(p1, p2, toothPaint);
     }
@@ -365,16 +365,8 @@ class _GimbalPainter extends CustomPainter {
     );
   }
 
-  double mathCos(double rad) => double.parse(SystemMath.cos(rad).toString());
-  double mathSin(double rad) => double.parse(SystemMath.sin(rad).toString());
-
   @override
   bool shouldRepaint(_GimbalPainter old) =>
       old.position != position || old.isPressed != isPressed;
-}
-
-class SystemMath {
-  static double cos(double rad) => double.parse((stdMathCos(rad)).toString());
-  static double sin(double rad) => double.parse((stdMathSin(rad)).toString());
 }
 

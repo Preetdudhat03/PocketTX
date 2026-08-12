@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pockettx_app/services/communication/connection_state_machine.dart';
-import 'package:pockettx_app/core/compatibility/protocol_version.dart';
+import 'package:PocketTX/services/communication/connection_state_machine.dart';
+import 'package:PocketTX/core/compatibility/protocol_version.dart';
 
 void main() {
   group('ConnectionStateMachine', () {

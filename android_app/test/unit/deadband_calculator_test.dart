@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pockettx_app/core/utils/deadband_calculator.dart';
+import 'package:PocketTX/core/utils/deadband_calculator.dart';
 
 void main() {
   group('DeadbandCalculator', () {

@@ -6,8 +6,8 @@
 import 'dart:convert';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import '../../models/calibration_data.dart';
-import 'package:pockettx_app/core/constants/app_constants.dart';
-import 'package:pockettx_app/core/services/logger_service.dart';
+import 'package:PocketTX/core/constants/app_constants.dart';
+import 'package:PocketTX/core/services/logger_service.dart';
 import '../../models/log_entry_model.dart';
 
 class CalibrationRepository {

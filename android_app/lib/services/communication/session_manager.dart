@@ -89,7 +89,7 @@ class SessionManager {
 
       // Auto-Fallback: If USB 127.0.0.1 failed (e.g. adb reverse missing), check if a Wi-Fi Companion was discovered
       if (!opened && (targetHost == '127.0.0.1' || targetHost == 'localhost')) {
-        final wifiDevs = _ref.read(udpDiscoveryServiceProvider).discoveredDevices;
+        final wifiDevs = _ref.read(companionServiceProvider).discoveryService.discoveredDevices;
         if (wifiDevs.isNotEmpty) {
           final wifiDev = wifiDevs.firstWhere(
             (d) => d.ipAddress != '127.0.0.1',

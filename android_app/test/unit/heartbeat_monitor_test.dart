@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pockettx_app/services/communication/heartbeat_monitor.dart';
+import 'package:PocketTX/services/communication/heartbeat_monitor.dart';
 
 void main() {
   group('HeartbeatMonitor', () {

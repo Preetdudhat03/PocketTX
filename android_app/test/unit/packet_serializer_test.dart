@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pockettx_app/core/protocol/packet_serializer.dart';
+import 'package:PocketTX/core/protocol/packet_serializer.dart';
 
 void main() {
   group('PacketSerializer', () {

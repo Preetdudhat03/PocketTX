@@ -160,13 +160,18 @@ class UdpDiscoveryService {
         }
       });
 
-      return await completer.future;
+      final result = await completer.future;
+      _discoveredDevices.clear();
+      _discoveredDevices.addAll(result);
+      return result;
     } catch (e) {
       LoggerService().warning(
         LogCategory.network,
         'DISCOVERY_FAILED',
         'UDP discovery scan error: $e',
       );
+      _discoveredDevices.clear();
+      _discoveredDevices.addAll(foundDevices);
       return foundDevices;
     }
   }

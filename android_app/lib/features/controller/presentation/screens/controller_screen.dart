@@ -45,64 +45,73 @@ class _ControllerScreenState extends ConsumerState<ControllerScreen> {
 
               // ── Main Controller Area ─────────────────
               Expanded(
-                child: Row(
-                  children: [
-                    // Left Gimbal (Throttle + Yaw in Mode 2)
-                    SizedBox(
-                      width: size.width * 0.28,
-                      child: Center(
-                        child: GimbalWidget(
-                          isLeft: true,
-                          semanticLabel: 'Left gimbal: Throttle and Yaw',
-                        ),
-                      ),
-                    ),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final dynamicGimbalSize = (constraints.maxHeight * 0.82).clamp(190.0, 260.0);
+                    final sideWidth = (constraints.maxWidth * 0.35).clamp(dynamicGimbalSize + 16.0, 320.0);
 
-                    // Center: Channel bars
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.md),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // ARM / BEEPER buttons
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    return Row(
+                      children: [
+                        // Left Gimbal (Throttle + Yaw in Mode 2)
+                        SizedBox(
+                          width: sideWidth,
+                          child: Center(
+                            child: GimbalWidget(
+                              isLeft: true,
+                              semanticLabel: 'Left gimbal: Throttle and Yaw',
+                              size: dynamicGimbalSize,
+                            ),
+                          ),
+                        ),
+
+                        // Center: Channel bars
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: AppSpacing.sm),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                ArmButton(isArmed: isArmed),
-                                _BeeperButton(),
+                                // ARM / BEEPER buttons
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    ArmButton(isArmed: isArmed),
+                                    _BeeperButton(),
+                                  ],
+                                ),
+                                const SizedBox(height: AppSpacing.sm),
+                                // 8 Channel Bars
+                                ...List.generate(ChannelConstants.channelCount, (i) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 1.0),
+                                    child: ChannelBar(
+                                      channelIndex: i,
+                                      value: channels.normalized[i],
+                                      pwm: channels.pwm[i],
+                                    ),
+                                  );
+                                }),
                               ],
                             ),
-                            const SizedBox(height: AppSpacing.base),
-                            // 8 Channel Bars
-                            ...List.generate(ChannelConstants.channelCount, (i) {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: AppSpacing.xs),
-                                child: ChannelBar(
-                                  channelIndex: i,
-                                  value: channels.normalized[i],
-                                  pwm: channels.pwm[i],
-                                ),
-                              );
-                            }),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
 
-                    // Right Gimbal (Pitch + Roll in Mode 2)
-                    SizedBox(
-                      width: size.width * 0.28,
-                      child: Center(
-                        child: GimbalWidget(
-                          isLeft: false,
-                          semanticLabel: 'Right gimbal: Pitch and Roll',
+                        // Right Gimbal (Pitch + Roll in Mode 2)
+                        SizedBox(
+                          width: sideWidth,
+                          child: Center(
+                            child: GimbalWidget(
+                              isLeft: false,
+                              semanticLabel: 'Right gimbal: Pitch and Roll',
+                              size: dynamicGimbalSize,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
+                      ],
+                    );
+                  },
                 ),
               ),
 

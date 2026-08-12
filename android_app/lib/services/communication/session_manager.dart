@@ -85,6 +85,27 @@ class SessionManager {
     if (_usingTcp) {
       _tcpChannel = TcpTransportChannel();
       opened = await _tcpChannel!.open(host: targetHost);
+
+      // Auto-Fallback: If USB 127.0.0.1 failed (e.g. adb reverse missing), check if a Wi-Fi Companion was discovered
+      if (!opened && (targetHost == '127.0.0.1' || targetHost == 'localhost')) {
+        final wifiDevs = _ref.read(udpDiscoveryServiceProvider).discoveredDevices;
+        if (wifiDevs.isNotEmpty) {
+          final wifiDev = wifiDevs.firstWhere(
+            (d) => d.ipAddress != '127.0.0.1',
+            orElse: () => wifiDevs.first,
+          );
+          if (wifiDev.ipAddress.isNotEmpty && wifiDev.ipAddress != '127.0.0.1') {
+            LoggerService().warning(
+              LogCategory.network,
+              'USB_FAIL_FALLBACK_WIFI',
+              '[USB Connection Failed] Automatically falling back to Wi-Fi Companion at ${wifiDev.ipAddress}:${wifiDev.port}...',
+            );
+            _usingTcp = false;
+            _udpChannel = UdpTransportChannel();
+            opened = await _udpChannel!.open(host: wifiDev.ipAddress, port: wifiDev.port);
+          }
+        }
+      }
     } else {
       _udpChannel = UdpTransportChannel();
       opened = await _udpChannel!.open(host: targetHost, port: port);

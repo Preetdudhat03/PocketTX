@@ -45,6 +45,9 @@ class CompanionDeviceInfo {
 }
 
 class UdpDiscoveryService {
+  final List<CompanionDeviceInfo> _discoveredDevices = [];
+  List<CompanionDeviceInfo> get discoveredDevices => List.unmodifiable(_discoveredDevices);
+
   Future<List<CompanionDeviceInfo>> scanForCompanions({
     Duration timeout = const Duration(milliseconds: 1500),
   }) async {

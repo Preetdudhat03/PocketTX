@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pockettx_app/core/utils/stick_mode_mapper.dart';
-import 'package:pockettx_app/models/controller_profile.dart';
-import 'package:pockettx_app/core/constants/channel_constants.dart';
+import 'package:PocketTX/core/utils/stick_mode_mapper.dart';
+import 'package:PocketTX/models/controller_profile.dart';
+import 'package:PocketTX/core/constants/channel_constants.dart';
 
 void main() {
   group('StickModeMapper', () {

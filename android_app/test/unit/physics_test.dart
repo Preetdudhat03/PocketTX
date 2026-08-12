@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pockettx_app/core/physics/spring_physics.dart';
-import 'package:pockettx_app/core/physics/ratchet_physics.dart';
-import 'package:pockettx_app/core/physics/fixed_physics.dart';
+import 'package:PocketTX/core/physics/spring_physics.dart';
+import 'package:PocketTX/core/physics/ratchet_physics.dart';
+import 'package:PocketTX/core/physics/fixed_physics.dart';
 
 void main() {
   group('SpringPhysics', () {

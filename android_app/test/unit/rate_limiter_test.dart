@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pockettx_app/core/utils/rate_limiter.dart';
+import 'package:PocketTX/core/utils/rate_limiter.dart';
 
 void main() {
   group('RateLimiter', () {

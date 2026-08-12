@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pockettx_app/models/channel_data.dart';
-import 'package:pockettx_app/core/constants/channel_constants.dart';
+import 'package:PocketTX/models/channel_data.dart';
+import 'package:PocketTX/core/constants/channel_constants.dart';
 
 void main() {
   group('ChannelData', () {

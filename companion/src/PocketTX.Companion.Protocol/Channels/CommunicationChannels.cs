@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Buffers.Binary;
+using System.Diagnostics;
+using System.IO;
 using PocketTX.Companion.Core.Contracts;
 using PocketTX.Companion.Core.Enums;
 using PocketTX.Companion.Protocol.Packets;

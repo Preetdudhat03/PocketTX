@@ -22,30 +22,30 @@ class HapticService {
   /// Light tap — button press, toggle, selection.
   Future<void> light() async {
     if (!_enabled) return;
-    await HapticFeedback.lightImpact();
+    try { await HapticFeedback.lightImpact(); } catch (_) {}
   }
 
   /// Medium tap — ARM/DISARM, profile switch.
   Future<void> medium() async {
     if (!_enabled) return;
-    await HapticFeedback.mediumImpact();
+    try { await HapticFeedback.mediumImpact(); } catch (_) {}
   }
 
   /// Heavy tap — critical action, error.
   Future<void> heavy() async {
     if (!_enabled) return;
-    await HapticFeedback.heavyImpact();
+    try { await HapticFeedback.heavyImpact(); } catch (_) {}
   }
 
   /// Selection changed — e.g. profile list scroll.
   Future<void> selection() async {
     if (!_enabled) return;
-    await HapticFeedback.selectionClick();
+    try { await HapticFeedback.selectionClick(); } catch (_) {}
   }
 
   /// Vibrate — center snap confirmation on gimbal return.
   Future<void> vibrate() async {
     if (!_enabled) return;
-    await HapticFeedback.vibrate();
+    try { await HapticFeedback.vibrate(); } catch (_) {}
   }
 }

@@ -129,11 +129,36 @@ public sealed class ViGEmBackend : IVirtualControllerBackend
             if (normalizedChannels.Length > 3)
                 _controller.SetAxisValue(Xbox360Axis.RightThumbX, ScaleToShort(normalizedChannels[3]));
 
-            // Map switches / auxiliary channels
-            if (switches.Length > 0) _controller.SetButtonState(Xbox360Button.A, switches[0]);
-            if (switches.Length > 1) _controller.SetButtonState(Xbox360Button.B, switches[1]);
-            if (switches.Length > 2) _controller.SetButtonState(Xbox360Button.X, switches[2]);
-            if (switches.Length > 3) _controller.SetButtonState(Xbox360Button.Y, switches[3]);
+            // Auxiliary Channels & Switch Buttons:
+            // Channel 4 (Aux1 / ARM) -> Xbox360Button.A, LeftShoulder, and LeftTrigger slider
+            bool isArmed = (normalizedChannels.Length > 4 && normalizedChannels[4] > 0.0f) || (switches.Length > 0 && switches[0]);
+            _controller.SetButtonState(Xbox360Button.A, isArmed);
+            _controller.SetButtonState(Xbox360Button.LeftShoulder, isArmed);
+            byte ltVal = isArmed ? (byte)255 : (byte)0;
+            if (normalizedChannels.Length > 4)
+            {
+                ltVal = (byte)System.Math.Clamp((int)(((normalizedChannels[4] + 1.0f) / 2.0f) * 255f), 0, 255);
+            }
+            _controller.SetSliderValue(Xbox360Slider.LeftTrigger, ltVal);
+
+            // Channel 5 (Aux2 / BEEPER) -> Xbox360Button.B, RightShoulder, and RightTrigger slider
+            bool isBeeper = (normalizedChannels.Length > 5 && normalizedChannels[5] > 0.0f) || (switches.Length > 1 && switches[1]);
+            _controller.SetButtonState(Xbox360Button.B, isBeeper);
+            _controller.SetButtonState(Xbox360Button.RightShoulder, isBeeper);
+            byte rtVal = isBeeper ? (byte)255 : (byte)0;
+            if (normalizedChannels.Length > 5)
+            {
+                rtVal = (byte)System.Math.Clamp((int)(((normalizedChannels[5] + 1.0f) / 2.0f) * 255f), 0, 255);
+            }
+            _controller.SetSliderValue(Xbox360Slider.RightTrigger, rtVal);
+
+            // Channel 6 (Aux3) -> Xbox360Button.X
+            bool aux3 = (normalizedChannels.Length > 6 && normalizedChannels[6] > 0.0f) || (switches.Length > 2 && switches[2]);
+            _controller.SetButtonState(Xbox360Button.X, aux3);
+
+            // Channel 7 (Aux4) -> Xbox360Button.Y
+            bool aux4 = (normalizedChannels.Length > 7 && normalizedChannels[7] > 0.0f) || (switches.Length > 3 && switches[3]);
+            _controller.SetButtonState(Xbox360Button.Y, aux4);
 
             _controller.SubmitReport();
         }
@@ -153,6 +178,16 @@ public sealed class ViGEmBackend : IVirtualControllerBackend
         _controller.SetAxisValue(Xbox360Axis.LeftThumbY, 0);
         _controller.SetAxisValue(Xbox360Axis.RightThumbY, -32768); // Throttle low
         _controller.SetAxisValue(Xbox360Axis.RightThumbX, 0);
+
+        _controller.SetButtonState(Xbox360Button.A, false);
+        _controller.SetButtonState(Xbox360Button.B, false);
+        _controller.SetButtonState(Xbox360Button.X, false);
+        _controller.SetButtonState(Xbox360Button.Y, false);
+        _controller.SetButtonState(Xbox360Button.LeftShoulder, false);
+        _controller.SetButtonState(Xbox360Button.RightShoulder, false);
+        _controller.SetSliderValue(Xbox360Slider.LeftTrigger, 0);
+        _controller.SetSliderValue(Xbox360Slider.RightTrigger, 0);
+
         _controller.SubmitReport();
 
         return Task.CompletedTask;

@@ -91,8 +91,16 @@ public sealed class VirtualControllerManager : IVirtualController
         float[] transformedChannels = new float[channelData.NormalizedValues.Length];
         for (int i = 0; i < channelData.NormalizedValues.Length; i++)
         {
-            // Apply neutral deadband/expo transformation
-            transformedChannels[i] = AxisTransformer.Transform(channelData.NormalizedValues[i], 0.02f, 0.15f);
+            if (i < 4)
+            {
+                // Apply neutral deadband/expo transformation to main stick axes
+                transformedChannels[i] = AxisTransformer.Transform(channelData.NormalizedValues[i], 0.02f, 0.15f);
+            }
+            else
+            {
+                // Pass auxiliary channels (ARM, BEEPER, Aux3, Aux4) raw
+                transformedChannels[i] = channelData.NormalizedValues[i];
+            }
         }
 
         await _activeBackend.UpdateChannelsAsync(transformedChannels, channelData.DigitalSwitches, cancellationToken);

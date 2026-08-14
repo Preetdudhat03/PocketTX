@@ -34,6 +34,10 @@ public sealed class ChannelData
 
         NormalizedValues[index] = Math.Clamp(normalizedValue, ChannelConstants.MinNormalized, ChannelConstants.MaxNormalized);
         PwmValues[index] = NormalizedToPwm(NormalizedValues[index]);
+        if (index < DigitalSwitches.Length)
+        {
+            DigitalSwitches[index] = NormalizedValues[index] > 0.0f;
+        }
         Timestamp = DateTime.UtcNow;
     }
 
@@ -43,6 +47,10 @@ public sealed class ChannelData
 
         PwmValues[index] = Math.Clamp(pwmValue, ChannelConstants.MinPwmUs, ChannelConstants.MaxPwmUs);
         NormalizedValues[index] = PwmToNormalized(PwmValues[index]);
+        if (index < DigitalSwitches.Length)
+        {
+            DigitalSwitches[index] = NormalizedValues[index] > 0.0f;
+        }
         Timestamp = DateTime.UtcNow;
     }
 

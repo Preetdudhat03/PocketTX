@@ -93,14 +93,11 @@ public partial class TestControllerViewModel : ObservableObject,
                 ThrottleNormalized = message.ChannelData.NormalizedValues.Length > 2 ? message.ChannelData.NormalizedValues[2] : -1.0f;
                 YawNormalized = message.ChannelData.NormalizedValues.Length > 3 ? message.ChannelData.NormalizedValues[3] : 0.0f;
                 
-                if (message.ChannelData.DigitalSwitches != null && message.ChannelData.DigitalSwitches.Length > 0)
-                {
-                    IsArmed = message.ChannelData.DigitalSwitches[0];
-                    if (message.ChannelData.DigitalSwitches.Length > 1)
-                    {
-                        IsBeeperActive = message.ChannelData.DigitalSwitches[1];
-                    }
-                }
+                IsArmed = (message.ChannelData.DigitalSwitches != null && message.ChannelData.DigitalSwitches.Length > 0 && message.ChannelData.DigitalSwitches[0]) ||
+                          (message.ChannelData.NormalizedValues.Length > 4 && message.ChannelData.NormalizedValues[4] > 0.0f);
+
+                IsBeeperActive = (message.ChannelData.DigitalSwitches != null && message.ChannelData.DigitalSwitches.Length > 1 && message.ChannelData.DigitalSwitches[1]) ||
+                                 (message.ChannelData.NormalizedValues.Length > 5 && message.ChannelData.NormalizedValues[5] > 0.0f);
 
                 OnPropertyChanged(nameof(RollPwm));
                 OnPropertyChanged(nameof(PitchPwm));

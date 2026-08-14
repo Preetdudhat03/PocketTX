@@ -19,8 +19,9 @@ public sealed class VirtualControllerManager : IVirtualController
 
     public VirtualControllerManager()
     {
-        // Try ViGEm first (Xbox 360 virtual controller), fallback to vJoy, then Simulation
-        _activeBackend = BackendFactory.CreateBackend(VirtualBackendType.ViGEm);
+        // Start with Simulation backend initially, then connect to ViGEm asynchronously
+        _activeBackend = BackendFactory.CreateBackend(VirtualBackendType.Simulation);
+        AppDomain.CurrentDomain.ProcessExit += (s, e) => Dispose();
         _ = ConnectAsync(VirtualBackendType.ViGEm);
     }
 
@@ -32,6 +33,7 @@ public sealed class VirtualControllerManager : IVirtualController
             if (_activeBackend.IsConnected)
             {
                 await _activeBackend.ShutdownAsync(cancellationToken);
+                _activeBackend.Dispose();
             }
 
             _activeBackend = BackendFactory.CreateBackend(backendType);
@@ -73,6 +75,7 @@ public sealed class VirtualControllerManager : IVirtualController
             if (_activeBackend.IsConnected)
             {
                 await _activeBackend.ShutdownAsync(cancellationToken);
+                _activeBackend.Dispose();
             }
         }
         finally
@@ -101,5 +104,23 @@ public sealed class VirtualControllerManager : IVirtualController
         {
             await _activeBackend.ResetAsync(cancellationToken);
         }
+    }
+
+    public void Dispose()
+    {
+        try
+        {
+            _activeBackend.Dispose();
+        }
+        catch {}
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await _activeBackend.DisposeAsync();
+        }
+        catch {}
     }
 }

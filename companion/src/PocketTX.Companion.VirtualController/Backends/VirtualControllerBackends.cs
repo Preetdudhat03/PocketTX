@@ -53,6 +53,9 @@ public sealed class SimulatedVirtualControllerBackend : IVirtualControllerBacken
         IsConnected = false;
         return Task.CompletedTask;
     }
+
+    public void Dispose() => _ = ShutdownAsync();
+    public ValueTask DisposeAsync() { _ = ShutdownAsync(); return ValueTask.CompletedTask; }
 }
 
 
@@ -90,6 +93,7 @@ public sealed class ViGEmBackend : IVirtualControllerBackend
             }
             IsConnected = true;
             Console.WriteLine("[ViGEmBus] Xbox 360 Virtual Controller connected successfully to Windows!");
+            _ = ResetAsync(cancellationToken);
             return Task.FromResult(true);
         }
         catch (Exception ex)
@@ -170,6 +174,9 @@ public sealed class ViGEmBackend : IVirtualControllerBackend
         }
         return Task.CompletedTask;
     }
+
+    public void Dispose() => _ = ShutdownAsync();
+    public ValueTask DisposeAsync() { _ = ShutdownAsync(); return ValueTask.CompletedTask; }
 }
 
 /// <summary>Future HID Injector virtual controller backend stub.</summary>
@@ -184,6 +191,8 @@ public sealed class HidInjectorBackend : IVirtualControllerBackend
     public Task UpdateChannelsAsync(float[] normalizedChannels, bool[] switches, CancellationToken cancellationToken = default) => Task.CompletedTask;
     public Task ResetAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
     public Task ShutdownAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
+    public void Dispose() {}
+    public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -426,4 +435,7 @@ public sealed class VJoyBackend : IVirtualControllerBackend
         }
         return Task.CompletedTask;
     }
+
+    public void Dispose() => _ = ShutdownAsync();
+    public ValueTask DisposeAsync() { _ = ShutdownAsync(); return ValueTask.CompletedTask; }
 }

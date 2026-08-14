@@ -64,6 +64,16 @@ public partial class App : Application
 
     protected override async void OnExit(ExitEventArgs e)
     {
+        try
+        {
+            var virtualController = Services.GetService<IVirtualController>();
+            if (virtualController != null)
+            {
+                await virtualController.DisposeAsync();
+            }
+        }
+        catch {}
+
         using (_host)
         {
             await _host.StopAsync(TimeSpan.FromSeconds(5));

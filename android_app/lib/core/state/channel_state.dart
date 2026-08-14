@@ -25,3 +25,7 @@ final channelStateProvider =
     StateNotifierProvider<ChannelStateNotifier, ChannelData>(
   (ref) => ChannelStateNotifier(),
 );
+
+/// Trigger provider for centering both 2D gimbals on demand.
+final recenterSticksTriggerProvider = StateProvider<int>((ref) => 0);
+

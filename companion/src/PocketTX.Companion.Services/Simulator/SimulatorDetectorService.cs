@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using PocketTX.Companion.Core.Contracts;
 using PocketTX.Companion.Core.Enums;
 using PocketTX.Companion.Core.Models;
@@ -9,11 +10,32 @@ public sealed class SimulatorDetectorService
 {
     private static readonly Dictionary<string, SimulatorType> KnownSimulators = new(StringComparer.OrdinalIgnoreCase)
     {
+        // Liftoff
         { "liftoff", SimulatorType.Liftoff },
-        { "liftoff_microdrones", SimulatorType.Liftoff },
+        { "liftoffmicrodrones", SimulatorType.Liftoff },
+
+        // VelociDrone
         { "velocidrone", SimulatorType.Velocidrone },
-        { "fpvskydrive", SimulatorType.FPVSkyDive },
-        { "picasim", SimulatorType.PicaSim }
+
+        // FPV.Skydive
+        { "fpvskydive", SimulatorType.FPVSkyDive },
+        { "fpvskydrive", SimulatorType.FPVSkyDive }, // Legacy typo alias
+        { "skydive", SimulatorType.FPVSkyDive },
+
+        // PicaSim
+        { "picasim", SimulatorType.PicaSim },
+
+        // Uncrashed & RealFlight & Freerider
+        { "uncrashed", SimulatorType.Custom },
+        { "uncrashedwin64shipping", SimulatorType.Custom },
+        { "realflight", SimulatorType.Custom },
+        { "realflight32", SimulatorType.Custom },
+        { "realflight64", SimulatorType.Custom },
+        { "realflightevo", SimulatorType.Custom },
+        { "fpvfreerider", SimulatorType.Custom },
+        { "fpvfreeriderrecharged", SimulatorType.Custom },
+        { "trypfpv", SimulatorType.Custom },
+        { "drlsimulator", SimulatorType.Custom }
     };
 
     private readonly IStateStore _stateStore;
@@ -25,6 +47,12 @@ public sealed class SimulatorDetectorService
         _logger = logger;
     }
 
+    private static string NormalizeProcessName(string rawName)
+    {
+        // Remove non-alphanumeric characters (. - _ space) for robust matching
+        return Regex.Replace(rawName, @"[^a-zA-Z0-9]", "").ToLowerInvariant();
+    }
+
     public SimulatorStatus ScanForSimulator()
     {
         try
@@ -32,13 +60,17 @@ public sealed class SimulatorDetectorService
             Process[] processes = Process.GetProcesses();
             foreach (var proc in processes)
             {
-                if (KnownSimulators.TryGetValue(proc.ProcessName, out SimulatorType simType))
+                string procName = proc.ProcessName;
+                string normalized = NormalizeProcessName(procName);
+
+                if (KnownSimulators.TryGetValue(procName, out SimulatorType simType) ||
+                    KnownSimulators.TryGetValue(normalized, out simType))
                 {
                     SimulatorStatus status = new()
                     {
                         IsDetected = true,
                         Type = simType,
-                        ProcessName = proc.ProcessName,
+                        ProcessName = procName,
                         ProcessId = proc.Id,
                         LastDetectedTime = DateTime.UtcNow
                     };
@@ -58,3 +90,4 @@ public sealed class SimulatorDetectorService
         return notRunning;
     }
 }
+

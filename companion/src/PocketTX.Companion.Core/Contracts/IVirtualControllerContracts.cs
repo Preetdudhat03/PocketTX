@@ -3,7 +3,7 @@ using PocketTX.Companion.Core.Models;
 
 namespace PocketTX.Companion.Core.Contracts;
 
-public interface IVirtualControllerBackend
+public interface IVirtualControllerBackend : IDisposable, IAsyncDisposable
 {
     VirtualBackendType Type { get; }
     bool IsAvailable { get; }
@@ -15,7 +15,7 @@ public interface IVirtualControllerBackend
     Task ShutdownAsync(CancellationToken cancellationToken = default);
 }
 
-public interface IVirtualController
+public interface IVirtualController : IDisposable, IAsyncDisposable
 {
     VirtualBackendType ActiveBackendType { get; }
     bool IsConnected { get; }
@@ -25,3 +25,4 @@ public interface IVirtualController
     Task UpdateInputAsync(ChannelData channelData, CancellationToken cancellationToken = default);
     Task ResetAsync(CancellationToken cancellationToken = default);
 }
+

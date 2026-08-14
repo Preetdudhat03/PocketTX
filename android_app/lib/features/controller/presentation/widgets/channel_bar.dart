@@ -35,15 +35,21 @@ class ChannelBar extends StatelessWidget {
       child: Row(
         children: [
           // Label
-          SizedBox(
-            width: 54,
-            child: Text(
-              _label,
-              style: AppTypography.controlLabelStyle(color: context.textSecondary),
-              textAlign: TextAlign.right,
+          Flexible(
+            flex: 0,
+            child: SizedBox(
+              width: 44,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerRight,
+                child: Text(
+                  _label,
+                  style: AppTypography.controlLabelStyle(color: context.textSecondary),
+                ),
+              ),
             ),
           ),
-          const SizedBox(width: AppSpacing.sm),
+          const SizedBox(width: AppSpacing.xs),
 
           // Bar track
           Expanded(
@@ -95,16 +101,22 @@ class ChannelBar extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(width: AppSpacing.sm),
+          const SizedBox(width: AppSpacing.xs),
 
           // PWM value
-          SizedBox(
-            width: 42,
-            child: Text(
-              '$pwm',
-              style: AppTypography.monoStyle(
-                  fontSize: AppTypography.caption, color: _color),
-              textAlign: TextAlign.right,
+          Flexible(
+            flex: 0,
+            child: SizedBox(
+              width: 36,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerRight,
+                child: Text(
+                  '$pwm',
+                  style: AppTypography.monoStyle(
+                      fontSize: AppTypography.caption, color: _color),
+                ),
+              ),
             ),
           ),
         ],

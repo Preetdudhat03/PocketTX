@@ -13,6 +13,7 @@ import '../../../../core/design/icons.dart';
 import '../../../../core/state/app_state.dart';
 import '../../../../core/state/channel_state.dart';
 import '../../../../core/constants/channel_constants.dart';
+import '../../../../core/services/haptic_service.dart';
 import '../../../../widgets/shared/dev_overlay.dart';
 import '../../../../widgets/shared/status_badge.dart';
 import '../../../../widgets/shared/device_scan_dialog.dart';
@@ -32,7 +33,6 @@ class _ControllerScreenState extends ConsumerState<ControllerScreen> {
   Widget build(BuildContext context) {
     final isArmed = ref.watch(isArmedProvider);
     final channels = ref.watch(channelStateProvider);
-    final size = MediaQuery.sizeOf(context);
 
     return DevOverlay(
       child: Scaffold(
@@ -53,8 +53,8 @@ class _ControllerScreenState extends ConsumerState<ControllerScreen> {
                     //final dynamicGimbalSize = (constraints.maxHeight * 0.90).clamp(220.0, 300.0);
                     //final sideWidth = (constraints.maxWidth * 0.38).clamp(dynamicGimbalSize + 16.0, 360.0);
 
-                    final dynamicGimbalSize = (constraints.maxHeight * 0.94).clamp(240.0, 340.0);
-                    final sideWidth = (constraints.maxWidth * 0.40).clamp(dynamicGimbalSize + 16.0, 400.0);
+                    final dynamicGimbalSize = (constraints.maxHeight * 0.88).clamp(180.0, 320.0);
+                    final sideWidth = (constraints.maxWidth * 0.35).clamp(180.0, 350.0);
 
                     //final dynamicGimbalSize = (constraints.maxHeight * 0.98).clamp(260.0, 420.0);
                     //final sideWidth = (constraints.maxWidth * 0.42).clamp(dynamicGimbalSize + 16.0, 450.0);
@@ -81,11 +81,12 @@ class _ControllerScreenState extends ConsumerState<ControllerScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                // ARM / BEEPER buttons
+                                // ARM / CENTER / BEEPER buttons
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     ArmButton(isArmed: isArmed),
+                                    _CenterSticksButton(),
                                     _BeeperButton(),
                                   ],
                                 ),
@@ -209,6 +210,48 @@ class _BeeperButton extends ConsumerWidget {
           child: Icon(
             beeperOn ? AppIcons.beeper : AppIcons.beeperOff,
             color: beeperOn ? AppColors.accentAmber : context.textSecondary,
+            size: AppSpacing.iconSize,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CenterSticksButton extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Semantics(
+      label: 'Center both joysticks to neutral (0.0)',
+      button: true,
+      child: GestureDetector(
+        onTap: () {
+          ref.read(recenterSticksTriggerProvider.notifier).state++;
+          HapticService().medium();
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Joysticks centered to neutral (0.0, 0.0)'),
+              duration: Duration(milliseconds: 900),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          width: AppSpacing.touchTarget,
+          height: AppSpacing.touchTarget,
+          decoration: BoxDecoration(
+            color: context.cardBg,
+            borderRadius: BorderRadius.circular(AppSpacing.sm),
+            border: Border.all(
+              color: AppColors.primary.withValues(alpha: 0.8),
+              width: 1.5,
+            ),
+          ),
+          child: const Icon(
+            Icons.center_focus_strong,
+            color: AppColors.primary,
             size: AppSpacing.iconSize,
           ),
         ),

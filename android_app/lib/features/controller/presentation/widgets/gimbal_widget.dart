@@ -130,6 +130,15 @@ class _GimbalWidgetState extends ConsumerState<GimbalWidget>
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<int>(recenterSticksTriggerProvider, (prev, next) {
+      if (next > 0) {
+        _activeTouchTarget = null;
+        _physics.snapTo(const Offset(0.0, 0.0));
+        _publishChannels();
+        if (mounted) setState(() {});
+      }
+    });
+
     return Semantics(
       label: widget.semanticLabel,
       child: GestureDetector(

@@ -20,6 +20,18 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
+      - name: Fetch Version Tag & Print
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          if [ -z "$TAG" ] || [ "$TAG" = "main" ]; then
+            PUBSPEC_VER=$(grep 'version:' android_app/pubspec.yaml | head -n 1 | awk '{print $2}' | cut -d'+' -f1)
+            TAG="v${PUBSPEC_VER}"
+          fi
+          echo "APP_VERSION=$TAG" >> $GITHUB_ENV
+          echo "=========================================="
+          echo "  BUILDING POCKETTX ANDROID VERSION: $TAG"
+          echo "=========================================="
+
       - name: Set up Java JDK 17
         uses: actions/setup-java@v4
         with:
@@ -42,15 +54,16 @@ jobs:
           cd android_app
           flutter build apk --release --no-tree-shake-icons
 
-      - name: Rename APK Output
+      - name: Rename APK Output with Dynamic Version
         run: |
-          cp android_app/build/app/outputs/flutter-apk/app-release.apk PocketTX_Android_v1.0.0.apk
+          cp android_app/build/app/outputs/flutter-apk/app-release.apk "PocketTX_Android_${{ env.APP_VERSION }}.apk"
+          echo "Successfully created: PocketTX_Android_${{ env.APP_VERSION }}.apk"
 
       - name: Upload Android APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: PocketTX-Android-APK
-          path: PocketTX_Android_v1.0.0.apk
+          path: PocketTX_Android_*.apk
 
   # ───────────────────────────────────────────────────────────────────────────
   # Job 2: Build Windows WPF Companion App
@@ -61,6 +74,20 @@ jobs:
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
+
+      - name: Fetch Version Tag & Print (Windows)
+        shell: powershell
+        run: |
+          $Tag = $env:GITHUB_REF_NAME
+          if ([string]::IsNullOrEmpty($Tag) -or $Tag -eq "main") {
+            $PubspecContent = Get-Content android_app/pubspec.yaml | Select-String "version:" | Select-Object -First 1
+            $VerStr = ($PubspecContent -split '\s+')[1] -split '\+' | Select-Object -First 1
+            $Tag = "v$VerStr"
+          }
+          Write-Host "=========================================="
+          Write-Host "  BUILDING POCKETTX WINDOWS COMPANION VERSION: $Tag"
+          Write-Host "=========================================="
+          echo "APP_VERSION=$Tag" >> $env:GITHUB_ENV
 
       - name: Set up .NET 8.0 SDK
         uses: actions/setup-dotnet@v4
@@ -73,17 +100,20 @@ jobs:
       - name: Build & Publish Companion App
         run: dotnet publish companion/src/PocketTX.Companion.UI/PocketTX.Companion.UI.csproj -c Release -o companion/publish
 
-      - name: Compress Companion Package
-        run: Compress-Archive -Path companion/publish/* -DestinationPath PocketTX_Companion_Windows.zip -Force
+      - name: Compress Companion Package with Dynamic Version
+        shell: powershell
+        run: |
+          Compress-Archive -Path companion/publish/* -DestinationPath "PocketTX_Companion_${env:APP_VERSION}.zip" -Force
+          Write-Host "Successfully created: PocketTX_Companion_${env:APP_VERSION}.zip"
 
       - name: Upload Windows Companion Artifact
         uses: actions/upload-artifact@v4
         with:
           name: PocketTX-Companion-Windows
-          path: PocketTX_Companion_Windows.zip
+          path: PocketTX_Companion_*.zip
 
   # ───────────────────────────────────────────────────────────────────────────
-  # Job 3: Publish GitHub Release with Attachments
+  # Job 3: Publish GitHub Release with Dynamic Version & Attachments
   # ───────────────────────────────────────────────────────────────────────────
   create-release:
     name: Publish Release to GitHub
@@ -93,6 +123,14 @@ jobs:
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
+
+      - name: Fetch Version Tag & Print
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          echo "APP_VERSION=$TAG" >> $GITHUB_ENV
+          echo "=========================================="
+          echo "  PUBLISHING GITHUB RELEASE FOR: $TAG"
+          echo "=========================================="
 
       - name: Download Android APK Artifact
         uses: actions/download-artifact@v4
@@ -108,20 +146,21 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            PocketTX_Android_v1.0.0.apk
-            PocketTX_Companion_Windows.zip
-          name: PocketTX ${{ github.ref_name }} – High-Precision RC Flight Simulator Controller
+            PocketTX_Android_*.apk
+            PocketTX_Companion_*.zip
+          name: PocketTX ${{ env.APP_VERSION }} – High-Precision RC Flight Simulator Controller
           body: |
-            # 🚁 PocketTX ${{ github.ref_name }} Release
+            # 🚁 PocketTX ${{ env.APP_VERSION }} Release
 
             Transform your Android phone into an ultra-low latency, 250Hz RC transmitter for PC flight simulators!
 
             ### 📦 Download Links
-            - **📱 Mobile App (Android)**: Download `PocketTX_Android_v1.0.0.apk` below and install it on your phone.
-            - **💻 Companion App (Windows)**: Download `PocketTX_Companion_Windows.zip`, extract, and launch `PocketTX.Companion.UI.exe`.
+            - **📱 Mobile App (Android)**: Download `PocketTX_Android_${{ env.APP_VERSION }}.apk` below and install it on your phone.
+            - **💻 Companion App (Windows)**: Download `PocketTX_Companion_${{ env.APP_VERSION }}.zip`, extract, and launch `PocketTX.Companion.UI.exe`.
 
-            ### ✨ Key Features
+            ### ✨ Key Features & Fixes
             - **Center Joysticks Button**: Tap `CENTER STICKS` next to ARM/BEEPER to instantly snap touch gimbals back to neutral `(0.0, 0.0)`.
+            - **ARM & BEEPER Calibration Fix**: Full button, bumper (LB/RB), and trigger (LT/RT) mapping across all flight simulators (FPV.Skydive, Liftoff, VelociDrone, RealFlight, PicaSim, Uncrashed).
             - **FPV.Skydive Support**: Enhanced process detection and single-controller instance management.
             - **Phantom Gamepad Cleanup**: Clean disconnects ensure zero ghost controllers (`"xinput gamepad 1"`, `"xinput gamepad 2"`, etc.) accumulate in Windows.
             - **Included Cleanup Utility**: Includes `reset_virtual_gamepads.bat` to flush stuck controllers if needed.

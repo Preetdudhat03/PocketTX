@@ -81,11 +81,12 @@ class _ControllerScreenState extends ConsumerState<ControllerScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                // ARM / CENTER / BEEPER buttons
+                                // ARM / MODE / CENTER / BEEPER buttons
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     ArmButton(isArmed: isArmed),
+                                    _FlightModeButton(),
                                     _CenterSticksButton(),
                                     _BeeperButton(),
                                   ],

@@ -1,0 +1,131 @@
+name: PocketTX Automated Release Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  # ───────────────────────────────────────────────────────────────────────────
+  # Job 1: Build Android Mobile Release APK
+  # ───────────────────────────────────────────────────────────────────────────
+  build-android:
+    name: Build Android App (APK)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Install Flutter Dependencies
+        run: |
+          cd android_app
+          flutter pub get
+
+      - name: Build Android Release APK
+        run: |
+          cd android_app
+          flutter build apk --release --no-tree-shake-icons
+
+      - name: Rename APK Output
+        run: |
+          cp android_app/build/app/outputs/flutter-apk/app-release.apk PocketTX_Android_v1.0.0.apk
+
+      - name: Upload Android APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PocketTX-Android-APK
+          path: PocketTX_Android_v1.0.0.apk
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # Job 2: Build Windows WPF Companion App
+  # ───────────────────────────────────────────────────────────────────────────
+  build-windows:
+    name: Build Windows Companion App
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up .NET 8.0 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore Companion Dependencies
+        run: dotnet restore companion/src/PocketTX.Companion.UI/PocketTX.Companion.UI.csproj
+
+      - name: Build & Publish Companion App
+        run: dotnet publish companion/src/PocketTX.Companion.UI/PocketTX.Companion.UI.csproj -c Release -o companion/publish
+
+      - name: Compress Companion Package
+        run: Compress-Archive -Path companion/publish/* -DestinationPath PocketTX_Companion_Windows.zip -Force
+
+      - name: Upload Windows Companion Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PocketTX-Companion-Windows
+          path: PocketTX_Companion_Windows.zip
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # Job 3: Publish GitHub Release with Attachments
+  # ───────────────────────────────────────────────────────────────────────────
+  create-release:
+    name: Publish Release to GitHub
+    needs: [build-android, build-windows]
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Download Android APK Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: PocketTX-Android-APK
+
+      - name: Download Windows Companion Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: PocketTX-Companion-Windows
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            PocketTX_Android_v1.0.0.apk
+            PocketTX_Companion_Windows.zip
+          name: PocketTX ${{ github.ref_name }} – High-Precision RC Flight Simulator Controller
+          body: |
+            # 🚁 PocketTX ${{ github.ref_name }} Release
+
+            Transform your Android phone into an ultra-low latency, 250Hz RC transmitter for PC flight simulators!
+
+            ### 📦 Download Links
+            - **📱 Mobile App (Android)**: Download `PocketTX_Android_v1.0.0.apk` below and install it on your phone.
+            - **💻 Companion App (Windows)**: Download `PocketTX_Companion_Windows.zip`, extract, and launch `PocketTX.Companion.UI.exe`.
+
+            ### ✨ Key Features
+            - **Center Joysticks Button**: Tap `CENTER STICKS` next to ARM/BEEPER to instantly snap touch gimbals back to neutral `(0.0, 0.0)`.
+            - **FPV.Skydive Support**: Enhanced process detection and single-controller instance management.
+            - **Phantom Gamepad Cleanup**: Clean disconnects ensure zero ghost controllers (`"xinput gamepad 1"`, `"xinput gamepad 2"`, etc.) accumulate in Windows.
+            - **Included Cleanup Utility**: Includes `reset_virtual_gamepads.bat` to flush stuck controllers if needed.
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

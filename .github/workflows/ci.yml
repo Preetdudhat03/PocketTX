@@ -1,0 +1,36 @@
+name: PocketTX CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-android:
+    name: Test Flutter Mobile App
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+      - run: |
+          cd android_app
+          flutter pub get
+          flutter test
+
+  test-companion:
+    name: Build & Test Windows Companion App
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - run: dotnet build companion/src/PocketTX.Companion.UI/PocketTX.Companion.UI.csproj -c Debug

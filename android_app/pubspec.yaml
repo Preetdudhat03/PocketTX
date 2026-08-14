@@ -1,7 +1,7 @@
 name: PocketTX
 description: PocketTX – Professional Android RC Transmitter Application
 publish_to: 'none'
-version: 1.0.0+1
+version: 2.1.3+4
 
 environment:
   sdk: '>=3.0.0 <4.0.0'

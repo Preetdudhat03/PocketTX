@@ -219,6 +219,94 @@ class _BeeperButton extends ConsumerWidget {
   }
 }
 
+class _FlightModeButton extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final channels = ref.watch(channelStateProvider);
+    final aux3Val = channels.normalized.length > ChannelConstants.chAux3
+        ? channels.normalized[ChannelConstants.chAux3]
+        : -1.0;
+
+    String modeName;
+    Color modeColor;
+    IconData modeIcon;
+    double nextVal;
+
+    if (aux3Val > 0.33) {
+      modeName = 'HORZ';
+      modeColor = AppColors.accentPurple;
+      modeIcon = Icons.flight_land;
+      nextVal = -1.0; // cycle back to ACRO
+    } else if (aux3Val > -0.33) {
+      modeName = 'ANGLE';
+      modeColor = AppColors.accentGreen;
+      modeIcon = Icons.flight;
+      nextVal = 1.0; // cycle to HORIZON
+    } else {
+      modeName = 'ACRO';
+      modeColor = AppColors.accentCyan;
+      modeIcon = Icons.flight_takeoff;
+      nextVal = 0.0; // cycle to ANGLE
+    }
+
+    return Semantics(
+      label: 'Flight Mode: $modeName. Tap to change flight mode.',
+      button: true,
+      child: GestureDetector(
+        onTap: () {
+          ref.read(channelStateProvider.notifier).updateChannel(
+                ChannelConstants.chAux3,
+                nextVal,
+              );
+          HapticService().medium();
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          String nextModeName = nextVal > 0.33
+              ? 'HORIZON'
+              : (nextVal > -0.33 ? 'ANGLE' : 'ACRO');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Flight Mode: $nextModeName'),
+              duration: const Duration(milliseconds: 900),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          height: AppSpacing.touchTarget,
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs + 2),
+          decoration: BoxDecoration(
+            color: modeColor.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(AppSpacing.sm),
+            border: Border.all(
+              color: modeColor,
+              width: 1.5,
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                modeIcon,
+                color: modeColor,
+                size: 16,
+              ),
+              const SizedBox(height: 1),
+              Text(
+                modeName,
+                style: AppTypography.controlLabelStyle(color: modeColor).copyWith(
+                  fontSize: 9,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _CenterSticksButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {

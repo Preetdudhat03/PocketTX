@@ -82,14 +82,20 @@ class _ControllerScreenState extends ConsumerState<ControllerScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 // ARM / MODE / CENTER / BEEPER buttons
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    ArmButton(isArmed: isArmed),
-                                    _FlightModeButton(),
-                                    _CenterSticksButton(),
-                                    _BeeperButton(),
-                                  ],
+                                FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      ArmButton(isArmed: isArmed),
+                                      const SizedBox(width: 4),
+                                      _FlightModeButton(),
+                                      const SizedBox(width: 4),
+                                      _CenterSticksButton(),
+                                      const SizedBox(width: 4),
+                                      _BeeperButton(),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(height: AppSpacing.sm),
                                 // 8 Channel Bars

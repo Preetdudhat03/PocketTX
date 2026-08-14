@@ -131,7 +131,7 @@ public sealed class ViGEmBackend : IVirtualControllerBackend
 
             // Auxiliary Channels & Switch Buttons:
             // Channel 4 (Aux1 / ARM) -> Xbox360Button.A, LeftShoulder, and LeftTrigger slider
-            bool isArmed = (normalizedChannels.Length > 4 && normalizedChannels[4] > 0.0f) || (switches.Length > 0 && switches[0]);
+            bool isArmed = (normalizedChannels.Length > 4 && normalizedChannels[4] > 0.0f) || (switches.Length > 4 && switches[4]);
             _controller.SetButtonState(Xbox360Button.A, isArmed);
             _controller.SetButtonState(Xbox360Button.LeftShoulder, isArmed);
             byte ltVal = isArmed ? (byte)255 : (byte)0;
@@ -142,7 +142,7 @@ public sealed class ViGEmBackend : IVirtualControllerBackend
             _controller.SetSliderValue(Xbox360Slider.LeftTrigger, ltVal);
 
             // Channel 5 (Aux2 / BEEPER) -> Xbox360Button.B, RightShoulder, and RightTrigger slider
-            bool isBeeper = (normalizedChannels.Length > 5 && normalizedChannels[5] > 0.0f) || (switches.Length > 1 && switches[1]);
+            bool isBeeper = (normalizedChannels.Length > 5 && normalizedChannels[5] > 0.0f) || (switches.Length > 5 && switches[5]);
             _controller.SetButtonState(Xbox360Button.B, isBeeper);
             _controller.SetButtonState(Xbox360Button.RightShoulder, isBeeper);
             byte rtVal = isBeeper ? (byte)255 : (byte)0;
@@ -153,11 +153,11 @@ public sealed class ViGEmBackend : IVirtualControllerBackend
             _controller.SetSliderValue(Xbox360Slider.RightTrigger, rtVal);
 
             // Channel 6 (Aux3) -> Xbox360Button.X
-            bool aux3 = (normalizedChannels.Length > 6 && normalizedChannels[6] > 0.0f) || (switches.Length > 2 && switches[2]);
+            bool aux3 = (normalizedChannels.Length > 6 && normalizedChannels[6] > 0.0f) || (switches.Length > 6 && switches[6]);
             _controller.SetButtonState(Xbox360Button.X, aux3);
 
             // Channel 7 (Aux4) -> Xbox360Button.Y
-            bool aux4 = (normalizedChannels.Length > 7 && normalizedChannels[7] > 0.0f) || (switches.Length > 3 && switches[3]);
+            bool aux4 = (normalizedChannels.Length > 7 && normalizedChannels[7] > 0.0f) || (switches.Length > 7 && switches[7]);
             _controller.SetButtonState(Xbox360Button.Y, aux4);
 
             _controller.SubmitReport();
@@ -428,9 +428,9 @@ public sealed class VJoyBackend : IVirtualControllerBackend
         if (normalizedChannels.Length > 7) _pos.wDial     = Map(normalizedChannels[7]);
 
         uint buttons = 0;
-        for (int i = 0; i < System.Math.Min(switches.Length, 32); i++)
+        for (int i = 4; i < System.Math.Min(switches.Length, 32); i++)
         {
-            if (switches[i]) buttons |= (1u << i);
+            if (switches[i]) buttons |= (1u << (i - 4));
         }
         _pos.lButtons = buttons;
 

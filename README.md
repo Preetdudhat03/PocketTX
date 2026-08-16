@@ -266,4 +266,4 @@ New-NetFirewallRule -DisplayName "PocketTX TCP" -Direction Inbound -Protocol TCP
 
 - **PocketTX Core & App**: Built with Flutter & .NET 8.
 - **Virtual Gamepad Engine**: Powered by [Nefarius.ViGEm.Client](https://github.com/nefarius/ViGEm.NET).
-- **License**: MIT License.
+- **License**: MIT License..

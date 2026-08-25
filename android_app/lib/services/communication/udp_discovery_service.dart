@@ -142,7 +142,7 @@ class UdpDiscoveryService {
               protocolVersion: ProtocolConstants.protocolVersion,
               osName: 'Windows PC',
               ipAddress: hostStr,
-              port: dg.port,
+              port: ProtocolConstants.dataPort,
               pingMs: 5,
               lastSeen: DateTime.now(),
             );

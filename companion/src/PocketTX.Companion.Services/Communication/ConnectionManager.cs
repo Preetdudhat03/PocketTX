@@ -145,6 +145,9 @@ public sealed class ConnectionManager : IConnectionManager
             await wifiChan.OpenAsync(cancellationToken);
         }
 
+        // Re-run ADB reverse port forwarding in case the device was plugged in after startup
+        UsbChannel.TryEnsureAdbReverse();
+
         await Task.Delay(300, cancellationToken);
 
         var physicalChannel = _channels.FirstOrDefault(c => c.Type != ConnectionType.TestMode && c.IsConnected);

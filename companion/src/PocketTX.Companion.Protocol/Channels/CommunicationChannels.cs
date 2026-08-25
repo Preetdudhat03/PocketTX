@@ -313,7 +313,7 @@ public sealed class UsbChannel : ICommunicationChannel
         }
     }
 
-    private static void TryEnsureAdbReverse()
+    public static void TryEnsureAdbReverse()
     {
         try
         {

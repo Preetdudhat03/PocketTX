@@ -9,4 +9,3 @@ public sealed record ProfileChangedMessage(ControllerProfile Profile);
 public sealed record SimulatorStatusChangedMessage(SimulatorStatus Status);
 public sealed record DiagnosticMetricsUpdatedMessage(DiagnosticMetrics Metrics);
 public sealed record ThemeChangedMessage(ThemeType Theme);
-public sealed record SettingsChangedMessage(AppSettings Settings);

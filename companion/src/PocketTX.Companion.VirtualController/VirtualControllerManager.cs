@@ -13,15 +13,24 @@ public sealed class VirtualControllerManager : IVirtualController
 {
     private IVirtualControllerBackend _activeBackend;
     private readonly SemaphoreSlim _semaphore = new(1, 1);
+    private readonly IStateStore _stateStore;
 
     public VirtualBackendType ActiveBackendType => _activeBackend.Type;
     public bool IsConnected => _activeBackend.IsConnected;
 
-    public VirtualControllerManager()
+    public VirtualControllerManager(IStateStore stateStore, CommunityToolkit.Mvvm.Messaging.IMessenger messenger)
     {
-        // Start with Simulation backend initially, then connect to ViGEm asynchronously
+        _stateStore = stateStore;
+        // Start with Simulation backend initially
         _activeBackend = BackendFactory.CreateBackend(VirtualBackendType.Simulation);
         AppDomain.CurrentDomain.ProcessExit += (s, e) => Dispose();
+
+        messenger.Register<VirtualControllerManager, PocketTX.Companion.Services.Messages.SettingsChangedMessage>(this, (r, m) =>
+        {
+            _ = r.ConnectAsync(m.Settings.PreferredVirtualBackend);
+        });
+
+        // Initialize with default or loaded settings immediately, though LoadSettingsAsync will trigger the messenger later
         _ = ConnectAsync(VirtualBackendType.ViGEm);
     }
 

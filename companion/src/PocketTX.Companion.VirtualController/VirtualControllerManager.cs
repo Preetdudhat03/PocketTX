@@ -18,19 +18,19 @@ public sealed class VirtualControllerManager : IVirtualController
     public VirtualBackendType ActiveBackendType => _activeBackend.Type;
     public bool IsConnected => _activeBackend.IsConnected;
 
-    public VirtualControllerManager(IStateStore stateStore, CommunityToolkit.Mvvm.Messaging.IMessenger messenger)
+    public VirtualControllerManager(IStateStore stateStore)
     {
         _stateStore = stateStore;
         // Start with Simulation backend initially
         _activeBackend = BackendFactory.CreateBackend(VirtualBackendType.Simulation);
         AppDomain.CurrentDomain.ProcessExit += (s, e) => Dispose();
 
-        messenger.Register<VirtualControllerManager, PocketTX.Companion.Services.Messages.SettingsChangedMessage>(this, (r, m) =>
+        _stateStore.SettingsChanged += (s, settings) =>
         {
-            _ = r.ConnectAsync(m.Settings.PreferredVirtualBackend);
-        });
+            _ = ConnectAsync(settings.PreferredVirtualBackend);
+        };
 
-        // Initialize with default or loaded settings immediately, though LoadSettingsAsync will trigger the messenger later
+        // Initialize with default or loaded settings immediately, though LoadSettingsAsync will trigger the event later
         _ = ConnectAsync(VirtualBackendType.ViGEm);
     }
 

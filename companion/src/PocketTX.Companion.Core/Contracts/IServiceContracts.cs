@@ -58,6 +58,7 @@ public interface IStateStore
     ChannelData CurrentChannels { get; }
     ControllerProfile CurrentProfile { get; }
     AppSettings CurrentSettings { get; }
+    event EventHandler<AppSettings>? SettingsChanged;
     SimulatorStatus CurrentSimulator { get; }
     DiagnosticMetrics Diagnostics { get; }
 

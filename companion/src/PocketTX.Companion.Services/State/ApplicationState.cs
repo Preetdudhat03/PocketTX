@@ -55,6 +55,8 @@ public sealed class ApplicationState : IStateStore
         _messenger.Send(new ProfileChangedMessage(profile));
     }
 
+    public event EventHandler<AppSettings>? SettingsChanged;
+
     public void UpdateSettings(AppSettings settings)
     {
         lock (_lock)
@@ -62,6 +64,7 @@ public sealed class ApplicationState : IStateStore
             CurrentSettings = settings;
             CurrentTheme = settings.Theme;
         }
+        SettingsChanged?.Invoke(this, settings);
         _messenger.Send(new ThemeChangedMessage(settings.Theme));
     }
 

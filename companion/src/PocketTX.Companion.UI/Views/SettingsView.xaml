@@ -21,7 +21,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Virtual Controller Backend" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
-                        <ComboBox Grid.Column="1" SelectedItem="{Binding SelectedBackend, Mode=TwoWay}" Padding="8,6" Background="{DynamicResource CardHeaderBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}">
+                        <ComboBox Grid.Column="1" SelectedItem="{Binding SelectedBackend, Mode=TwoWay}" Padding="8,6">
                             <coreEnums:VirtualBackendType>ViGEm</coreEnums:VirtualBackendType>
                             <coreEnums:VirtualBackendType>VJoy</coreEnums:VirtualBackendType>
                             <coreEnums:VirtualBackendType>Simulation</coreEnums:VirtualBackendType>
@@ -34,7 +34,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Preferred Connection" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
-                        <ComboBox Grid.Column="1" SelectedItem="{Binding SelectedConnection, Mode=TwoWay}" Padding="8,6" Background="{DynamicResource CardHeaderBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}">
+                        <ComboBox Grid.Column="1" SelectedItem="{Binding SelectedConnection, Mode=TwoWay}" Padding="8,6">
                             <coreEnums:ConnectionType>Usb</coreEnums:ConnectionType>
                             <coreEnums:ConnectionType>Wifi</coreEnums:ConnectionType>
                         </ComboBox>
@@ -46,7 +46,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Interface Theme" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
-                        <ComboBox Grid.Column="1" SelectedItem="{Binding SelectedTheme, Mode=TwoWay}" Padding="8,6" Background="{DynamicResource CardHeaderBackgroundBrush}" Foreground="{DynamicResource TextPrimaryBrush}">
+                        <ComboBox Grid.Column="1" SelectedItem="{Binding SelectedTheme, Mode=TwoWay}" Padding="8,6">
                             <coreEnums:ThemeType>Dark</coreEnums:ThemeType>
                             <coreEnums:ThemeType>Light</coreEnums:ThemeType>
                         </ComboBox>

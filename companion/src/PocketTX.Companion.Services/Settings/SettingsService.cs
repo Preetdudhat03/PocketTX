@@ -45,6 +45,7 @@ public sealed class SettingsService : ISettingsService
             }
 
             _stateStore.UpdateSettings(settings);
+            _messenger.Send(new PocketTX.Companion.Services.Messages.SettingsChangedMessage(settings));
             _logger.LogInfo($"Loaded application settings (v{settings.Version}). Theme: {settings.Theme}", "SettingsService");
         }
         catch (Exception ex)

@@ -67,6 +67,7 @@ public sealed class SettingsService : ISettingsService
             string json = JsonHelper.Serialize(settings);
             await File.WriteAllTextAsync(_settingsFilePath, json, cancellationToken);
             _stateStore.UpdateSettings(settings);
+            _messenger.Send(new PocketTX.Companion.Services.Messages.SettingsChangedMessage(settings));
             _logger.LogInfo("Saved application settings.", "SettingsService");
         }
         catch (Exception ex)

@@ -20,7 +20,7 @@ public class ConnectionManagerTests
         IMessenger messenger = WeakReferenceMessenger.Default;
         IStateStore stateStore = new ApplicationState(messenger);
         ILoggerService logger = new LoggerService(new ILogSink[] { new DebugSink() });
-        IVirtualController virtualController = new VirtualControllerManager();
+        IVirtualController virtualController = new VirtualControllerManager(stateStore);
 
         List<ICommunicationChannel> channels = new()
         {

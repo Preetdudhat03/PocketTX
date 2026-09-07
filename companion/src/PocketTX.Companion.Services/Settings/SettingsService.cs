@@ -10,14 +10,16 @@ public sealed class SettingsService : ISettingsService
     private readonly string _settingsFilePath;
     private readonly IStateStore _stateStore;
     private readonly ILoggerService _logger;
+    private readonly CommunityToolkit.Mvvm.Messaging.IMessenger _messenger;
     private readonly SemaphoreSlim _semaphore = new(1, 1);
 
     public AppSettings CurrentSettings => _stateStore.CurrentSettings;
 
-    public SettingsService(IStateStore stateStore, ILoggerService logger)
+    public SettingsService(IStateStore stateStore, ILoggerService logger, CommunityToolkit.Mvvm.Messaging.IMessenger messenger)
     {
         _stateStore = stateStore;
         _logger = logger;
+        _messenger = messenger;
         string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         string folder = Path.Combine(localAppData, AppConstants.DefaultFolderName, AppConstants.SettingsFolderName);
         Directory.CreateDirectory(folder);

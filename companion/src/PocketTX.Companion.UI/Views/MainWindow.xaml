@@ -60,8 +60,8 @@
                 <!-- Footer Status -->
                 <Border DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Background="#1B202E" CornerRadius="8" Padding="12">
                     <StackPanel>
-                        <TextBlock Text="STATUS" Foreground="#8C9BB4" FontSize="10" FontWeight="Bold"/>
-                        <TextBlock Text="Simulating RC Input" Foreground="#5B8DEF" FontSize="12" FontWeight="Bold" Margin="0,2,0,0"/>
+                        <TextBlock Text="VIRTUAL BACKEND" Foreground="#8C9BB4" FontSize="10" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding DashboardVM.ActiveBackendText}" Foreground="#5B8DEF" FontSize="12" FontWeight="Bold" Margin="0,2,0,0"/>
                     </StackPanel>
                 </Border>
             </DockPanel>

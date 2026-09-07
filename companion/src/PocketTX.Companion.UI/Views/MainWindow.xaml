@@ -81,7 +81,7 @@
 
                     <!-- Connection Badge -->
                     <Border DockPanel.Dock="Right" HorizontalAlignment="Right" Background="#22C55E" CornerRadius="12" Padding="12,4" VerticalAlignment="Center">
-                        <TextBlock Text="TEST MODE (SIMULATION)" Foreground="#FFFFFF" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding ConnectionBadgeText}" Foreground="#FFFFFF" FontSize="11" FontWeight="Bold"/>
                     </Border>
                 </DockPanel>
             </Border>

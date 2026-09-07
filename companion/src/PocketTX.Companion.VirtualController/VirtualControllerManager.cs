@@ -69,6 +69,8 @@ public sealed class VirtualControllerManager : IVirtualController
                     await _activeBackend.InitializeAsync(cancellationToken);
                 }
             }
+
+            _stateStore.UpdateBackend(_activeBackend.Type);
         }
         finally
         {
